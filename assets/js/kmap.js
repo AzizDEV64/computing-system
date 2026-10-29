@@ -157,6 +157,8 @@
     const rows = GRAY[L.rowBits], cols = GRAY[L.colBits];
     container.innerHTML = '';
     container.classList.add('kmap-wrap');
+    container.classList.toggle('pos', !!opts.pos);
+    container.classList.remove('dim');
     L.maps.forEach(prefix => {
       const block = document.createElement('div');
       block.className = 'kmap-block';
@@ -185,7 +187,7 @@
         const val = opts.values.get(idx) ?? 0;
         const cell = document.createElement(opts.editable ? 'button' : 'div');
         if (opts.editable) { cell.type = 'button'; cell.setAttribute('aria-label', `m${idx}: ${val}. Değiştirmek için bas.`); }
-        cell.className = 'kmap-cell' + (val === 1 ? ' one' : val === 'X' ? ' dc' : '');
+        cell.className = 'kmap-cell' + (val === 1 ? ' one' : val === 'X' ? ' dc' : ' zero');
         cell.style.gridRow = ri + 1; cell.style.gridColumn = ci + 1;
         cell.innerHTML = opts.cellLabel
           ? `<span class="kl">${opts.cellLabel(idx)}</span>`
@@ -194,22 +196,27 @@
         body.appendChild(cell);
       }));
       // grupları çiz
+      // İçe çekme: sadece daha önceki bir grupla hücre paylaşan gruplar içe çekilir (en fazla 2 kademe)
+      const cellSets = (opts.groups || []).map(g => { const set = new Set(); for (let x = 0; x < (1 << n); x++) if (covers(g.t, x)) set.add(x); return set; });
       (opts.groups || []).forEach((g, gi) => {
+        let depth = 0;
+        for (let j = 0; j < gi; j++) if ([...cellSets[gi]].some(x => cellSets[j].has(x))) depth++;
         const rowSet = new Set(), colSet = new Set();
         rows.forEach((r, ri) => cols.forEach((c, ci) => {
           if (covers(g.t, cellIndex(prefix, r, c))) { rowSet.add(ri); colSet.add(ci); }
         }));
         if (!rowSet.size) return;
-        const inset = 4 + (gi % 4) * 4;
+        const inset = 3 + Math.min(depth, 2) * 3;
         segments(rowSet, rows.length).forEach(([r0, r1, rOpenTop, rOpenBottom]) => {
           segments(colSet, cols.length).forEach(([c0, c1, cOpenLeft, cOpenRight]) => {
             const box = document.createElement('div');
             box.className = 'kmap-group';
+            box.dataset.g = gi;
             box.style.setProperty('--gc', g.color || GROUP_COLORS[gi % GROUP_COLORS.length]);
-            box.style.left = `calc(${(c0 / cols.length) * 100}% + ${cOpenLeft ? -2 : inset}px)`;
-            box.style.width = `calc(${((c1 - c0 + 1) / cols.length) * 100}% - ${(cOpenLeft ? -2 : inset) + (cOpenRight ? -2 : inset)}px)`;
-            box.style.top = `calc(${(r0 / rows.length) * 100}% + ${rOpenTop ? -2 : inset}px)`;
-            box.style.height = `calc(${((r1 - r0 + 1) / rows.length) * 100}% - ${(rOpenTop ? -2 : inset) + (rOpenBottom ? -2 : inset)}px)`;
+            box.style.left = `calc(${(c0 / cols.length) * 100}% + ${cOpenLeft ? -9 : inset}px)`;
+            box.style.width = `calc(${((c1 - c0 + 1) / cols.length) * 100}% - ${(cOpenLeft ? -9 : inset) + (cOpenRight ? -9 : inset)}px)`;
+            box.style.top = `calc(${(r0 / rows.length) * 100}% + ${rOpenTop ? -9 : inset}px)`;
+            box.style.height = `calc(${((r1 - r0 + 1) / rows.length) * 100}% - ${(rOpenTop ? -9 : inset) + (rOpenBottom ? -9 : inset)}px)`;
             if (cOpenLeft) box.classList.add('open-l');
             if (cOpenRight) box.classList.add('open-r');
             if (rOpenTop) box.classList.add('open-t');

@@ -55,7 +55,7 @@
       const bits = `${r.F3}${r.s[2]}${r.s[1]}${r.s[0]}`;
       let expl;
       if (!env.op) expl = `${a} + ${b} = ${a + b} → F₃F₂F₁F₀ = ${bits}`;
-      else if (r.F3) expl = `${a} − ${b}: elde taştı, C_in0 = 1, sonuç pozitif: F₂F₁F₀ = ${bits.slice(1)} = +${r.sum}`;
+      else if (r.F3) expl = `${a} − ${b}: elde taştı, AND kapısı 1 verir (Cᵢₙ₀ = 1), sonuç pozitif: F₂F₁F₀ = ${bits.slice(1)} = +${r.sum}`;
       else expl = `${a} − ${b}: elde yok, sonuç negatif. F₂F₁F₀ = ${bits.slice(1)}, tersi ${((~r.sum) & 7).toString(2).padStart(3, '0')} → ${r.value === 0 ? '−0' : r.value}`;
       return {
         x0: (r.bx >> 0) & 1, x1: (r.bx >> 1) & 1, x2: (r.bx >> 2) & 1,

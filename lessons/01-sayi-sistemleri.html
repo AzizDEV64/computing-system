@@ -127,20 +127,33 @@
 
   <h3>İkili sistemde sayma</h3>
   <p>Sadece 0 ve 1 olduğu için "elde" çok çabuk oluşur. Kilometre sayacının sadece 0 ve 1 rakamı olduğunu düşün:</p>
-  <div class="table-wrap">
-    <table class="data">
-      <thead><tr><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th></tr></thead>
+  <div class="tables-row">
+    <div class="table-wrap"><table class="data">
+      <thead><tr><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th></tr></thead>
       <tbody>
-        <tr><td>0</td><td class="b">0000</td><td class="b">0</td><td class="b">0</td><td>8</td><td class="b">1000</td><td class="b">10</td><td class="b">8</td></tr>
-        <tr><td>1</td><td class="b">0001</td><td class="b">1</td><td class="b">1</td><td>9</td><td class="b">1001</td><td class="b">11</td><td class="b">9</td></tr>
-        <tr><td>2</td><td class="b">0010</td><td class="b">2</td><td class="b">2</td><td>10</td><td class="b">1010</td><td class="b">12</td><td class="b">A</td></tr>
-        <tr><td>3</td><td class="b">0011</td><td class="b">3</td><td class="b">3</td><td>11</td><td class="b">1011</td><td class="b">13</td><td class="b">B</td></tr>
-        <tr><td>4</td><td class="b">0100</td><td class="b">4</td><td class="b">4</td><td>12</td><td class="b">1100</td><td class="b">14</td><td class="b">C</td></tr>
-        <tr><td>5</td><td class="b">0101</td><td class="b">5</td><td class="b">5</td><td>13</td><td class="b">1101</td><td class="b">15</td><td class="b">D</td></tr>
-        <tr><td>6</td><td class="b">0110</td><td class="b">6</td><td class="b">6</td><td>14</td><td class="b">1110</td><td class="b">16</td><td class="b">E</td></tr>
-        <tr><td>7</td><td class="b">0111</td><td class="b">7</td><td class="b">7</td><td>15</td><td class="b">1111</td><td class="b">17</td><td class="b">F</td></tr>
+        <tr><td>0</td><td class="b">0000</td><td class="b">0</td><td class="b">0</td></tr>
+        <tr><td>1</td><td class="b">0001</td><td class="b">1</td><td class="b">1</td></tr>
+        <tr><td>2</td><td class="b">0010</td><td class="b">2</td><td class="b">2</td></tr>
+        <tr><td>3</td><td class="b">0011</td><td class="b">3</td><td class="b">3</td></tr>
+        <tr><td>4</td><td class="b">0100</td><td class="b">4</td><td class="b">4</td></tr>
+        <tr><td>5</td><td class="b">0101</td><td class="b">5</td><td class="b">5</td></tr>
+        <tr><td>6</td><td class="b">0110</td><td class="b">6</td><td class="b">6</td></tr>
+        <tr><td>7</td><td class="b">0111</td><td class="b">7</td><td class="b">7</td></tr>
       </tbody>
-    </table>
+    </table></div>
+    <div class="table-wrap"><table class="data">
+      <thead><tr><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th></tr></thead>
+      <tbody>
+        <tr><td>8</td><td class="b">1000</td><td class="b">10</td><td class="b">8</td></tr>
+        <tr><td>9</td><td class="b">1001</td><td class="b">11</td><td class="b">9</td></tr>
+        <tr><td>10</td><td class="b">1010</td><td class="b">12</td><td class="b">A</td></tr>
+        <tr><td>11</td><td class="b">1011</td><td class="b">13</td><td class="b">B</td></tr>
+        <tr><td>12</td><td class="b">1100</td><td class="b">14</td><td class="b">C</td></tr>
+        <tr><td>13</td><td class="b">1101</td><td class="b">15</td><td class="b">D</td></tr>
+        <tr><td>14</td><td class="b">1110</td><td class="b">16</td><td class="b">E</td></tr>
+        <tr><td>15</td><td class="b">1111</td><td class="b">17</td><td class="b">F</td></tr>
+      </tbody>
+    </table></div>
   </div>
   <p>Bu tabloya iyi bak. En sağdaki bit her satırda değişiyor (0,1,0,1…), bir solundaki ikişer ikişer, sonraki dörder dörder, en soldaki sekizer sekizer. Bu deseni doğruluk tablosu kurarken tekrar kullanacağız.</p>
   <div class="note tip">
@@ -298,6 +311,7 @@
         <hr>
         <span class="l"></span><span class="v">10010</span><span class="c">18</span>
       </div>
+      <p class="hint">En üstteki küçük satır elde satırıdır: her 1, sağındaki sütundan gelen eldeyi gösterir. En soldaki 1 sayının dışına taşan eldedir ve sonucun başına iner.</p>
       <ol class="steps">
         <li>En sağ sütun: 1 + 1 = 10. <b>0</b> yaz, 1 elde.</li>
         <li>İkinci sütun: 1 + 1 + elde 1 = 11. <b>1</b> yaz, 1 elde.</li>
@@ -510,7 +524,7 @@
         <li>Topla:</li>
       </ol>
       <div class="calc">
-        <span class="l"></span><span class="v carry"> 111 </span><span class="c">elde (hocanın "ccc"si)</span>
+        <span class="l"></span><span class="v carry">1111 </span><span class="c">elde (hocanın "ccc"si)</span>
         <span class="l"></span><span class="v">1011</span><span class="c">M = 11</span>
         <span class="l">+</span><span class="v">0111</span><span class="c">1001'in 2's complement'i</span>
         <hr>
@@ -930,16 +944,16 @@
     <tbody>
       <tr><td>AND</td><td>·</td><td class="m">A · B = AB</td><td>Nokta genelde yazılmaz</td></tr>
       <tr><td>OR</td><td>+</td><td class="m">A + B</td><td></td></tr>
-      <tr><td>NOT</td><td>' veya ‾</td><td class="m">A', <span class="ov">A</span></td><td></td></tr>
+      <tr><td>NOT</td><td>' (kesme) veya üst çizgi</td><td class="m">A', <span class="ov">A</span></td><td></td></tr>
       <tr><td>EXOR</td><td>⊕</td><td class="m">A ⊕ B</td><td class="m">= <span class="ov">A ⊙ B</span></td></tr>
       <tr><td>EXNOR</td><td>⊙</td><td class="m">A ⊙ B</td><td class="m">= <span class="ov">A ⊕ B</span></td></tr>
-      <tr><td>NAND</td><td>‾ üstünde ·</td><td class="m"><span class="ov">A · B</span> = <span class="ov">AB</span></td><td></td></tr>
-      <tr><td>NOR</td><td>‾ üstünde +</td><td class="m"><span class="ov">A + B</span></td><td></td></tr>
+      <tr><td>NAND</td><td>çarpımın üstüne çizgi</td><td class="m"><span class="ov">A · B</span> = <span class="ov">AB</span></td><td></td></tr>
+      <tr><td>NOR</td><td>toplamın üstüne çizgi</td><td class="m"><span class="ov">A + B</span></td><td></td></tr>
     </tbody>
   </table></div>
   <div class="note warn">
     <span class="note-title">Çizgi uzunluğu anlam değiştirir</span>
-    <p><span class="m"><span class="ov">AB</span></span> (NAND: önce VE, sonra tümünü ters çevir) ile <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> (ikisini ayrı ayrı ters çevir, sonra VE) <b>farklıdır</b>. A = 1, B = 0 için ilki 1, ikincisi 0 verir. Elle yazarken çizgilerin nerede başlayıp bittiğine çok dikkat et.</p>
+    <p><span class="m"><span class="ov">AB</span></span> (NAND: önce VE, sonra tümünü ters çevir) ile <span class="m"><span class="ov">A</span><span class="ov">B</span></span> (ikisini ayrı ayrı ters çevir, sonra VE) <b>farklıdır</b>. A = 1, B = 0 için ilki 1, ikincisi 0 verir. Elle yazarken çizgilerin nerede başlayıp bittiğine çok dikkat et.</p>
   </div>
 </section>
 
@@ -996,10 +1010,11 @@
           <tr class="wrong"><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="out one">1</td></tr>
         </tbody>
       </table></div>
+      <p class="hint">Kırmızı satırlar: hocanın 0 yazdığı, doğrusu 1 olan satırlar.</p>
       <p class="answer">F sütunu: 1, 0, 0, 1, 1, 1, 1, 1</p>
       <div class="note warn">
         <span class="note-title">Hocanın tablosunda üç satır yanlış</span>
-        <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri" loading="lazy"><figcaption>Hocanın notu, PDF s.4: soru işaretli satırlar</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri"><figcaption>Hocanın notu, PDF s.4: soru işaretli satırlar</figcaption></figure>
         <p>PDF'te bu tablonun yanına soru işaretleri konmuş ve <b>011, 101, 111</b> satırları 0 yazılmış. Doğrusu bu üç satırda da <b>1</b> (yukarıda kırmızı arka planla işaretli). Örneğin 011 satırı: <span class="ov">A</span> = 1, B ⊕ C = 1 ⊕ 1 = 0, çarpım 1 · 0 = 0, tersi <b>1</b>. A = 1 olan satırlarda <span class="ov">A</span> = 0 olduğu için çarpım hep 0, tersi hep 1. Bu yüzden alt dört satırın hepsi 1 olmalı.</p>
         <p>Sağlama için ifadeyi iki duruma ayır. A = 1 ise <span class="ov">A</span> = 0, çarpım 0, tersi 1: alt dört satır 1. A = 0 ise <span class="ov">A</span> = 1, çarpım B ⊕ C'nin kendisi, F onun tersi: B ile C <b>eşitken</b> 1 (000 ve 011 satırları). Tablo bununla birebir uyuşuyor.</p>
       </div>
@@ -1020,7 +1035,7 @@
       <div class="table-wrap"><table class="tt">
         <thead><tr><th>A</th><th>B</th><th class="out">F</th><th>Satırın terimi</th></tr></thead>
         <tbody>
-          <tr><td>0</td><td>0</td><td class="out">0</td><td class="m"><span class="ov">A</span> <span class="ov">B</span></td></tr>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td class="m"><span class="ov">A</span><span class="ov">B</span></td></tr>
           <tr class="hit"><td>0</td><td>1</td><td class="out one">1</td><td class="m"><span class="ov">A</span>B</td></tr>
           <tr class="hit"><td>1</td><td>0</td><td class="out one">1</td><td class="m">A<span class="ov">B</span></td></tr>
           <tr><td>1</td><td>1</td><td class="out">0</td><td class="m">AB</td></tr>
@@ -1028,7 +1043,7 @@
       </table></div>
       <p>F = 1 olan satırlar 01 ve 10. 01 satırında A = 0 (çizgili), B = 1 (düz) → <span class="m"><span class="ov">A</span>B</span>. 10 satırında → <span class="m">A<span class="ov">B</span></span>.</p>
       <p class="answer">F = A ⊕ B = <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span></span></p>
-      <p>Aynı yöntemle XNOR: tablosunda 1 olan satırlar 00 ve 11. 00 satırı <span class="m"><span class="ov">A</span> <span class="ov">B</span></span>, 11 satırı <span class="m">AB</span> verir, yani <span class="m">A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB</span>.</p>
+      <p>Aynı yöntemle XNOR: tablosunda 1 olan satırlar 00 ve 11. 00 satırı <span class="m"><span class="ov">A</span><span class="ov">B</span></span>, 11 satırı <span class="m">AB</span> verir, yani <span class="m">A ⊙ B = <span class="ov">A</span><span class="ov">B</span> + AB</span>.</p>
     </div>
   </div>
 
@@ -1080,7 +1095,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = A<span class="ov">B</span> <span class="ov">C</span> + <span class="ov">A</span>B<span class="ov">C</span> + ABC</h4><span class="src">Hocanın örneği, PDF s.4–5</span></div>
+    <div class="example-head"><h4>Örnek: F = A<span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>B<span class="ov">C</span> + ABC</h4><span class="src">Hocanın örneği, PDF s.4–5</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>İlk iki terimde ortak olan ne? İkisinde de <span class="ov">C</span> var. Hoca bunları altlarına nokta koyarak işaretlemiş.</li>
@@ -1089,7 +1104,7 @@
       </ol>
       <p class="answer">F = <span class="m"><span class="ov">C</span>(A ⊕ B) + ABC</span></p>
       <p>Hoca bu örnekte EXOR'un tablosunu hemen yanına çizmiş, çünkü bu kalıbı tanımak sadeleştirmenin anahtarı. <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span></span> gördüğün her yerde <span class="m">A ⊕ B</span> yazabilirsin.</p>
-      <p>Hoca ayrıca 2. ve 3. terimi bir yayla bağlamış: ikisinde de B ortak. Bu gruplamayla <span class="m" style="white-space:normal">F = A<span class="ov">B</span> <span class="ov">C</span> + B(<span class="ov">A</span> <span class="ov">C</span> + AC) = A<span class="ov">B</span> <span class="ov">C</span> + B(A ⊙ C)</span> olur. İki sonuç da doğrudur, hangi terimleri grupladığına bağlıdır.</p>
+      <p>Hoca ayrıca 2. ve 3. terimi bir yayla bağlamış: ikisinde de B ortak. Bu gruplamayla <span class="m" style="white-space:normal">F = A<span class="ov">B</span><span class="ov">C</span> + B(<span class="ov">A</span><span class="ov">C</span> + AC) = A<span class="ov">B</span><span class="ov">C</span> + B(A ⊙ C)</span> olur. İki sonuç da doğrudur, hangi terimleri grupladığına bağlıdır.</p>
     </div>
   </div>
 
@@ -1124,7 +1139,7 @@
       </tbody>
     </table></div>
   </div>
-  <p>Kural istediğin kadar değişkene genişler: <span class="m"><span class="ov">ABC</span> = <span class="ov">A</span> + <span class="ov">B</span> + <span class="ov">C</span></span> ve <span class="m"><span class="ov">A+B+C</span> = <span class="ov">A</span> <span class="ov">B</span> <span class="ov">C</span></span>.</p>
+  <p>Kural istediğin kadar değişkene genişler: <span class="m"><span class="ov">ABC</span> = <span class="ov">A</span> + <span class="ov">B</span> + <span class="ov">C</span></span> ve <span class="m"><span class="ov">A+B+C</span> = <span class="ov">A</span><span class="ov">B</span><span class="ov">C</span></span>.</p>
   <p>Dikkat edersen birinci kural NAND kapısını, ikinci kural NOR kapısını açıyor. Hocanın notunda örneğin altına "NOR, NAND" yazmasının sebebi bu.</p>
 
   <div class="example">
@@ -1209,7 +1224,7 @@
         <li>XOR: farklı → 1. XNOR: aynı → 1</li>
         <li>NAND, NOR: AND ve OR'un tersi</li>
         <li>A ⊕ B = <span class="ov">A</span>B + A<span class="ov">B</span></li>
-        <li><span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span>, <span class="ov">A+B</span> = <span class="ov">A</span> <span class="ov">B</span></li>
+        <li><span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span>, <span class="ov">A+B</span> = <span class="ov">A</span><span class="ov">B</span></li>
         <li>Öncelik: parantez → NOT → AND → OR (⊕ ve ⊙ ile parantez kullan)</li>
       </ul>
     </div>
@@ -1277,7 +1292,7 @@
     <li><span class="m"><span class="ov"><span class="ov">A</span> + <span class="ov">B</span></span></span> ifadesini De Morgan ile aç.
       <details class="solution"><summary>Çözümü göster</summary><p>Çizgiyi kır, + işaretini · yap: <span class="ov"><span class="ov">A</span></span> · <span class="ov"><span class="ov">B</span></span> = <b>AB</b> (Aksiyom 7). Yani bu bir AND kapısıdır.</p></details></li>
     <li><span class="m">F = <span class="ov">A + B</span> + <span class="ov">A</span>B</span> ifadesini sadeleştir.
-      <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span> <span class="ov">B</span>. F = <span class="ov">A</span> <span class="ov">B</span> + <span class="ov">A</span>B = <span class="ov">A</span>(<span class="ov">B</span> + B) = <span class="ov">A</span> · 1 = <b><span class="ov">A</span></b>.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span><span class="ov">B</span>. F = <span class="ov">A</span><span class="ov">B</span> + <span class="ov">A</span>B = <span class="ov">A</span>(<span class="ov">B</span> + B) = <span class="ov">A</span> · 1 = <b><span class="ov">A</span></b>.</p></details></li>
   </ol>
 
   <h3>Sınırsız test</h3>

@@ -55,7 +55,46 @@
     initTopNav();
     initToc();
     initRegister();
+    // Ders JS'leri kendi içeriklerini ürettikten sonra çalışsın
+    setTimeout(polishContent, 0);
+    initGroupHover();
   });
+
+  /* ---------- K-map grup listesi: bir gruba gelince haritada o grubu vurgula ---------- */
+  function initGroupHover() {
+    const findMap = ul => {
+      for (let el = ul.parentElement; el && el !== document.body; el = el.parentElement) {
+        const maps = [...el.querySelectorAll('.kmap-wrap')];
+        if (!maps.length) continue;
+        const before = maps.filter(m => m.compareDocumentPosition(ul) & Node.DOCUMENT_POSITION_FOLLOWING);
+        return before.length ? before[before.length - 1] : maps[0];
+      }
+      return null;
+    };
+    const clear = () => {
+      document.querySelectorAll('.kmap-wrap.dim').forEach(w => w.classList.remove('dim'));
+      document.querySelectorAll('.kmap-group.on, .group-list li.on').forEach(el => el.classList.remove('on'));
+    };
+    const show = li => {
+      const ul = li.parentElement, map = findMap(ul);
+      if (!map) return;
+      const i = [...ul.children].indexOf(li);
+      const boxes = map.querySelectorAll(`.kmap-group[data-g="${i}"]`);
+      if (!boxes.length) return;
+      clear();
+      map.classList.add('dim');
+      boxes.forEach(b => b.classList.add('on'));
+      li.classList.add('on');
+    };
+    const liOf = e => e.target.closest && e.target.closest('.group-list li');
+    document.addEventListener('pointerover', e => { const li = liOf(e); if (li && e.pointerType === 'mouse') show(li); });
+    document.addEventListener('pointerout', e => { const li = liOf(e); if (li && e.pointerType === 'mouse' && !li.contains(e.relatedTarget)) clear(); });
+    document.addEventListener('click', e => {
+      const li = liOf(e);
+      if (li) { li.classList.contains('on') ? clear() : show(li); }
+      else if (!e.target.closest('.kmap-wrap')) clear();
+    });
+  }
 
   /* ---------- Üst menü: ana sayfa, önceki/sonraki ders, ders listesi ---------- */
   const LESSONS = [
@@ -113,6 +152,82 @@
     const det = nav.querySelector('.tn-menu');
     document.addEventListener('click', e => { if (det.open && !det.contains(e.target)) det.open = false; });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && det.open) { det.open = false; det.querySelector('summary').focus(); } });
+  }
+
+  /* ---------- Görsel düzeltmeler: formül terimleri, tablo yazı tipi, geniş şemalar ---------- */
+  // Bir formülde boşluk içermeyen her parçayı (ör. S₁S̄₀I) bölünmez bir kutuya alır.
+  function protectTerms(el) {
+    if (el.dataset.nw) return;
+    el.dataset.nw = '1';
+    const tokens = [];
+    [...el.childNodes].forEach(node => {
+      if (node.nodeType === 3) node.textContent.split(/(\s+)/).forEach(t => { if (t) tokens.push(t); });
+      else tokens.push(node);
+    });
+    el.textContent = '';
+    let group = null;
+    tokens.forEach(t => {
+      const isSpace = typeof t === 'string' && /^\s+$/.test(t);
+      if (isSpace) { group = null; el.appendChild(document.createTextNode(t)); return; }
+      if (!group) { group = document.createElement('span'); group.className = 'nw'; el.appendChild(group); }
+      group.appendChild(typeof t === 'string' ? document.createTextNode(t) : t);
+    });
+  }
+  // Unicode üst simge rakamlarını (2⁴, 10⁻¹) gerçek <sup>'a çevirir: her yazı tipinde düzgün görünür
+  const SUP_MAP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '−', 'ⁿ': 'n' };
+  function fixSuperscripts(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (/[⁰¹²³⁴⁵⁶⁷⁸⁹ⁿ]/.test(n.nodeValue) && !n.parentElement.closest('svg, code, script, option, select, textarea, .topnav')) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const frag = document.createDocumentFragment();
+      node.nodeValue.split(/([⁰¹²³⁴⁵⁶⁷⁸⁹⁻ⁿ]+)/).forEach(part => {
+        if (!part) return;
+        if (/^[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ⁿ]+$/.test(part) && /[⁰¹²³⁴⁵⁶⁷⁸⁹ⁿ]/.test(part)) {
+          const sup = document.createElement('sup'); sup.textContent = [...part].map(c => SUP_MAP[c]).join(''); frag.appendChild(sup);
+        } else frag.appendChild(document.createTextNode(part));
+      });
+      node.replaceWith(frag);
+    });
+  }
+  function polishContent() {
+    const content = document.querySelector('.content') || document.querySelector('main');
+    if (content) fixSuperscripts(content);
+    // Uzun bit dizileri boşluklardan bölünebilsin (telefonda taşmasın)
+    document.querySelectorAll('.content .b').forEach(b => { if (b.textContent.length > 16 && /\s/.test(b.textContent)) b.classList.add('list'); });
+    // Geniş tablolar: yana kaydığını belirt
+    document.querySelectorAll('.content .table-wrap').forEach(w => {
+      if (w.closest('.widget, .wout, .quiz, [id$="-out"]')) return;
+      const hint = document.createElement('p'); hint.className = 'table-hint'; hint.textContent = 'Tablo yana kayıyor, tamamını görmek için kaydır.';
+      w.before(hint);
+      const check = () => hint.classList.toggle('on', w.scrollWidth > w.clientWidth + 2);
+      check(); window.addEventListener('resize', check);
+    });
+    // Devrelerde renk açıklaması
+    document.querySelectorAll('.circuit').forEach(c => {
+      if (c.querySelector('.wire-legend') || !c.querySelector('[data-n]')) return;
+      const p = document.createElement('p'); p.className = 'wire-legend';
+      p.innerHTML = '<b>Bakır</b> kablo = 1, gri kablo = 0. Girişlere basarak değiştir.';
+      (c.querySelector('.circuit-foot') || c).appendChild(p);
+    });
+    document.querySelectorAll('.content .m').forEach(m => { if (!m.parentElement.closest('.m')) protectTerms(m); });
+    document.querySelectorAll('.tt td').forEach(td => { if (/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(td.textContent)) td.classList.add('txt'); });
+    document.querySelectorAll('.circuit-svg svg').forEach(svg => {
+      const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+      if (vb[2] > 520) {
+        svg.classList.add('wide');
+        const circuit = svg.closest('.circuit');
+        if (circuit && !circuit.querySelector('.scroll-hint')) {
+          const hint = document.createElement('p');
+          hint.className = 'scroll-hint';
+          hint.textContent = 'Şemanın tamamını görmek için yana kaydır.';
+          svg.parentElement.before(hint);
+          const check = () => circuit.classList.toggle('can-scroll', svg.parentElement.scrollWidth > svg.parentElement.clientWidth + 2);
+          check(); window.addEventListener('resize', check);
+        }
+      }
+    });
   }
 
   /* ---------- İçindekiler: okunan bölümü vurgula ---------- */

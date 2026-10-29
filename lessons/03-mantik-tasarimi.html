@@ -234,7 +234,7 @@
   <h3>1st Step: doğruluk tablosu</h3>
   <p>Her satır için iki soruyu sor: "En az iki kapı açık mı?" ve "Sadece B mi açık?" Biri evetse F = 1.</p>
   <div class="table-wrap"><table class="tt">
-    <thead><tr><th>A</th><th>B</th><th>C</th><th>Açık kapı sayısı</th><th>Neden?</th><th class="out">F</th><th>Minterm</th></tr></thead>
+    <thead><tr><th>A</th><th>B</th><th>C</th><th>Açık kapı</th><th>Neden?</th><th class="out">F</th><th>Minterm</th></tr></thead>
     <tbody>
       <tr><td>0</td><td>0</td><td>0</td><td>0</td><td style="font-family:var(--font)">hiçbiri açık değil</td><td class="out">0</td><td>m₀</td></tr>
       <tr><td>0</td><td>0</td><td>1</td><td>1</td><td style="font-family:var(--font)">sadece C açık</td><td class="out">0</td><td>m₁</td></tr>
@@ -263,7 +263,7 @@
 
   <div class="note warn">
     <span class="note-title">II. seçenek doğru ama en sade hali değil</span>
-        <figure class="hoca-fig"><img src="../assets/img/hoca/l3-alarm.png" alt="Hocanın el yazısı sadeleştirme adımları, I. opt (A+B)(B+C) ve II. opt B+AB+AC+BC kırmızı kutularda" loading="lazy"><figcaption>Hocanın notu, PDF s.2: I. ve II. seçenek</figcaption></figure>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l3-alarm.png" alt="Hocanın el yazısı sadeleştirme adımları, I. opt (A+B)(B+C) ve II. opt B+AB+AC+BC kırmızı kutularda"><figcaption>Hocanın notu, PDF s.2: I. ve II. seçenek</figcaption></figure>
     <p><span class="m">B + AB + AC + BC</span> ifadesinde AB ve BC terimleri B tarafından yutulur (<span class="m">B + AB = B</span>, <span class="m">B + BC = B</span>). Geriye kalan:</p>
     <div class="formula"><span class="m">F = B + AC</span></div>
     <p>Aynı sonuca 3. adımdan doğrudan da gidebilirdin: <span class="m">B + <span class="ov">B</span>(AC) = B + AC</span> (ters değişkenli yutma). Bu en kısa hal: 1 AND + 1 OR = <b>2 kapı</b>. Bu arada I. seçenek de aslında aynı şey: dağılma 2 ile <span class="m">(B + A)(B + C) = B + AC</span>. Yani I. seçenek en sade POS, B + AC en sade SOP. I. seçenek 2 OR + 1 AND = 3 kapı. Sınavda "simplify" denirse <span class="m">B + AC</span> yaz. Hocanın iki cevabı da doğru fonksiyonu verir, sadece daha uzun.</p>
@@ -330,12 +330,12 @@
   </div>
   <div class="tables-row">
     <div class="table-wrap"><table class="tt">
-      <thead><tr><th>A</th><th>B</th><th class="out">S</th><th class="out">C<sub>out</sub></th><th>Ondalık toplam</th></tr></thead>
+      <thead><tr><th>A</th><th>B</th><th class="out">S</th><th>C<sub>out</sub></th><th>Ondalık toplam</th></tr></thead>
       <tbody>
-        <tr><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td><td>0</td></tr>
-        <tr><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td><td>1</td></tr>
-        <tr><td>1</td><td>0</td><td class="out one">1</td><td class="out">0</td><td>1</td></tr>
-        <tr><td>1</td><td>1</td><td class="out">0</td><td class="out one">1</td><td>2 = 10₂</td></tr>
+        <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td class="out one">1</td><td>0</td><td>1</td></tr>
+        <tr><td>1</td><td>0</td><td class="out one">1</td><td>0</td><td>1</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="one">1</td><td>2 = 10₂</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -384,16 +384,16 @@
   <p class="lead">Tam toplayıcı üç biti toplar: A, B ve sağdaki sütundan gelen elde <b>C<sub>in</sub></b> (<span class="en">carry in</span>).</p>
   <p>1. derste alt alta toplama yaparken her sütunda tam olarak bunu yaptın: iki rakam + yukarıdan gelen elde. Üç bitin toplamı 0 ile 3 arasındadır, yine iki çıkışla (C<sub>out</sub> S) yazılır.</p>
   <div class="table-wrap"><table class="tt">
-    <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th>1'lerin sayısı</th><th class="out">S</th><th class="out">C<sub>out</sub></th></tr></thead>
+    <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th>1'lerin sayısı</th><th class="out">S</th><th>C<sub>out</sub></th></tr></thead>
     <tbody>
-      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
-      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
-      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
-      <tr><td>0</td><td>1</td><td>1</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
-      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
-      <tr><td>1</td><td>0</td><td>1</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
-      <tr><td>1</td><td>1</td><td>0</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
-      <tr><td>1</td><td>1</td><td>1</td><td>3</td><td class="out one">1</td><td class="out one">1</td></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>3</td><td class="out one">1</td><td class="one">1</td></tr>
     </tbody>
   </table></div>
   <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b> (çok girişli XOR'un kuralı). <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
@@ -402,9 +402,9 @@
     <div class="example-head"><h4>S'nin formülü</h4><span class="src">Hocanın çözümü, PDF s.3–4</span></div>
     <div class="example-body">
       <ol class="steps">
-        <li>1 olan satırlar 1, 2, 4, 7: <span class="m" style="white-space:normal">S = <span class="ov">A</span> <span class="ov">B</span>C<sub>in</sub> + <span class="ov">A</span>B<span class="ov">C<sub>in</sub></span> + A<span class="ov">B</span> <span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>. Hoca C<sub>in</sub>'i düz olanların altını iki çizgiyle, çizgili olanların altını tek çizgiyle işaretlemiş.</li>
-        <li>C<sub>in</sub> düz olanlar (1. ve 4.) ile çizgili olanları (2. ve 3.) ayrı grupla: <span class="m" style="white-space:normal">S = C<sub>in</sub>(<span class="ov">A</span> <span class="ov">B</span> + AB) + <span class="ov">C<sub>in</sub></span>(<span class="ov">A</span>B + A<span class="ov">B</span>)</span>.</li>
-        <li>Kalıpları tanı: <span class="m"><span class="ov">A</span> <span class="ov">B</span> + AB = A ⊙ B</span> ve <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>. <span class="m">S = C<sub>in</sub>(A ⊙ B) + <span class="ov">C<sub>in</sub></span>(A ⊕ B)</span>.</li>
+        <li>1 olan satırlar 1, 2, 4, 7: <span class="m" style="white-space:normal">S = <span class="ov">A</span><span class="ov">B</span>C<sub>in</sub> + <span class="ov">A</span>B<span class="ov">C<sub>in</sub></span> + A<span class="ov">B</span><span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>. Hoca C<sub>in</sub>'i düz olanların altını iki çizgiyle, çizgili olanların altını tek çizgiyle işaretlemiş.</li>
+        <li>C<sub>in</sub> düz olanlar (1. ve 4.) ile çizgili olanları (2. ve 3.) ayrı grupla: <span class="m" style="white-space:normal">S = C<sub>in</sub>(<span class="ov">A</span><span class="ov">B</span> + AB) + <span class="ov">C<sub>in</sub></span>(<span class="ov">A</span>B + A<span class="ov">B</span>)</span>.</li>
+        <li>Kalıpları tanı: <span class="m"><span class="ov">A</span><span class="ov">B</span> + AB = A ⊙ B</span> ve <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>. <span class="m">S = C<sub>in</sub>(A ⊙ B) + <span class="ov">C<sub>in</sub></span>(A ⊕ B)</span>.</li>
         <li>Hocanın x taktiği: <span class="m">x = A ⊕ B</span> de. Bir ifadenin tamamına tek harf vermek serbesttir: x her satırda 0 ya da 1 olan bir değerdir, yani bir değişken gibi davranır. Amaç kalıbı görünür kılmak. XNOR, XOR'un tersi olduğu için <span class="m">A ⊙ B = <span class="ov">x</span></span>.</li>
         <li><span class="m">S = C<sub>in</sub><span class="ov">x</span> + <span class="ov">C<sub>in</sub></span>x</span>. Bu da bir XOR kalıbı: <span class="m">= C<sub>in</sub> ⊕ x</span>.</li>
         <li>x yerine A ⊕ B koy: <span class="m">S = C<sub>in</sub> ⊕ (A ⊕ B)</span>. XOR da AND ve OR gibi değişme ve birleşme özelliğine sahiptir (tabloyla kontrol edebilirsin: hangi sırayla yazarsan yaz "1'lerin sayısı tekse 1" kuralı değişmez). Bu yüzden parantez ve sıra önemsiz.</li>
@@ -470,8 +470,8 @@
         <text class="lbl" x="54" y="18">A</text><text class="lbl" x="84" y="18">B</text><text class="lbl" x="110" y="18">C<tspan font-size="11" dy="4">in</tspan></text>
         <text class="lbl" x="538" y="66">S</text><text class="lbl" x="538" y="181">C<tspan font-size="11" dy="4">out</tspan></text>
         <text class="tag" x="288" y="176">B⊕C<tspan font-size="10" dy="3">in</tspan><tspan dy="-3"> =</tspan></text><text class="val" x="350" y="176" data-v="x2"></text>
-        <text class="tag" x="374" y="112">A(B⊕C<tspan font-size="10" dy="3">in</tspan><tspan dy="-3">)</tspan></text><text class="val" x="392" y="132" data-v="a3"></text>
-        <text class="tag" x="256" y="212">BC<tspan font-size="10" dy="3">in</tspan></text><text class="val" x="256" y="238" data-v="a4"></text>
+        <text class="tag" x="374" y="112">A(B⊕C<tspan font-size="10" dy="3">in</tspan><tspan dy="-3">) =</tspan></text><text class="val" x="452" y="112" data-v="a3"></text>
+        <text class="tag" x="256" y="212">BC<tspan font-size="10" dy="3">in</tspan><tspan dy="-3"> =</tspan></text><text class="val" x="296" y="212" data-v="a4"></text>
         <text class="val" x="500" y="52" data-v="S"></text><text class="val" x="500" y="167" data-v="Cout"></text>
       </svg>
     </div>
@@ -627,7 +627,7 @@
   <ol class="exercises">
     <li>3 değişken için m₅ ve M₂'yi yaz.
       <details class="solution"><summary>Çözümü göster</summary><p>5 = 101 → <span class="m">m₅ = A<span class="ov">B</span>C</span>. 2 = 010 → maxtermde 1 çizgili: <span class="m">M₂ = A + <span class="ov">B</span> + C</span>.</p></details></li>
-    <li><span class="m">A<span class="ov">B</span> <span class="ov">C</span></span> hangi mintermdir?
+    <li><span class="m">A<span class="ov">B</span><span class="ov">C</span></span> hangi mintermdir?
       <details class="solution"><summary>Çözümü göster</summary><p>Düz 1, çizgili 0: 100 → 4 → <b>m₄</b>.</p></details></li>
     <li>F(A,B,C) = Σ(0, 2, 5) ise Π gösterimi nedir?
       <details class="solution"><summary>Çözümü göster</summary><p>0–7 arasında eksik olanlar: <b>Π(1, 3, 4, 6, 7)</b>.</p></details></li>

@@ -299,9 +299,12 @@ sub { font-size: .7em; }
 
 /* Matematik ve ifade yazımı */
 .m { font-family: var(--font); font-variation-settings: "wdth" 100; letter-spacing: .02em; white-space: nowrap; font-weight: 520; }
-.ov { display: inline-block; border-top: 1.5px solid currentColor; padding-top: 1px; line-height: 1.15; }
-/* Yan yana iki ayrı çizgi birleşip tek uzun çizgi gibi görünmesin */
-.ov + .ov { margin-left: .16em; }
+.ov {
+  display: inline-block; padding-top: 2px; line-height: 1.15;
+  /* çizgi iki uçtan biraz içeride: yan yana iki ayrı çizgi birleşmez */
+  background: linear-gradient(currentColor, currentColor) top center / calc(100% - .16em) 1.5px no-repeat;
+}
+
 .b { font-family: var(--mono); letter-spacing: .04em; white-space: nowrap; }
 .b.list { white-space: normal; }
 .formula {
@@ -463,7 +466,7 @@ details.solution[open] > summary { margin-bottom: .4rem; }
 .circuit { border: 1.5px solid var(--copper); border-radius: var(--radius-m); background: var(--sheet); margin: 1.6rem 0; overflow: hidden; }
 .circuit-head { padding: .75rem 1.1rem; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; justify-content: space-between; }
 .circuit-head h4 { margin: 0; font-size: var(--step-0); }
-.pins { display: flex; gap: .45rem; }
+.pins { display: flex; flex-wrap: wrap; gap: .45rem; }
 .pin {
   font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: .45rem;
   border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; padding: .25rem .75rem .25rem .3rem;
@@ -476,7 +479,10 @@ details.solution[open] > summary { margin-bottom: .4rem; }
 .pin[aria-pressed="true"] { border-color: var(--copper); }
 .pin[aria-pressed="true"] .pin-val { background: var(--copper); color: #1b1206; }
 .circuit-svg { padding: .6rem .6rem 0; overflow-x: auto; }
-.circuit-svg svg { display: block; width: 100%; min-width: 30rem; height: auto; }
+.circuit-svg svg { display: block; width: 100%; min-width: 0; height: auto; }
+.circuit-svg svg.wide { min-width: 34rem; }
+.scroll-hint { display: none; font-size: .8rem; color: var(--muted); padding: .35rem 1.1rem 0; }
+.circuit.can-scroll .scroll-hint { display: block; }
 .circuit-svg .w { fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
 .circuit-svg .w.hi { stroke: var(--copper); opacity: 1; stroke-width: 3.2; }
 .circuit-svg .g { fill: var(--sheet); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
@@ -666,3 +672,60 @@ button.kmap-cell:hover { background: var(--tip-bg); }
 }
 @media print { .topnav, .theme-btn { display: none; } }
 
+
+/* Tablolarda harf içeren hücreler gövde yazı tipiyle (alt simgeler okunaklı olsun) */
+.tt th, .tt td.txt { font-family: var(--font); }
+/* Formül terimleri satır sonunda bölünmesin */
+.nw { white-space: nowrap; }
+/* Karnaugh: grup çerçevesi hücre değerini ve numarasını örtmesin */
+.kmap-group { z-index: 1; }
+.kmap-cell .kv, .kmap-cell .kl { position: relative; z-index: 2; }
+.kmap-cell .ki { z-index: 2; }
+
+/* Tablo hücresindeki formül bölünmesin; dar ekranda hücreler sıkışsın */
+.content td .m { white-space: nowrap; }
+@media (max-width: 40rem) {
+  th, td { padding: .3rem .45rem; }
+}
+.table-hint { display: none; font-size: .8rem; color: var(--muted); margin: .6rem 0 -.6rem; }
+.table-hint.on { display: block; }
+.data.left td, .data.left th { text-align: left; }
+
+/* Karnaugh köşe etiketi: çapraz çizgiyle çakışmasın */
+.kmap { grid-template-columns: 3.3rem repeat(var(--cols), var(--cell)); grid-template-rows: 2.6rem repeat(var(--rows), var(--cell)); }
+.kmap-corner { font-size: .76rem; }
+.kmap-corner::before { opacity: .35; }
+.kmap-corner .cv { right: .2rem; top: .1rem; }
+.kmap-corner .rv { left: .15rem; bottom: .1rem; }
+/* Grup vurgulama: etikete gelince sadece o grup */
+.group-list li { cursor: pointer; }
+.group-list li.on { border-color: var(--gc); box-shadow: 0 0 0 1px var(--gc) inset; }
+.kmap-wrap.dim .kmap-group { opacity: .12; }
+.kmap-wrap.dim .kmap-group.on { opacity: 1; border-width: 3.5px; background: color-mix(in srgb, var(--gc) 20%, transparent); }
+.group-hint { font-size: .8rem; color: var(--muted); margin: .2rem 0 0; }
+/* POS: gruplanan 0'lar belirgin, 1'ler soluk, çerçeveler kesikli */
+.kmap-wrap.pos .kmap-cell.one { color: var(--muted); font-weight: 400; }
+.kmap-wrap.pos .kmap-cell.zero { color: var(--ink); font-weight: 700; }
+.kmap-wrap.pos .kmap-group { border-style: dashed; }
+
+/* Koyu temada birincil düğmeler ve seçili seçenekler belirgin olsun */
+:root { --btn-bg: var(--pcb); --btn-fg: var(--silk); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --btn-bg: #D08A45; --btn-fg: #1b1206; } }
+:root[data-theme="dark"] { --btn-bg: #D08A45; --btn-fg: #1b1206; }
+.btn { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.btn:hover { background: var(--btn-bg); filter: brightness(1.1); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); filter: none; }
+.seg button[aria-pressed="true"], .digit-pick button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.keypad button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-fg); }
+/* Bölüm numaraları aynı genişlikte */
+.content h2 .n { min-width: 1.7rem; }
+/* Tablo başlıkları bölünmesin */
+.tt th { white-space: nowrap; }
+.wire-legend { font-size: .8rem; color: var(--muted); margin: .25rem 0 0; }
+.wire-legend b { color: var(--copper-ink); }
+/* İç içe üst çizgiler birbirine yapışmasın */
+.ov:has(.ov) { padding-top: 5px; }
+.content td.m { white-space: nowrap; }
+.content sup { font-size: .72em; line-height: 0; }
+.circuit > .wire-legend { padding: 0 1.1rem .8rem; }
+.tt td.miss { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); font-weight: 700; }

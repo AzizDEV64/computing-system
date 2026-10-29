@@ -7,7 +7,8 @@
   const popcount = x => { let c = 0; while (x) { c += x & 1; x >>= 1; } return c; };
   const D_NAMES = { A: 'D₃', B: 'D₂', C: 'D₁', D: 'D₀' };
   const toD = html => html.replace(/[ABCD]/g, ch => D_NAMES[ch]);
-  const M = (e, dn) => `<span class="m">${dn ? toD(prettyExpr(e)) : prettyExpr(e)}</span>`;
+  const A_NAMES = { A: 'A₁', B: 'A₀' };
+  const M = (e, dn) => `<span class="m">${dn === 'A' ? prettyExpr(e).replace(/[AB]/g, ch => A_NAMES[ch]) : dn ? toD(prettyExpr(e)) : prettyExpr(e)}</span>`;
   const list = s => (s || '').split(',').filter(Boolean).map(Number);
   const valuesFrom = (ones, dcs = []) => { const m = new Map(); ones.forEach(x => m.set(x, 1)); dcs.forEach(x => m.set(x, 'X')); return m; };
   const chips = (items) => '<ul class="group-list">' + items.map(it => `<li style="--gc:${it.color}">${it.html} <span class="why">${it.size} hücre</span></li>`).join('') + '</ul>';
@@ -24,7 +25,8 @@
     for (let x = 0; x < (1 << n); x++) if (!ones.includes(x) && !dcs.includes(x)) zeros.push(x);
     K.renderKMap(holder, {
       n, values: valuesFrom(ones, dcs), groups,
-      rowLabel: dn ? 'D₃D₂' : undefined, colLabel: dn ? 'D₁D₀' : undefined
+      pos: !!(pos && pos.length) && !(sop && sop.length),
+      rowLabel: dn === 'A' ? 'A₁' : dn ? 'D₃D₂' : undefined, colLabel: dn === 'A' ? 'A₀' : dn ? 'D₁D₀' : undefined
     });
     if (groups.length) {
       const g = document.createElement('div');
@@ -38,7 +40,7 @@
         n: +el.dataset.n, ones: list(el.dataset.ones), dcs: list(el.dataset.dcs),
         sop: el.dataset.groups ? el.dataset.groups.split('|') : null,
         pos: el.dataset.posGroups ? el.dataset.posGroups.split('|') : null,
-        dn: el.dataset.vars === 'D'
+        dn: el.dataset.vars === 'A' ? 'A' : el.dataset.vars === 'D'
       });
     });
   }
@@ -139,7 +141,7 @@
     const res = svForm === 'sop' ? K.minimize(svN, ones, dcs) : K.minimize(svN, zeros, dcs);
     const groups = res.constant === null ? res.terms.map((t, i) => ({ t, color: COLORS[i % COLORS.length] })) : [];
     K.renderKMap($('sv-map'), {
-      n: svN, values: svVals, groups, editable: true,
+      n: svN, values: svVals, groups, editable: true, pos: svForm === 'pos',
       onCell: idx => { const v = svVals.get(idx); svVals.set(idx, v === 1 ? 'X' : v === 'X' ? 0 : 1); renderSolver(); }
     });
     const text = svForm === 'sop' ? K.sopText(res, svN) : K.posText(res, svN);
@@ -247,7 +249,7 @@
       if (current.sol) {
         const s = current.sol;
         box.innerHTML = '<p>Doğru gruplama:</p><div></div>';
-        K.renderKMap(box.querySelector('div'), { n: s.n, values: valuesFrom(s.ones, s.dcs), groups: s.groups.map((t, i) => ({ t, color: COLORS[i % COLORS.length] })) });
+        K.renderKMap(box.querySelector('div'), { n: s.n, values: valuesFrom(s.ones, s.dcs), groups: s.groups.map((t, i) => ({ t, color: COLORS[i % COLORS.length] })), pos: !!s.pos });
       } else if (current.fig !== undefined) {
         box.innerHTML = `<div class="seg7">${seg7SVG({ on: segsOn(current.fig), labels: true, title: String(current.fig) })}</div>`;
       }

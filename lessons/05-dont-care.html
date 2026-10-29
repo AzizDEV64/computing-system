@@ -205,8 +205,8 @@
         <li><b>F₂</b> sadece 10 satırında 1 → <span class="m">F₂ = A₁<span class="ov">A₀</span></span>.</li>
         <li><b>F₁</b> hiçbir satırda 1 değil → <span class="m">F₁ = 0</span>. Bu çıkış doğrudan GND'ye bağlanır.</li>
         <li><b>F₀</b> 01 ve 11 satırlarında 1. Hoca bunu 2 değişkenli haritayla çözmüş: sağ sütun (A₀ = 1) tamamen 1 → <span class="m">F₀ = A₀</span>. Kapıya bile gerek yok, A₀ kablosu doğrudan çıkışa gider.
-          <div class="kmap-figure"><div class="kmap5" data-n="2" data-ones="1,3" data-groups="B"></div></div>
-          <p class="hint">Bu haritada A = A₁ (satır), B = A₀ (sütun). Grup: B = A₀.</p></li>
+          <div class="kmap-figure"><div class="kmap5" data-n="2" data-vars="A" data-ones="1,3" data-groups="B"></div></div>
+          <p class="hint">Satırlar A₁, sütunlar A₀. Sağ sütunun tamamı 1, grup: A₀.</p></li>
       </ol>
       <div class="circuit" id="c-square">
         <div class="circuit-head"><h4>Kare devresi: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
@@ -268,7 +268,7 @@
   <div class="seg7" id="seg-names"></div>
   <div class="note warn">
     <span class="note-title">Hocanın segment adları standarttan farklı</span>
-        <figure class="hoca-fig" style="max-width:180px"><img src="../assets/img/hoca/l5-segment.png" alt="Hocanın 7 segment çizimi ve segment harfleri" loading="lazy"><figcaption>Hocanın notu, PDF s.3: a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt (d alt, bir sonraki sayfada)</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:180px"><img src="../assets/img/hoca/l5-segment.png" alt="Hocanın 7 segment çizimi ve segment harfleri"><figcaption>Hocanın notu, PDF s.3: a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt (d alt, bir sonraki sayfada)</figcaption></figure>
     <p>Hoca segmentleri şöyle adlandırmış: <b>a</b> üst, <b>b</b> sol üst, <b>f</b> sağ üst, <b>g</b> orta, <b>c</b> sol alt, <b>e</b> sağ alt, <b>d</b> alt. Veri sayfalarında ve çoğu kitapta kullanılan standart düzende ise a üstten başlayıp <b>saat yönünde</b> döner: <b>b</b> sağ üst, <b>c</b> sağ alt, <b>d</b> alt, <b>e</b> sol alt, <b>f</b> sol üst, <b>g</b> orta.</p>
     <p>Yani hocanın b'si standart f, hocanın f'si standart b, hocanın c'si standart e, hocanın e'si standart c. Bu sayfada hocanın düzeni kullanılıyor. Sınavda soru hangi düzeni veriyorsa onu kullan. Bir şekil verilmemişse hangi düzeni kullandığını cevabının başına bir çizimle belirt.</p>
   </div>

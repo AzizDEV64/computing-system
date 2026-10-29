@@ -88,7 +88,7 @@
     <div class="kmap-static" data-n="2" data-labels="terms"></div>
     <div class="kmap-static" data-n="2" data-labels="index"></div>
   </div>
-  <p>Hocanın ilk çizimindeki gibi: sol üst hücre A = 0, B = 0, yani <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> = m₀. Sağ alt hücre A = 1, B = 1, yani AB = m₃. Doğruluk tablosunda F = 1 olan satırların hücrelerine 1, diğerlerine 0 yazılır.</p>
+  <p>Hocanın ilk çizimindeki gibi: sol üst hücre A = 0, B = 0, yani <span class="m"><span class="ov">A</span><span class="ov">B</span></span> = m₀. Sağ alt hücre A = 1, B = 1, yani AB = m₃. Doğruluk tablosunda F = 1 olan satırların hücrelerine 1, diğerlerine 0 yazılır.</p>
 
   <div class="example">
     <div class="example-head"><h4>Örnek 1: F = Σ(0, 2)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
@@ -102,7 +102,7 @@
         <li>Grubun içinde A değişiyor (0 ve 1), B sabit 0. Değişen gider, sabit kalır: <span class="m"><span class="ov">B</span></span>.</li>
       </ol>
       <p class="answer">F(A, B) = <span class="m"><span class="ov">B</span></span></p>
-      <p>Hoca cebirle de sağlamış: <span class="m">m₀ + m₂ = <span class="ov">A</span> <span class="ov">B</span> + A<span class="ov">B</span> = <span class="ov">B</span>(<span class="ov">A</span> + A) = <span class="ov">B</span> · 1 = <span class="ov">B</span></span>. Harita aynı sonuca hiç işlem yapmadan ulaştı.</p>
+      <p>Hoca cebirle de sağlamış: <span class="m">m₀ + m₂ = <span class="ov">A</span><span class="ov">B</span> + A<span class="ov">B</span> = <span class="ov">B</span>(<span class="ov">A</span> + A) = <span class="ov">B</span> · 1 = <span class="ov">B</span></span>. Harita aynı sonuca hiç işlem yapmadan ulaştı.</p>
     </div>
   </div>
 
@@ -113,7 +113,7 @@
         <div class="kmap-static" data-n="2" data-ones="0,3" data-groups="A'B'|AB"></div>
       </div>
       <p>İki 1 <b>çapraz</b> duruyor. Çapraz hücreler komşu sayılmaz (iki değişkenleri birden farklı). Bu yüzden her biri kendi başına bir grup olur ve hiçbir değişken düşmez.</p>
-      <p class="answer">F = <span class="m">AB + <span class="ov">A</span> <span class="ov">B</span> = A ⊙ B = <span class="ov">A ⊕ B</span></span></p>
+      <p class="answer">F = <span class="m">AB + <span class="ov">A</span><span class="ov">B</span> = A ⊙ B = <span class="ov">A ⊕ B</span></span></p>
       <p>Haritada satranç tahtası gibi çapraz dizilmiş 1'ler görürsen XOR ya da XNOR'dan şüphelen.</p>
     </div>
   </div>
@@ -125,12 +125,12 @@
         <div class="kmap-static" data-n="2" data-ones="0,2,3" data-groups="B'|A"></div>
       </div>
       <ol class="steps">
-        <li><span class="m"><span class="ov">A</span> <span class="ov">B</span></span> hücresinin tek komşu 1'i var (hoca "1 neighbor" yazmış): altındaki <span class="m">A<span class="ov">B</span></span>. İlk grup sol sütun: <span class="m"><span class="ov">B</span></span>.</li>
+        <li><span class="m"><span class="ov">A</span><span class="ov">B</span></span> hücresinin tek komşu 1'i var (hoca "1 neighbor" yazmış): altındaki <span class="m">A<span class="ov">B</span></span>. İlk grup sol sütun: <span class="m"><span class="ov">B</span></span>.</li>
         <li><span class="m">AB</span> hücresinin de tek komşu 1'i var: solundaki <span class="m">A<span class="ov">B</span></span>. İkinci grup alt satır: <span class="m">A</span>.</li>
         <li><span class="m">A<span class="ov">B</span></span> iki gruba birden girdi ("2 neighbors"). Bu serbest: bir 1 birden fazla grupta olabilir.</li>
       </ol>
       <p class="answer">F = <span class="m"><span class="ov">B</span> + A = A + <span class="ov">B</span></span></p>
-      <p>Cebirle sağlama (hocanın yaptığı gibi): <span class="m"><span class="ov">A</span> <span class="ov">B</span> + A<span class="ov">B</span> + AB = <span class="ov">A</span> <span class="ov">B</span> + A(<span class="ov">B</span> + B) = <span class="ov">A</span> <span class="ov">B</span> + A = (A + <span class="ov">A</span>)(A + <span class="ov">B</span>) = A + <span class="ov">B</span></span>. Harita çok daha hızlı.</p>
+      <p>Cebirle sağlama (hocanın yaptığı gibi): <span class="m"><span class="ov">A</span><span class="ov">B</span> + A<span class="ov">B</span> + AB = <span class="ov">A</span><span class="ov">B</span> + A(<span class="ov">B</span> + B) = <span class="ov">A</span><span class="ov">B</span> + A = (A + <span class="ov">A</span>)(A + <span class="ov">B</span>) = A + <span class="ov">B</span></span>. Harita çok daha hızlı.</p>
     </div>
   </div>
 </section>
@@ -141,7 +141,7 @@
   <p class="lead">Hoca kırmızıyla yazmış: "In a group: 1 element 2⁰, 2 elements 2¹, 4 elements 2², 8 elements 2³, 16 elements 2⁴…"</p>
   <p>Bir grupta <b>1, 2, 4, 8 ya da 16</b> hücre olabilir. 3, 5, 6 hücreli grup olmaz. Sebebi: grup büyüdükçe her ikiye katlanışta bir değişken daha "hem 0 hem 1" olur ve düşer. 3 hücrede bir değişken bir yarıda 0, diğer yarıda 1 olamaz.</p>
   <div class="table-wrap"><table class="data">
-    <thead><tr><th>Grup boyutu</th><th>Düşen değişken</th><th>3 değişkenli haritada terim</th><th>4 değişkenli haritada terim</th></tr></thead>
+    <thead><tr><th>Grup boyutu</th><th>Düşen değişken</th><th>3 değişkenli harita</th><th>4 değişkenli harita</th></tr></thead>
     <tbody>
       <tr><td>1 (2⁰)</td><td>0</td><td>3 harf (ör. <span class="m">A<span class="ov">B</span>C</span>)</td><td>4 harf</td></tr>
       <tr><td>2 (2¹)</td><td>1</td><td>2 harf</td><td>3 harf</td></tr>
@@ -310,7 +310,7 @@
   <p>Her iki haritada satırlar BC, sütunlar DE. Kural: <b>iki haritada aynı yerde duran hücreler birbirine komşudur</b> (sadece A'da farklıdırlar). Haritaları üst üste konmuş iki kat gibi düşün. Bir grup aynı şekilde iki haritada da varsa, A düşer.</p>
   <div class="note warn">
     <span class="note-title">Hocanın tek parça 5 değişkenli haritasında başlık hatası</span>
-        <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l4-5degisken.png" alt="Hocanın 8 sütunlu 5 değişkenli harita çizimi, CDE başlıkları 000 001 011 010 110 111 011 010" loading="lazy"><figcaption>Hocanın notu, PDF s.4: son iki sütun başlığı 011 ve 010</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l4-5degisken.png" alt="Hocanın 8 sütunlu 5 değişkenli harita çizimi, CDE başlıkları 000 001 011 010 110 111 011 010"><figcaption>Hocanın notu, PDF s.4: son iki sütun başlığı 011 ve 010</figcaption></figure>
     <p>Hoca önce 8 sütunlu tek bir harita çizmiş. Sütun başlıklarını (CDE) 000, 001, 011, 010, 110, 111, <b>011, 010</b> diye yazmış. Son ikisi yanlış. Doğrusu <b>101, 100</b>. 3 bitlik yansıtmalı Gray kodu şöyledir: 000, 001, 011, 010, 110, 111, 101, 100. Aynı kod bir sırada iki kez geçemez. Hocanın asıl örneği iki ayrı 4'lük haritayla çözüldüğü için bu hatadan etkilenmiyor.</p>
     <p>Tek parça 8 sütunlu haritayı da okuyabilmelisin: satırlar AB, sütunlar CDE. Yan yana sütunlar ve iki dış kenar komşudur. Ayrıca orta çizgiye göre <b>ayna simetriği</b> olan sütunlar da komşudur (000↔100, 001↔101, 011↔111, 010↔110), çünkü bunlar yalnızca C'de farklıdır. Bu, iki ayrı 4'lük harita yöntemiyle aynı şeydir.</p>
   </div>
@@ -415,7 +415,7 @@
         <li>3 değişken: satır A, sütun BC</li>
         <li>4 değişken: satır AB, sütun CD</li>
         <li>5 değişken: A = 0 ve A = 1 için iki 4'lük harita</li>
-        <li>3. ve 4. satır/sütun: m₃ ↔ m₂, m₁₂–15 ↔ m₈–11</li>
+        <li>3. ve 4. satır/sütun: m₃ ↔ m₂, m₁₂–m₁₅ ↔ m₈–m₁₁</li>
       </ul>
     </div>
     <div>

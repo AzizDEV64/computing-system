@@ -49,71 +49,76 @@
     s.path(`M${nOut} 60H200`, 'nI2'); s.vline(200, 60, 120, 'nI2'); s.path('M200 120H230', 'nI2');
     s.hline(100, 60, 230, 'I1'); s.dot(60, 100);
     const a1 = s.and(230, 110);
-    s.path(`M${a1} 110H285V115H304`, 'and1');
+    s.path(`M${a1} 110H304`, 'and1');
     s.hline(135, 120, 304, 'I3'); s.dot(120, 135);
-    const oB = s.or(300, 125);
-    s.path(`M${oB} 125H410`, 'B');
+    const oB = s.or(300, 122);
+    s.path(`M${oB} 122H410`, 'B');
     s.hline(175, 90, 304, 'I2'); s.dot(90, 175);
     s.path('M120 195H304', 'I3');
     const oA = s.or(300, 185);
     s.path(`M${oA} 185H410`, 'A');
     s.text(22, 18, 'I₀'); s.text(52, 18, 'I₁'); s.text(82, 18, 'I₂'); s.text(112, 18, 'I₃');
-    s.text(414, 131, 'B'); s.text(414, 191, 'A');
-    s.val(384, 116, 'B'); s.val(384, 176, 'A');
+    s.text(414, 128, 'B'); s.text(414, 191, 'A');
+    s.val(384, 113, 'B'); s.val(384, 176, 'A');
     s.text(236, 86, 'I₁<tspan style="text-decoration:overline">I₂</tspan>', 'tag');
     svg.setAttribute('viewBox', '0 0 440 215'); svg.innerHTML = s.html();
   }
 
   function drawDec(svg) {
+    // NOT kapıları doğrudan ilgili AND'in girişine yerleştirildi: ters sinyal için ayrı uzun kablo yok
     const s = Sketch();
-    s.rail(50, 24, 235, 'I0'); s.rail(80, 24, 255, 'I1');
-    s.hline(50, 50, 130, 'I0'); s.dot(50, 50);
-    let o = s.not(130, 50); s.path(`M${o} 50H190`, 'nI0'); s.vline(190, 50, 215, 'nI0');
-    s.hline(80, 80, 130, 'I1'); s.dot(80, 80);
-    o = s.not(130, 80); s.hline(80, o, 210, 'nI1'); s.vline(210, 80, 175, 'nI1');
-    // F0 = NOR(I0, I1)
-    s.hline(110, 50, 304, 'I0'); s.dot(50, 110);
-    s.hline(130, 80, 304, 'I1'); s.dot(80, 130);
-    const f0 = s.or(300, 120, 40, true); s.path(`M${f0} 120H400`, 'F0');
-    // F1 = I0 · nI1
-    s.hline(155, 50, 300, 'I0'); s.dot(50, 155);
-    s.hline(175, 210, 300, 'nI1');
-    const f1 = s.and(300, 165); s.path(`M${f1} 165H400`, 'F1');
-    // F2 = I1 · nI0
-    s.hline(195, 80, 300, 'I1'); s.dot(80, 195);
-    s.hline(215, 190, 300, 'nI0');
-    const f2 = s.and(300, 205); s.path(`M${f2} 205H400`, 'F2');
+    s.rail(50, 24, 235, 'I1'); s.rail(80, 24, 255, 'I0');
+    // F0 = NOR(I1, I0)
+    s.hline(40, 50, 304, 'I1'); s.dot(50, 40);
+    s.path('M80 60H304', 'I0'); s.dot(80, 60);
+    const f0 = s.or(300, 50, 40, true); s.path(`M${f0} 50H420`, 'F0');
+    // F1 = Ī1 · I0
+    s.hline(105, 50, 170, 'I1'); s.dot(50, 105);
+    let o = s.not(170, 105); s.path(`M${o} 105H300`, 'nI1');
+    s.path('M80 125H300', 'I0'); s.dot(80, 125);
+    const f1 = s.and(300, 115); s.path(`M${f1} 115H420`, 'F1');
+    // F2 = I1 · Ī0
+    s.hline(170, 50, 300, 'I1'); s.dot(50, 170);
+    s.path('M80 190H170', 'I0'); s.dot(80, 190);
+    o = s.not(170, 190); s.path(`M${o} 190H300`, 'nI0');
+    const f2 = s.and(300, 180); s.path(`M${f2} 180H420`, 'F2');
     // F3 = I1 · I0
-    s.hline(235, 50, 300, 'I0'); s.dot(50, 235);
-    s.hline(255, 80, 300, 'I1'); s.dot(80, 255);
-    const f3 = s.and(300, 245); s.path(`M${f3} 245H400`, 'F3');
-    s.text(42, 18, 'I₀'); s.text(72, 18, 'I₁');
-    s.text(178, 40, '<tspan style="text-decoration:overline">I₀</tspan>', 'tag'); s.text(200, 72, '<tspan style="text-decoration:overline">I₁</tspan>', 'tag');
-    ['F₀', 'F₁', 'F₂', 'F₃'].forEach((t, i) => { s.text(406, [126, 171, 211, 251][i], t); s.val(380, [112, 157, 197, 237][i], 'F' + i); });
-    svg.setAttribute('viewBox', '0 0 440 270'); svg.innerHTML = s.html();
+    s.hline(235, 50, 300, 'I1');
+    s.path('M80 255H300', 'I0');
+    const f3 = s.and(300, 245); s.path(`M${f3} 245H420`, 'F3');
+    s.text(42, 18, 'I₁'); s.text(72, 18, 'I₀');
+    s.text(218, 97, '<tspan style="text-decoration:overline">I₁</tspan>', 'tag'); s.text(218, 182, '<tspan style="text-decoration:overline">I₀</tspan>', 'tag');
+    s.text(316, 22, 'NOR', 'tag');
+    [50, 115, 180, 245].forEach((y, i) => { s.text(426, y + 6, 'F' + SUBS[i]); s.val(396, y - 8, 'F' + i); });
+    svg.setAttribute('viewBox', '0 0 460 270'); svg.innerHTML = s.html();
   }
 
   function drawFADec(svg) {
     const s = Sketch();
-    s.rect(90, 20, 80, 220);
-    [['A', 70, 'I₂'], ['B', 130, 'I₁'], ['Cin', 190, 'I₀']].forEach(([n, y, lab]) => { s.path(`M30 ${y}H90`, n); s.text(94, y + 4, lab, 'tag'); });
-    s.text(8, 76, 'A'); s.text(8, 136, 'B'); s.text(2, 196, 'C<tspan font-size="10" dy="3">in</tspan>');
-    s.text(108, 125, '3×8'); s.text(98, 145, 'Decoder', 'tag');
-    const ys = k => 35 + 25 * k;
-    for (let k = 0; k < 8; k++) s.text(156, ys(k) + 4, String(k), 'tag');
-    s.path(`M170 ${ys(0)}H186`, 'o0');
-    const route = { 1: [200, 50], 2: [212, 70], 4: [236, 90], 3: [224, 155], 5: [248, 175], 6: [260, 195] };
-    // önce dikey hatlar, sonra yatay kablolar (kesişimlerde köprü çizilsin)
-    Object.entries(route).forEach(([k, [x, ty]]) => s.vline(x, ys(+k), ty, 'o' + k));
-    s.vline(272, 110, 215, 'o7');
-    Object.entries(route).forEach(([k, [x, ty]]) => { s.hline(ys(+k), 170, x, 'o' + k); s.hline(ty, x, 334, 'o' + k); });
-    s.hline(ys(7), 170, 272, 'o7'); s.hline(110, 272, 334, 'o7'); s.hline(215, 272, 334, 'o7'); s.dot(272, ys(7));
-    const oR = s.or(330, 80, 80); s.path(`M${oR} 80H440`, 'R');
-    const oC = s.or(330, 185, 80); s.path(`M${oC} 185H440`, 'Cout');
-    s.text(420, 72, 'R'); s.text(408, 177, 'C<tspan font-size="10" dy="3">out</tspan>');
-    s.val(404, 100, 'R'); s.val(404, 205, 'Cout');
-    s.text(300, 30, 'Σ(1,2,4,7)', 'tag'); s.text(300, 140, 'Σ(3,5,6,7)', 'tag');
-    svg.setAttribute('viewBox', '0 0 460 250'); svg.innerHTML = s.html();
+    const ys = k => 40 + 26 * k;                 // decoder çıkışlarının yüksekliği
+    s.rect(90, 22, 110, 218);
+    [['A', 75, 'I₂'], ['B', 131, 'I₁'], ['Cin', 187, 'I₀']].forEach(([n, y, lab]) => { s.path(`M30 ${y}H90`, n); s.text(95, y + 4, lab, 'tag'); });
+    s.text(8, 81, 'A'); s.text(8, 137, 'B'); s.text(2, 193, 'C<tspan font-size="10" dy="3">in</tspan>');
+    s.text(142, 102, '3×8', 'lbl', 'text-anchor="middle"'); s.text(142, 120, 'Decoder', 'tag', 'text-anchor="middle"');
+    for (let k = 0; k < 8; k++) s.text(190, ys(k) + 4, String(k), 'tag', 'text-anchor="end"');
+    s.path(`M200 ${ys(0)}H214`, 'o0');
+    // OR girişleri: arka eğrinin üstünde bitsin
+    const OX = 370, H = 96;
+    const inX = (cy, y) => { const t = (y - (cy - H / 2)) / H; return OX + 28 * t * (1 - t); };
+    const R_CY = 89, C_CY = 199;
+    // çıkış → (dikey x) → OR girişi
+    const plan = [[1, 316, R_CY, 50], [2, 316, R_CY, 76], [4, 316, R_CY, 102], [3, 292, C_CY, 160], [5, 268, C_CY, 186], [6, 244, C_CY, 212]];
+    plan.forEach(([k, x, , ty]) => s.vline(x, ys(k), ty, 'o' + k));
+    s.vline(342, 128, 238, 'o7');
+    plan.forEach(([k, x, cy, ty]) => { s.hline(ys(k), 200, x, 'o' + k); s.hline(ty, x, inX(cy, ty), 'o' + k); });
+    s.hline(ys(7), 200, 342, 'o7'); s.dot(342, ys(7));
+    s.hline(128, 342, inX(R_CY, 128), 'o7'); s.hline(238, 342, inX(C_CY, 238), 'o7');
+    const oR = s.or(OX, R_CY, H); s.path(`M${oR} ${R_CY}H510`, 'R');
+    const oC = s.or(OX, C_CY, H); s.path(`M${oC} ${C_CY}H510`, 'Cout');
+    s.text(516, R_CY + 6, 'R'); s.text(516, C_CY + 6, 'C<tspan font-size="10" dy="3">out</tspan>');
+    s.val(482, R_CY - 8, 'R'); s.val(482, C_CY - 8, 'Cout');
+    s.text(440, R_CY + 22, 'Σ(1, 2, 4, 7)', 'tag'); s.text(440, C_CY + 22, 'Σ(3, 5, 6, 7)', 'tag');
+    svg.setAttribute('viewBox', '0 0 560 256'); svg.innerHTML = s.html();
   }
 
   function drawComp1(svg) {
@@ -123,16 +128,16 @@
     s.hline(60, 80, 296, 'B'); s.dot(80, 60);
     const eq = s.xnor(300, 50); s.path(`M${eq} 50H400`, 'eq');
     s.hline(100, 50, 150, 'A'); s.dot(50, 100);
-    let o = s.not(150, 100); s.path(`M${o} 100H240V105H300`, 'nA');
+    let o = s.not(150, 100); s.path(`M${o} 100H300`, 'nA');
     s.hline(125, 80, 300, 'B'); s.dot(80, 125);
-    const lt = s.and(300, 115); s.path(`M${lt} 115H400`, 'lt');
+    const lt = s.and(300, 112); s.path(`M${lt} 112H400`, 'lt');
     s.hline(160, 80, 150, 'B'); s.dot(80, 160);
-    o = s.not(150, 160); s.path(`M${o} 160H240V170H300`, 'nB');
+    o = s.not(150, 160); s.path(`M${o} 160H300`, 'nB');
     s.hline(190, 50, 300, 'A'); s.dot(50, 190);
-    const gt = s.and(300, 180); s.path(`M${gt} 180H400`, 'gt');
+    const gt = s.and(300, 175); s.path(`M${gt} 175H400`, 'gt');
     s.text(42, 18, 'A'); s.text(72, 18, 'B');
-    s.text(406, 55, 'A=B', 'tag'); s.text(406, 120, 'A&lt;B', 'tag'); s.text(406, 185, 'A&gt;B', 'tag');
-    s.val(384, 42, 'eq'); s.val(384, 107, 'lt'); s.val(384, 172, 'gt');
+    s.text(406, 55, 'A=B', 'tag'); s.text(406, 117, 'A&lt;B', 'tag'); s.text(406, 180, 'A&gt;B', 'tag');
+    s.val(384, 42, 'eq'); s.val(384, 104, 'lt'); s.val(384, 167, 'gt');
     svg.setAttribute('viewBox', '0 0 450 205'); svg.innerHTML = s.html();
   }
 

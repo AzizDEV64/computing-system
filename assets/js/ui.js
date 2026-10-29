@@ -94,6 +94,8 @@
 
   /* Etkileşimli devre: svg içindeki [data-n] öğelerini hesaplanan değerlere göre boyar.
      inputs: ['A','B',...], compute(env) → {düğüm: 0/1}, onUpdate(values) isteğe bağlı */
+  const SUBD = '₀₁₂₃₄₅₆₇₈₉';
+  const pinLabel = v => v === 'op' ? 'Op' : v === 'Cin' ? 'C<sub>in</sub>' : v.replace(/(\d+)$/, m => [...m].map(d => SUBD[+d]).join(''));
   function bindCircuit(root, inputs, compute, onUpdate) {
     const env = {}; inputs.forEach(v => { env[v] = 0; });
     const pins = root.querySelector('.pins');
@@ -108,7 +110,7 @@
       const vals = Object.assign({}, env, compute(env));
       buttons.forEach(([v, b]) => {
         b.setAttribute('aria-pressed', env[v] ? 'true' : 'false');
-        b.innerHTML = `<span class="pin-name">${v}</span><span class="pin-val">${env[v]}</span>`;
+        b.innerHTML = `<span class="pin-name">${pinLabel(v)}</span><span class="pin-val">${env[v]}</span>`;
         b.setAttribute('aria-label', `${v} girişi: ${env[v]}. Değiştirmek için bas.`);
       });
       root.querySelectorAll('[data-n]').forEach(el => {

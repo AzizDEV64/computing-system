@@ -244,7 +244,7 @@
   </div>
   <div class="note warn">
     <span class="note-title">Sık hata</span>
-    <p><span class="m"><span class="ov">AB</span></span> ile <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> aynı şey değil. Birincisi <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span>'ye eşit. Uzun çizgiyi kırınca işaret <b>mutlaka</b> değişir.</p>
+    <p><span class="m"><span class="ov">AB</span></span> ile <span class="m"><span class="ov">A</span><span class="ov">B</span></span> aynı şey değil. Birincisi <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span>'ye eşit. Uzun çizgiyi kırınca işaret <b>mutlaka</b> değişir.</p>
   </div>
 </section>
 
@@ -285,7 +285,7 @@
     <li><b>Hemen sıfırlananları sil.</b> İçinde <span class="m">A<span class="ov">A</span></span> geçen her terim 0'dır. Tekrarları teke indir (<span class="m">AA = A</span>, <span class="m">X + X = X</span>).</li>
     <li><b>Ortak çarpan ara.</b> Terimleri ortak değişkenlerine göre grupla ve parantezine al. Parantezin içinde <span class="m">X + <span class="ov">X</span></span> ya da <span class="m">X + 1</span> çıkarsa 1 yap.</li>
     <li><b>Yutmaları kontrol et.</b> Bir terim başka bir terimin içinde tamamen geçiyorsa (A ve AB gibi) büyüğünü sil. <span class="m">A + <span class="ov">A</span>B</span> görürsen <span class="m">A + B</span> yap.</li>
-    <li><b>Kalıpları tanı.</b> <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>, <span class="m"><span class="ov">A</span> <span class="ov">B</span> + AB = A ⊙ B</span>.</li>
+    <li><b>Kalıpları tanı.</b> <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>, <span class="m"><span class="ov">A</span><span class="ov">B</span> + AB = A ⊙ B</span>.</li>
     <li><b>Sağlama yap.</b> Orijinal ifadeyle sonucun doğruluk tablosu aynı mı? Sınavda en az bir iki satırı yerine koyarak kontrol et.</li>
   </ol>
   <div class="widget" id="w-tt">
@@ -353,7 +353,7 @@
     </figure>
     <figure>
       <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H22M0 40H22M93 30H120"/><path d="M15 5Q28 30 15 55"/><path d="M27 5Q59 5 82 30Q59 55 27 55Q40 30 27 5Z"/><circle cx="87.5" cy="30" r="5.5"/></g></svg>
-      <figcaption><b>EXNOR</b> = EXOR + NOT: F = A ⊙ B</figcaption>
+      <figcaption><b>EXNOR</b> = EXOR + NOT: <span class="nw">F = A ⊙ B</span></figcaption>
     </figure>
   </div>
 
@@ -366,7 +366,7 @@
     </figure>
     <figure>
       <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M85 30H120"/><circle cx="30" cy="20" r="5"/><circle cx="30" cy="40" r="5"/><path d="M35 5H60A25 25 0 0 1 60 55H35Z"/></g></svg>
-      <figcaption><b>Girişleri balonlu AND = NOR</b>: <span class="ov">A</span> <span class="ov">B</span> = <span class="ov">A + B</span></figcaption>
+      <figcaption><b>Girişleri balonlu AND = NOR</b>: <span class="ov">A</span><span class="ov">B</span> = <span class="ov">A + B</span></figcaption>
     </figure>
   </div>
   <div class="note tip">
@@ -380,7 +380,7 @@
     <tbody>
       <tr><td>NOT A</td><td class="m">NAND(A, A) = <span class="ov">AA</span> = <span class="ov">A</span></td><td class="m">NOR(A, A) = <span class="ov">A + A</span> = <span class="ov">A</span></td></tr>
       <tr><td>A AND B</td><td>NAND'in çıkışını bir NAND-NOT'tan geçir: <span class="m"><span class="ov"><span class="ov">AB</span></span> = AB</span></td><td>Girişleri NOR-NOT ile ters çevir, NOR'la: <span class="m"><span class="ov"><span class="ov">A</span> + <span class="ov">B</span></span> = AB</span> (De Morgan)</td></tr>
-      <tr><td>A OR B</td><td>Girişleri NAND-NOT ile ters çevir, NAND'le: <span class="m"><span class="ov"><span class="ov">A</span> <span class="ov">B</span></span> = A + B</span> (De Morgan)</td><td>NOR'un çıkışını bir NOR-NOT'tan geçir: <span class="m"><span class="ov"><span class="ov">A + B</span></span> = A + B</span></td></tr>
+      <tr><td>A OR B</td><td>Girişleri NAND-NOT ile ters çevir, NAND'le: <span class="m"><span class="ov"><span class="ov">A</span><span class="ov">B</span></span> = A + B</span> (De Morgan)</td><td>NOR'un çıkışını bir NOR-NOT'tan geçir: <span class="m"><span class="ov"><span class="ov">A + B</span></span> = A + B</span></td></tr>
     </tbody>
   </table></div>
   <p>NOT, AND ve OR yapılabildiğine göre her Boole ifadesi yapılabilir. Örnek: <span class="m">F = AB + CD</span> iki seviyeli NAND ile kurulur: AB ve CD için birer NAND, çıkışları bir NAND'e. Kontrol De Morgan ile: <span class="m"><span class="ov"><span class="ov">AB</span> · <span class="ov">CD</span></span> = AB + CD</span>.</p>
@@ -481,7 +481,7 @@
       <ol class="steps">
         <li>De Morgan: <span class="m"><span class="ov"><span class="ov">A</span> + B</span> = <span class="ov"><span class="ov">A</span></span> · <span class="ov">B</span> = A<span class="ov">B</span></span>. Yani <span class="m">F = (A<span class="ov">B</span>) ⊙ A</span>.</li>
         <li>Hocanın taktiği: karmaşık parçaya bir harf ver. <span class="m">x = A<span class="ov">B</span></span> dersek <span class="m">F = x ⊙ A</span>.</li>
-        <li>XNOR'un açılımı (1. dersten; aşağıdaki kutuda da var): <span class="m">x ⊙ A = <span class="ov">x</span> <span class="ov">A</span> + xA</span>.</li>
+        <li>XNOR'un açılımı (1. dersten; aşağıdaki kutuda da var): <span class="m">x ⊙ A = <span class="ov">x</span><span class="ov">A</span> + xA</span>.</li>
         <li><b>Dikkat, kritik adım:</b> <span class="m"><span class="ov">x</span> = <span class="ov">A<span class="ov">B</span></span> = <span class="ov">A</span> + B</span> (De Morgan). x'i yerine koyarken üstündeki çizgiyi unutma!</li>
         <li><span class="m">F = (<span class="ov">A</span> + B)<span class="ov">A</span> + A<span class="ov">B</span>A</span>.</li>
         <li>Birinci terim: <span class="m">(<span class="ov">A</span> + B)<span class="ov">A</span> = <span class="ov">A</span></span> (yutma: <span class="m">X(X + Y) = X</span>). İkinci terim: <span class="m">A<span class="ov">B</span>A = A<span class="ov">B</span></span> (AA = A).</li>
@@ -491,17 +491,18 @@
 
       <div class="note warn">
         <span class="note-title">Hocanın çözümünde hata var: sonuç AB̄ değil</span>
-        <figure class="hoca-fig"><img src="../assets/img/hoca/l2-devre1.png" alt="Hocanın el yazısı devre ve çözümü: F = (A'+B)' XNOR A, x = AB', sonuç kutu içinde F = AB'" loading="lazy"><figcaption>Hocanın notu, PDF s.3: "F = x̄Ā + xA" satırından sonraki satırda x'in üstündeki çizgi kayboluyor</figcaption></figure>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l2-devre1.png" alt="Hocanın el yazısı devre ve çözümü: F = (A'+B)' XNOR A, x = AB', sonuç kutu içinde F = AB'"><figcaption>Hocanın notu, PDF s.3: "F = x̄Ā + xA" satırından sonraki satırda x'in üstündeki çizgi kayboluyor</figcaption></figure>
         <p>PDF'te sonuç kutu içinde <span class="m">F = A<span class="ov">B</span></span> diye verilmiş. Hata, x̄Ā terimine x'i yerleştirdiği satırda (yukarıdaki 4. maddede uyardığımız yer): hoca <span class="m"><span class="ov">x</span><span class="ov">A</span></span> terimine x'i koyarken x'in üstündeki çizgiyi düşürmüş ve <span class="m">A<span class="ov">B</span><span class="ov">A</span></span> yazmış. Doğrusu <span class="m"><span class="ov">A<span class="ov">B</span></span> · <span class="ov">A</span></span>. O terim 0 değil, <span class="m"><span class="ov">A</span></span> çıkıyor.</p>
         <div class="table-wrap"><table class="tt">
-          <thead><tr><th>A</th><th>B</th><th><span class="ov"><span class="ov">A</span>+B</span></th><th class="out">F (devre)</th><th class="out"><span class="ov">A</span>+<span class="ov">B</span></th><th class="out">A<span class="ov">B</span> (hoca)</th></tr></thead>
+          <thead><tr><th>A</th><th>B</th><th><span class="ov"><span class="ov">A</span>+B</span></th><th class="out">F (devre)</th><th class="out"><span class="ov">A</span>+<span class="ov">B</span></th><th class="out">Hoca: A<span class="ov">B</span></th></tr></thead>
           <tbody>
-            <tr class="wrong"><td>0</td><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out">0</td></tr>
-            <tr class="wrong"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out">0</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out miss">0</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out miss">0</td></tr>
             <tr><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="out one">1</td><td class="out one">1</td></tr>
             <tr><td>1</td><td>1</td><td>0</td><td class="out">0</td><td class="out">0</td><td class="out">0</td></tr>
           </tbody>
         </table></div>
+        <p class="hint">"F (devre)" ile <span class="m"><span class="ov">A</span>+<span class="ov">B</span></span> sütunları her satırda aynı. Hocanın sütunu kırmızı hücrelerde devreden farklı.</p>
         <p>Sağlama, ilk satır (A = 0, B = 0): <span class="ov">A</span> + B = 1 + 0 = 1, ters çevrilince 0. Son kapı XNOR(0, A = 0): girişler aynı olduğu için <b>1</b>. Hocanın sonucu A<span class="ov">B</span> ise 0 · 1 = 0 veriyor. Yukarıdaki devrede A = 0, B = 0 iken F'nin 1 yandığını kendin görebilirsin.</p>
         <p>Sınavda bu soru gelirse doğru cevap <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span>. Emin olmak için çözümünü bir iki satır yerine koyarak kontrol et.</p>
       </div>
@@ -513,9 +514,9 @@
   <div class="theorem">
     <span class="tlabel">XOR ve XNOR'u AND/OR/NOT ile yazmak</span>
     <span class="m">A ⊕ B = A<span class="ov">B</span> + <span class="ov">A</span>B</span>
-    <span class="m">A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB</span>
+    <span class="m">A ⊙ B = <span class="ov">A</span><span class="ov">B</span> + AB</span>
   </div>
-  <p>Hatırlama yolu: XOR "farklıysa 1" demek. Farklı olmanın iki yolu var: A = 1, B = 0 (<span class="m">A<span class="ov">B</span></span>) ya da A = 0, B = 1 (<span class="m"><span class="ov">A</span>B</span>). XNOR "aynıysa 1": ikisi de 0 (<span class="m"><span class="ov">A</span> <span class="ov">B</span></span>) ya da ikisi de 1 (<span class="m">AB</span>).</p>
+  <p>Hatırlama yolu: XOR "farklıysa 1" demek. Farklı olmanın iki yolu var: A = 1, B = 0 (<span class="m">A<span class="ov">B</span></span>) ya da A = 0, B = 1 (<span class="m"><span class="ov">A</span>B</span>). XNOR "aynıysa 1": ikisi de 0 (<span class="m"><span class="ov">A</span><span class="ov">B</span></span>) ya da ikisi de 1 (<span class="m">AB</span>).</p>
 </section>
 
 <!-- ============================================================ 12 -->
@@ -548,7 +549,7 @@
         <path class="g" d="M430 120Q475 120 505 150Q475 180 430 180Q447 150 430 120Z"/>
         <text class="lbl" x="12" y="58">A</text><text class="lbl" x="12" y="84">B</text><text class="lbl" x="12" y="156">C</text><text class="lbl" x="566" y="156">F</text>
         <text class="tag" x="252" y="52"><tspan style="text-decoration:overline">A</tspan>B =</text><text class="val" x="282" y="52" data-v="and1"></text>
-        <text class="tag" x="388" y="88">(<tspan style="text-decoration:overline">A</tspan>B)⊕C =</text><text class="val" x="456" y="88" data-v="xr"></text>
+        <text class="tag" x="388" y="88">(<tspan style="text-decoration:overline">A</tspan>B)⊕C =</text><text class="val" x="448" y="88" data-v="xr"></text>
         <text class="tag" x="214" y="186"><tspan style="text-decoration:overline">B</tspan> =</text><text class="val" x="236" y="186" data-v="nB"></text>
         <text class="val" x="530" y="140" data-v="F"></text>
       </svg>
@@ -598,7 +599,7 @@
       <p>Sonucun anlamı: F, A'ya hiç bağlı değil! Dört kapılık devre tek bir OR kapısı (ve C için bir NOT) ile yapılabilir.</p>
 
       <h4>Daha kısa yol</h4>
-      <p>Yutma teoremlerini bilirsen 2. adımdan sonra daha hızlı biter. Bir şeyin XOR'unun tersi XNOR'dur, yani <span class="m"><span class="ov">x ⊕ C</span> = x ⊙ C = <span class="ov">x</span> <span class="ov">C</span> + xC</span>:</p>
+      <p>Yutma teoremlerini bilirsen 2. adımdan sonra daha hızlı biter. Bir şeyin XOR'unun tersi XNOR'dur, yani <span class="m"><span class="ov">x ⊕ C</span> = x ⊙ C = <span class="ov">x</span><span class="ov">C</span> + xC</span>:</p>
       <ol class="steps">
         <li><span class="m">F = <span class="ov"><span class="ov">A</span>B</span> <span class="ov">C</span> + <span class="ov">A</span>BC + B = (A + <span class="ov">B</span>)<span class="ov">C</span> + <span class="ov">A</span>BC + B</span></li>
         <li><span class="m"><span class="ov">A</span>BC + B = B</span> (yutma, B içinde kaybolur): <span class="m">F = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + B</span>.</li>
@@ -647,7 +648,7 @@
         <li>Dağılma: A(B + C) = AB + AC</li>
         <li>Dağılma 2: A + BC = (A + B)(A + C)</li>
         <li>Tekrar: A + A = A, AA = A</li>
-        <li>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span> <span class="ov">B</span>, <span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span></li>
+        <li>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span><span class="ov">B</span>, <span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span></li>
       </ul>
     </div>
     <div>
@@ -664,7 +665,7 @@
       <h4>XOR / XNOR</h4>
       <ul>
         <li>A ⊕ B = A<span class="ov">B</span> + <span class="ov">A</span>B (farklıysa 1)</li>
-        <li>A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB (aynıysa 1)</li>
+        <li>A ⊙ B = <span class="ov">A</span><span class="ov">B</span> + AB (aynıysa 1)</li>
         <li><span class="ov">A ⊕ B</span> = A ⊙ B</li>
         <li>Çok girişli XOR: 1'lerin sayısı tekse 1</li>
         <li>A ⊕ 0 = A, A ⊕ 1 = <span class="ov">A</span>, A ⊕ A = 0, A ⊕ <span class="ov">A</span> = 1</li>
@@ -723,7 +724,7 @@
       <details class="solution"><summary>Çözümü göster</summary><p>Dağılmanın ikinci hali: <span class="m">A + B<span class="ov">B</span> = A + 0 = <b>A</b></span>.</p></details></li>
     <li><span class="m">AB + A(B + C)</span> ifadesini sadeleştir.
       <details class="solution"><summary>Çözümü göster</summary><p>Aç: <span class="m">AB + AB + AC</span>. Tekrar kuralı: <span class="m">AB + AC</span>. A ortak: <span class="m"><b>A(B + C)</b></span>.</p></details></li>
-    <li><span class="m"><span class="ov">A</span> <span class="ov">B</span> + <span class="ov">A</span>B + AB</span> ifadesini sadeleştir.
+    <li><span class="m"><span class="ov">A</span><span class="ov">B</span> + <span class="ov">A</span>B + AB</span> ifadesini sadeleştir.
       <details class="solution"><summary>Çözümü göster</summary><p>İlk ikisi: <span class="m"><span class="ov">A</span>(<span class="ov">B</span> + B) = <span class="ov">A</span></span>. Kalan: <span class="m"><span class="ov">A</span> + AB</span>. Ters değişkenli yutma (X = <span class="ov">A</span>): <span class="m"><b><span class="ov">A</span> + B</b></span>.</p></details></li>
     <li><span class="m"><span class="ov">A<span class="ov">B</span></span> + B</span> ifadesini sadeleştir.
       <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="m"><span class="ov">A</span> + B + B</span>. Tekrar kuralı: <span class="m"><b><span class="ov">A</span> + B</b></span>.</p></details></li>
@@ -736,7 +737,7 @@
     <li><span class="m">(A + B)(A + C) = A + BC</span> eşitliğini cebirsel olarak ispatla.
       <details class="solution"><summary>Çözümü göster</summary><p><span class="m" style="white-space:normal">AA + AC + AB + BC = A + AC + AB + BC = A(1 + C + B) + BC = A + BC</span>. Ayrıntısı 4. bölümde.</p></details></li>
     <li><span class="m">F = (A + B) ⊕ A</span> ifadesini sadeleştir. (İpucu: x = A + B de.)
-      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">x ⊕ A = x<span class="ov">A</span> + <span class="ov">x</span>A</span>. <span class="m">x<span class="ov">A</span> = (A + B)<span class="ov">A</span> = A<span class="ov">A</span> + B<span class="ov">A</span> = <span class="ov">A</span>B</span>. <span class="m"><span class="ov">x</span>A = <span class="ov">A</span> <span class="ov">B</span>A = 0</span>. Sonuç: <span class="m"><b><span class="ov">A</span>B</b></span>.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">x ⊕ A = x<span class="ov">A</span> + <span class="ov">x</span>A</span>. <span class="m">x<span class="ov">A</span> = (A + B)<span class="ov">A</span> = A<span class="ov">A</span> + B<span class="ov">A</span> = <span class="ov">A</span>B</span>. <span class="m"><span class="ov">x</span>A = <span class="ov">A</span><span class="ov">B</span>A = 0</span>. Sonuç: <span class="m"><b><span class="ov">A</span>B</b></span>.</p></details></li>
     <li>3 girişli XOR için A = 1, B = 1, C = 1 iken çıkış kaçtır?
       <details class="solution"><summary>Çözümü göster</summary><p>Üç tane 1 var, tek sayı → <b>1</b>. Adım adım: 1 ⊕ 1 = 0, 0 ⊕ 1 = 1.</p></details></li>
     <li>Girişlerinde balon olan bir AND kapısına A ve B giriyor. Çıkışı tek bir kapı adıyla söyle.
@@ -754,7 +755,7 @@
     <li><span class="m">F = (A + B)<span class="ov">C</span></span> devresini çiz.
       <details class="solution"><summary>Çözümü göster</summary><p>A ve B bir OR kapısına girer. C bir NOT kapısından geçer (ya da AND'in o girişine balon koyarsın). OR'un çıkışı ile <span class="ov">C</span> bir AND kapısına girer, çıkışı F.</p></details></li>
     <li>Sadece NAND kapılarıyla A OR B yap.
-      <details class="solution"><summary>Çözümü göster</summary><p>A'yı NAND(A, A) ile, B'yi NAND(B, B) ile ters çevir. Sonra NAND(<span class="ov">A</span>, <span class="ov">B</span>) = <span class="m"><span class="ov"><span class="ov">A</span> <span class="ov">B</span></span> = A + B</span> (De Morgan). Toplam 3 NAND.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p>A'yı NAND(A, A) ile, B'yi NAND(B, B) ile ters çevir. Sonra NAND(<span class="ov">A</span>, <span class="ov">B</span>) = <span class="m"><span class="ov"><span class="ov">A</span><span class="ov">B</span></span> = A + B</span> (De Morgan). Toplam 3 NAND.</p></details></li>
   </ol>
 
   <h3>Sınırsız test</h3>
