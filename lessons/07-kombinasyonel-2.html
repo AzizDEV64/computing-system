@@ -132,8 +132,9 @@
       <p class="hint">Hocanın bu örnekteki sütun başlığı "B A" diye yazılmış ama değerler A'dan başlayarak okunuyor (doğruluk tablosundaki "A B" sırası). Değerler doğru, sadece başlık ters.</p>
 
       <h4>Doğruluk tablosu</h4>
+      <p class="hint">Hocanın tablosunda sadece I₃ I₂ I₁ I₀ | A B var. Gri "Kazanan" sütunu sadece anlaman için, sınavda yazma.</p>
       <div class="table-wrap"><table class="tt" id="pe-table">
-        <thead><tr><th>I₃</th><th>I₂</th><th>I₁</th><th>I₀</th><th>Kazanan</th><th class="out">A</th><th>B</th></tr></thead>
+        <thead><tr><th>I₃</th><th>I₂</th><th>I₁</th><th>I₀</th><th class="out">A</th><th>B</th><th class="help">Kazanan (yardımcı)</th></tr></thead>
         <tbody></tbody>
       </table></div>
       <h4>Haritalar</h4>
@@ -208,13 +209,27 @@
   <div class="example">
     <div class="example-head"><h4>Design of a FA with a 3×8 Decoder</h4><span class="src">Hocanın örneği, PDF s.3–4</span></div>
     <div class="example-body">
-      <p>Hoca tam toplayıcının tablosunu tekrar yazmış (toplama R demiş, S yerine). 3. dersten: R, 1'lerin sayısı tekse 1. C<sub>out</sub>, en az iki 1 varsa 1.</p>
-      <div class="formula"><span class="m">R = Σ(1, 2, 4, 7) &nbsp;&nbsp; C<sub>out</sub> = Σ(3, 5, 6, 7)</span></div>
+      <p>Hoca önce tam toplayıcının tablosunu tekrar yazmış (toplama R demiş, S yerine). 3. dersten: R, 1'lerin sayısı tekse 1. C<sub>out</sub>, en az iki 1 varsa 1.</p>
+      <div class="table-wrap"><table class="tt" style="width:auto">
+        <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th class="out">R</th><th>C<sub>out</sub></th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td></tr>
+          <tr><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td class="out">0</td><td class="one">1</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td class="out one">1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td class="out">0</td><td class="one">1</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td class="out">0</td><td class="one">1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td class="one">1</td></tr>
+        </tbody>
+      </table></div>
+      <p>Sonra 1 olan satırların numaralarını toplamış:</p>
+      <div class="formula chain"><span class="m">R = Σ(1, 2, 4, 7)</span><span class="m">C<sub>out</sub> = Σ(3, 5, 6, 7)</span></div>
       <ol class="steps">
-        <li>A, B, C<sub>in</sub>'i 3×8 decoder'ın girişlerine bağla. Minterm numaraları ABC<sub>in</sub> sırasıyla okunduğu için <b>A en yüksek bit</b> (I₂), C<sub>in</sub> en düşük bit (I₀) olmalı. Hoca girişleri I₀, I₁, I₂ diye adlandırmış ama hangisinin hangi değişken olduğunu yazmamış. Sınavda bunu mutlaka belirt.</li>
+        <li>A, B, C<sub>in</sub>'i 3×8 decoder'ın girişlerine bağla. Minterm numaraları ABC<sub>in</sub> sırasıyla okunduğu için <b>A en yüksek bit</b> (I₂), C<sub>in</sub> en düşük bit (I₀) olmalı. Hoca girişleri yukarıdan aşağı I₀, I₁, I₂ diye çizmiş ama hangisinin hangi değişken olduğunu yazmamış. Sınavda girişlerin yanına yaz: <b>I₀ = C<sub>in</sub>, I₁ = B, I₂ = A</b>.</li>
+        <li>0 numaralı çıkış kullanılmaz. Hoca onu toprağa bağlamış (aşağıdaki devrede de öyle).</li>
         <li>Decoder'ın 1, 2, 4, 7 numaralı çıkışlarını 4 girişli bir OR'a bağla → <b>R</b>.</li>
         <li>3, 5, 6, 7 numaralı çıkışları ikinci bir 4 girişli OR'a bağla → <b>C<sub>out</sub></b>. 7 numaralı çıkış iki OR'a birden gider.</li>
-        <li>0 numaralı çıkış kullanılmaz.</li>
       </ol>
       <p class="answer">Sadeleştirme gerekmeden, doğrudan Σ listesinden devre.</p>
     </div>
@@ -222,7 +237,7 @@
   <div class="circuit" id="c-fadec">
     <div class="circuit-head"><h4>Decoder ile tam toplayıcı: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
     <div class="circuit-svg">
-      <svg data-gen="fadec" role="img" aria-label="A, B, Cin bir 3x8 decoder'a giriyor. 1, 2, 4, 7 numaralı çıkışlar R'yi veren OR kapısına, 3, 5, 6, 7 numaralı çıkışlar Cout'u veren OR kapısına bağlı."></svg>
+      <svg data-gen="fadec" role="img" aria-label="Cin decoderın I0, B I1, A I2 girişine bağlı; 0 numaralı çıkış toprağa bağlı. 1, 2, 4, 7 numaralı çıkışlar R'yi veren OR kapısına, 3, 5, 6, 7 numaralı çıkışlar Cout'u veren OR kapısına bağlı."></svg>
     </div>
     <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
   </div>
@@ -235,9 +250,9 @@
   <div class="example">
     <div class="example-head"><h4>Comparator</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
     <div class="example-body">
-      <p>Çıkışlar: F₂ = F<sub>A&gt;B</sub>, F₁ = F<sub>A&lt;B</sub>, F₀ = F<sub>A=B</sub>.</p>
+      <p>Hoca önce bir "Comp." kutusu çizip çıkışları adlandırmış: <b>F<sub>A&gt;B</sub> (F₂)</b>, <b>F<sub>A&lt;B</sub> (F₁)</b>, <b>F<sub>A=B</sub> (F₀)</b>. Devrede F₁ çıkışına F<sub>B&gt;A</sub> demiş, ikisi aynı şey. Tabloda sadece F₂ F₁ F₀ yazıyor:</p>
       <div class="table-wrap"><table class="tt">
-        <thead><tr><th>A</th><th>B</th><th class="out">F₂ (A&gt;B)</th><th>F₁ (A&lt;B)</th><th>F₀ (A=B)</th></tr></thead>
+        <thead><tr><th>A</th><th>B</th><th class="out">F₂</th><th>F₁</th><th>F₀</th></tr></thead>
         <tbody>
           <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td class="one">1</td></tr>
           <tr><td>0</td><td>1</td><td class="out">0</td><td class="one">1</td><td>0</td></tr>

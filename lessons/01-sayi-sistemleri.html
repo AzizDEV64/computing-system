@@ -206,22 +206,21 @@
   <div class="example">
     <div class="example-head"><h4>Örnek: 41'i ikiliye çevir</h4></div>
     <div class="example-body">
-      <div class="table-wrap"><table class="data">
-        <thead><tr><th>İşlem</th><th>Bölüm</th><th>Kalan</th></tr></thead>
-        <tbody>
-          <tr><td>41 ÷ 2</td><td>20</td><td class="b">1</td></tr>
-          <tr><td>20 ÷ 2</td><td>10</td><td class="b">0</td></tr>
-          <tr><td>10 ÷ 2</td><td>5</td><td class="b">0</td></tr>
-          <tr><td>5 ÷ 2</td><td>2</td><td class="b">1</td></tr>
-          <tr><td>2 ÷ 2</td><td>1</td><td class="b">0</td></tr>
-          <tr><td>1 ÷ 2</td><td>0</td><td class="b">1</td></tr>
-        </tbody>
-      </table></div>
-      <p>Kalanları aşağıdan yukarı oku: 1, 0, 1, 0, 0, 1.</p>
+      <div data-ladder="41/2"></div>
+      <ol class="steps">
+        <li>41'i 2'ye böl: bölüm 20, kalan <b>1</b>. Kalanı bölmenin altına yaz.</li>
+        <li>Bölümü (20) bir sağa al ve onu da 2'ye böl: bölüm 10, kalan <b>0</b>.</li>
+        <li>Bölüm 0 olana kadar devam et: 10 → 5 (kalan 0), 5 → 2 (kalan 1), 2 → 1 (kalan 0), 1 → 0 (kalan 1).</li>
+      </ol>
+      <p>Kalanları <b>sondan başa</b>, yani sağ alttaki son kalandan sol üstteki ilk kalana doğru oku: 1, 0, 1, 0, 0, 1.</p>
       <p class="answer">41 = <span class="b">(101001)<sub>2</sub></span>. Kontrol: 32 + 8 + 1 = 41.</p>
     </div>
   </div>
-  <p>Aynı yöntem her taban için geçerli, sadece 2 yerine hedef tabana bölersin. Örneğin 153'ü sekizliye çevirelim: 153 ÷ 8 = 19 kalan 1, 19 ÷ 8 = 2 kalan 3, 2 ÷ 8 = 0 kalan 2. Aşağıdan yukarı: <span class="b">(231)<sub>8</sub></span>. Bir örnek daha, 25'i 3 tabanına: 25 ÷ 3 = 8 kalan 1, 8 ÷ 3 = 2 kalan 2, 2 ÷ 3 = 0 kalan 2 → <span class="b">(221)<sub>3</sub></span> (kontrol: 2×9 + 2×3 + 1 = 25). Kontrol: 2×64 + 3×8 + 1 = 153.</p>
+  <p>Aynı yöntem her taban için geçerli, sadece 2 yerine hedef tabana bölersin. Solda 153'ü sekizliye, sağda 25'i 3 tabanına çeviriyoruz:</p>
+  <div class="ladder-pair">
+    <div><div data-ladder="153/8"></div><p>Sondan başa: <span class="b">(231)<sub>8</sub></span>. Kontrol: 2×64 + 3×8 + 1 = 153.</p></div>
+    <div><div data-ladder="25/3"></div><p>Sondan başa: <span class="b">(221)<sub>3</sub></span>. Kontrol: 2×9 + 2×3 + 1 = 25.</p></div>
+  </div>
 
   <h3>3.3 Onluktan başka tabana (kesir kısım): sürekli çarp, tam kısımları yukarıdan aşağı oku</h3>
   <p>Kesri hedef tabanla çarp. Çıkan sonucun tam kısmı (0 ya da 1) bir basamaktır. Kalan kesirle devam et. Kesir 0 olunca dur. Bu sefer basamakları <b>yukarıdan aşağı</b> okursun.</p>
@@ -311,7 +310,7 @@
         <hr>
         <span class="l"></span><span class="v">10010</span><span class="c">18</span>
       </div>
-      <p class="hint">En üstteki küçük satır elde satırıdır: her 1, sağındaki sütundan gelen eldeyi gösterir. En soldaki 1 sayının dışına taşan eldedir ve sonucun başına iner.</p>
+      <p class="hint">En üstteki küçük satır elde satırıdır: her 1, sağındaki sütundan gelen eldeyi gösterir. En soldaki 1 sayının dışına taşan eldedir ve sonucun başına iner. Hoca notlarında elde alan sütunun üstüne 1 yerine küçük bir <b>c</b> (carry) harfi yazıyor. Aşağıdaki hoca örneklerinde biz de öyle yazdık.</p>
       <ol class="steps">
         <li>En sağ sütun: 1 + 1 = 10. <b>0</b> yaz, 1 elde.</li>
         <li>İkinci sütun: 1 + 1 + elde 1 = 11. <b>1</b> yaz, 1 elde.</li>
@@ -389,6 +388,7 @@
         <span class="l"></span><span class="v">0111010</span><span class="c">her bit ters çevrildi</span>
       </div>
       <p class="answer">1's complement = <span class="b">0111010</span></p>
+      <p>Hocanın yazımıyla tek satır: <span class="m">(1000101)<sub>2</sub><span class="arr" data-l="1's comp."></span>(0111010)<sub>2</sub></span></p>
       <p>Hocanın notunda sonuç <span class="b">(111010)<sub>2</sub></span> diye yazılmış. Baştaki 0 düşürülmüş, değer aynı. Ama aşağıdaki uyarıyı oku.</p>
     </div>
   </div>
@@ -406,6 +406,7 @@
       </div>
       <p><b>Kısayol:</b> <span class="b">11001<u>10</u></span>. Sağdan ilk 1'e kadar olan kısım <span class="b">10</span>, aynen kalır. Soldaki <span class="b">11001</span> ters çevrilir ve <span class="b">00110</span> olur. Birleştir: <span class="b">0011010</span>. Aynı sonuç.</p>
       <p class="answer">2's complement = <span class="b">0011010</span> (hocanın yazımıyla <span class="b">(11010)<sub>2</sub></span>)</p>
+      <p>Hocanın yazımıyla tek satır: <span class="m">(1100110)<sub>2</sub><span class="arr" data-l="2's comp"></span>(0011001)<sub>2</sub> + (1)<sub>2</sub> = (0011010)<sub>2</sub></span></p>
     </div>
   </div>
 
@@ -474,19 +475,21 @@
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları zaten eşit, 4'er bit.</li>
-        <li>0111'in 1's complement'i: <span class="b">1000</span>.</li>
+        <li>0111'in 1's complement'i: <span class="m">0111<span class="arr" data-l="1's"></span>1000</span></li>
         <li>Topla:</li>
       </ol>
       <div class="calc">
+        <span class="l"></span><span class="v carry">c    </span><span class="c">elde (c)</span>
         <span class="l"></span><span class="v">1001</span><span class="c">M = 9</span>
         <span class="l">+</span><span class="v">1000</span><span class="c">0111'in 1's complement'i</span>
         <hr>
-        <span class="l"></span><span class="v"><span class="hl">1</span>0001</span><span class="c">en solda elde taştı</span>
-        <span class="l">+</span><span class="v">1</span><span class="c">taşan 1'i en sağa ekle</span>
+        <span class="l"></span><span class="v"><span class="circ hl">1</span>0001</span><span class="c">OF (overflow bit): çember içine al</span>
+        <span class="l"></span><span class="v carry">  c </span><span class="c">ikinci toplamanın eldesi</span>
+        <span class="l">+</span><span class="v">1</span><span class="c">Move: OF'u en sağa taşı ve ekle</span>
         <hr>
-        <span class="l"></span><span class="v">0010</span><span class="c">= 2</span>
+        <span class="l"></span><span class="v"><span class="dbl">0010</span></span><span class="c">= 2</span>
       </div>
-      <p>Hoca taşan bu 1'e <b>OF</b> (<span class="en">overflow bit</span>) demiş ve "Move" okuyla en sağa taşımış. Bu tam olarak end-around carry'dir.</p>
+      <p>Hoca taşan bu 1'i daire içine alıp yanına <b>OF</b> (<span class="en">overflow bit</span>) yazmış, sonra "Move" okuyla en sağa taşımış. Bu tam olarak end-around carry'dir. Sınavda sen de aynı işaretleri kullan: çember, OF, Move oku.</p>
       <p class="answer">Sonuç <span class="b">(0010)<sub>2</sub></span> = +2. Kontrol: 9 − 7 = 2.</p>
     </div>
   </div>
@@ -494,24 +497,32 @@
   <div class="example">
     <div class="example-head"><h4>Örnek 2: 10101 − 11001, 1's complement ile (21 − 25)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
     <div class="example-body">
-      <p>Cevabın −4 çıkmasını bekliyoruz, çünkü küçükten büyük çıkıyor.</p>
+      <p>Hoca önce soruyu alt alta yazıp onluk karşılıklarıyla cevabı tahmin etmiş:</p>
+      <div class="calc">
+        <span class="l"></span><span class="v">10101</span><span class="c">→ 21</span>
+        <span class="l">−</span><span class="v">11001</span><span class="c">→ 25</span>
+        <hr>
+        <span class="l"></span><span class="v"></span><span class="c">= −4 bekliyoruz</span>
+      </div>
       <ol class="steps">
         <li>Bit sayıları eşit, 5'er bit.</li>
-        <li>11001'in 1's complement'i: <span class="b">00110</span>.</li>
+        <li>11001'in 1's complement'i: <span class="m">(11001)<sub>2</sub><span class="arr" data-l="1's"></span>(00110)<sub>2</sub></span></li>
         <li>Topla:</li>
       </ol>
       <div class="calc">
-        <span class="l"></span><span class="v carry"> 1   </span><span class="c">elde</span>
+        <span class="l"></span><span class="v carry"> c   </span><span class="c">elde (c)</span>
         <span class="l"></span><span class="v">10101</span><span class="c">M = 21</span>
         <span class="l">+</span><span class="v">00110</span><span class="c">11001'in 1's complement'i</span>
         <hr>
-        <span class="l"></span><span class="v">11011</span><span class="c">en solda elde taşmadı</span>
+        <span class="l"></span><span class="v">11011</span><span class="c"></span>
+        <span class="l"></span><span class="v">↑    </span><span class="c">en solda elde taşmadı (OF yok)</span>
       </div>
       <ol class="steps" start="4">
-        <li>Taşan elde yok, yani sonuç <b>negatif</b>. Toplamın 1's complement'ini al: <span class="b">11011</span> → <span class="b">00100</span> = 4.</li>
+        <li>Taşan elde yok, yani sonuç <b>negatif</b>. Toplamın 1's complement'ini al: <span class="m">(11011)<sub>2</sub><span class="arr" data-l="1's"></span>(<span class="dbl">00100</span>)<sub>2</sub></span> = 4.</li>
         <li>Başına eksi koy.</li>
       </ol>
       <p class="answer">Sonuç <span class="b">−(00100)<sub>2</sub></span> = −4. Kontrol: 21 − 25 = −4.</p>
+      <p class="hint">Hoca ikili sonucun önüne eksi yazmamış: <span class="b">(00100)<sub>2</sub></span>'nin altını çift çizmiş, cevabın −4 olduğunu en başta yazmış. Sen eksi işaretini de yaz, daha açık olur.</p>
     </div>
   </div>
 
@@ -520,15 +531,15 @@
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları eşit.</li>
-        <li>1001'in 2's complement'i: 1's complement 0110, +1 → <span class="b">0111</span>. Kısayolla: sağdaki <span class="b">1</span> kalır, <span class="b">100</span> ters çevrilip <span class="b">011</span> olur → <span class="b">0111</span>.</li>
+        <li>1001'in 2's complement'i: <span class="m">1001<span class="arr" data-l="2's"></span>0111</span> (1's complement 0110, +1 → <span class="b">0111</span>). Kısayolla: sağdaki <span class="b">1</span> kalır, <span class="b">100</span> ters çevrilip <span class="b">011</span> olur → <span class="b">0111</span>.</li>
         <li>Topla:</li>
       </ol>
       <div class="calc">
-        <span class="l"></span><span class="v carry">1111 </span><span class="c">elde (hocanın "ccc"si)</span>
+        <span class="l"></span><span class="v carry">ccc </span><span class="c">elde (hocanın "ccc"si)</span>
         <span class="l"></span><span class="v">1011</span><span class="c">M = 11</span>
         <span class="l">+</span><span class="v">0111</span><span class="c">1001'in 2's complement'i</span>
         <hr>
-        <span class="l"></span><span class="v"><span class="strike">1</span>0010</span><span class="c">taşan 1'i at</span>
+        <span class="l"></span><span class="v"><span class="strike">1</span><span class="dbl">0010</span></span><span class="c">taşan 1'i üstünü çizerek at</span>
       </div>
       <p class="answer">Sonuç <span class="b">(0010)<sub>2</sub></span> = +2. Kontrol: 11 − 9 = 2.</p>
     </div>
@@ -539,21 +550,23 @@
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları eşit.</li>
-        <li>1011'in 2's complement'i: 1's complement 0100, +1 → <span class="b">0101</span>.</li>
+        <li>1011'in 2's complement'i: <span class="m">1011<span class="arr" data-l="2's"></span>0101</span> (1's complement 0100, +1 → <span class="b">0101</span>).</li>
         <li>Topla:</li>
       </ol>
       <div class="calc">
-        <span class="l"></span><span class="v carry">   1 </span><span class="c">elde</span>
+        <span class="l"></span><span class="v carry">  c </span><span class="c">elde (c)</span>
         <span class="l"></span><span class="v">1001</span><span class="c">M = 9</span>
         <span class="l">+</span><span class="v">0101</span><span class="c">1011'in 2's complement'i</span>
         <hr>
-        <span class="l"></span><span class="v">1110</span><span class="c">elde taşmadı</span>
+        <span class="l"></span><span class="v"><span class="dbl">1110</span></span><span class="c"></span>
+        <span class="l"></span><span class="v">↑   </span><span class="c">en solda elde taşmadı (OF yok)</span>
       </div>
       <ol class="steps" start="4">
-        <li>Taşan elde yok, yani sonuç <b>negatif</b>. 1110'un 2's complement'i: 0001 + 1 = <span class="b">0010</span> = 2.</li>
+        <li>Taşan elde yok, yani sonuç <b>negatif</b>. 1110'un 2's complement'i (0001 + 1): <span class="m">(1110)<span class="arr" data-l="2's"></span><span class="circ">(0010)<sub>2</sub></span></span> = 2.</li>
         <li>Başına eksi koy.</li>
       </ol>
       <p class="answer">Sonuç <span class="b">−(0010)<sub>2</sub></span> = −2. Kontrol: 9 − 11 = −2.</p>
+      <p class="hint">Hoca da önce soruyu alt alta yazıp (1001 → 9, 1011 → 11, = −2) cevabı tahmin etmiş, sonunda <span class="b">(0010)<sub>2</sub></span>'yi daire içine almış. Sen önüne eksi işaretini de yaz.</p>
     </div>
   </div>
 
@@ -644,6 +657,7 @@
   <p>Bir 2's complement sayının değerini bulmak için en soldaki bitin ağırlığını <b>negatif</b> say: <span class="b">1101</span> = −8 + 4 + 0 + 1 = −3.</p>
 
   <h3>Taşma (overflow)</h3>
+  <p class="hint">Dikkat: buradaki "overflow", hocanın "OF" dediği taşan elde biti değildir. Hocanın OF'u sadece en soldan dışarı taşan elde. Buradaki taşma ise işaretli sonucun ayrılan bitlere sığmaması.</p>
   <p>İki işaretli sayıyı toplarken sonuç ayrılan bitlere sığmayabilir. 4 bitte 6 + 3 = 9, ama 4 bitte en büyük sayı +7:</p>
   <div class="calc-row">
     <div class="calc">
@@ -674,7 +688,7 @@
   <div class="example">
     <div class="example-head"><h4>Rakam rakam BCD</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
     <div class="example-body">
-      <p><span class="m">7 → <span class="b">0111</span></span> (4+2+1) ve <span class="m">9 → <span class="b">1001</span></span> (8+1)</p>
+      <p><span class="m">7<span class="arr" data-l="BCD"></span><span class="b">0111</span></span> (4+2+1) ve <span class="m">9<span class="arr" data-l="BCD"></span><span class="b">1001</span></span> (8+1)</p>
       <p>Çok basamaklı sayıda her rakamı ayrı çevir: 396 → <span class="b">0011 1001 0110</span>.</p>
     </div>
   </div>
@@ -741,7 +755,7 @@
     <div class="example-head"><h4>3 bitlik Gray kodu tablosu</h4><span class="src">Hocanın tablosu, PDF s.2</span></div>
     <div class="example-body">
       <div class="table-wrap"><table class="tt">
-        <thead><tr><th>Onluk</th><th>İkili</th><th class="out">Gray</th></tr></thead>
+        <thead><tr><th>Dec</th><th>BCD</th><th class="out">Gray</th></tr></thead>
         <tbody>
           <tr><td>0</td><td>000</td><td class="out">000</td></tr>
           <tr><td>1</td><td>001</td><td class="out">001</td></tr>
@@ -754,7 +768,7 @@
         </tbody>
       </table></div>
       <p>Gray sütununda yukarıdan aşağı in. Her satırda sadece bir bit değişiyor. Sondan başa (100 → 000) dönerken de tek bit değişiyor.</p>
-      <p>Hocanın tablosunda orta sütunun başlığı "BCD". 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında bu sütun düz ikilidir.</p>
+      <p>Başlıkları hocanın tablosundaki gibi yazdık: Dec (onluk), BCD, Gray. 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında orta sütun düz ikilidir.</p>
     </div>
   </div>
 
@@ -1260,7 +1274,7 @@
     <li><span class="m">(110101)<sub>2</sub></span> sayısını onluğa çevir.
       <details class="solution"><summary>Çözümü göster</summary><p>Ağırlıklar 32 16 8 4 2 1. 1 olan bitler: 32 + 16 + 4 + 1 = <b>53</b>.</p></details></li>
     <li>77 sayısını ikiliye çevir.
-      <details class="solution"><summary>Çözümü göster</summary><p>77÷2 = 38 k1, 38÷2 = 19 k0, 19÷2 = 9 k1, 9÷2 = 4 k1, 4÷2 = 2 k0, 2÷2 = 1 k0, 1÷2 = 0 k1. Aşağıdan yukarı: <span class="b">1001101</span>. Kontrol: 64 + 8 + 4 + 1 = 77.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><div data-ladder="77/2"></div><p>Kalanları sondan başa oku: <span class="b">1001101</span>. Kontrol: 64 + 8 + 4 + 1 = 77.</p></details></li>
     <li>0.375 sayısını ikiliye çevir.
       <details class="solution"><summary>Çözümü göster</summary><p>0.375×2 = 0.75 → 0, 0.75×2 = 1.5 → 1, 0.5×2 = 1.0 → 1. Yukarıdan aşağı: <span class="b">0.011</span>. Kontrol: 0.25 + 0.125 = 0.375.</p></details></li>
     <li><span class="m">(2F)<sub>16</sub></span> sayısını ikiliye ve onluğa çevir.
@@ -1270,13 +1284,13 @@
     <li>4250 sayısının (4 basamak) 9's ve 10's complement'ini bul.
       <details class="solution"><summary>Çözümü göster</summary><p>9's: 9−4, 9−2, 9−5, 9−0 → <span class="b">5749</span>. 10's: +1 → <span class="b">5750</span>.</p></details></li>
     <li><span class="b">1100 − 0101</span> işlemini 2's complement ile yap.
-      <details class="solution"><summary>Çözümü göster</summary><p>0101'in 2's complement'i <span class="b">1011</span>. 1100 + 1011 = <span class="b">1 0111</span>. Elde var, at → <span class="b">0111</span> = +7. Kontrol: 12 − 5 = 7.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">0101<span class="arr" data-l="2's"></span>1011</span></p><div class="calc"><span class="l"></span><span class="v carry">c    </span><span class="c">elde</span><span class="l"></span><span class="v">1100</span><span class="c">12</span><span class="l">+</span><span class="v">1011</span><span class="c"></span><hr><span class="l"></span><span class="v"><span class="strike">1</span><span class="dbl">0111</span></span><span class="c">taşan 1'i at</span></div><p>Elde var, sonuç pozitif: <span class="b">0111</span> = +7. Kontrol: 12 − 5 = 7.</p></details></li>
     <li><span class="b">0101 − 1100</span> işlemini 2's complement ile yap.
-      <details class="solution"><summary>Çözümü göster</summary><p>1100'ün 2's complement'i <span class="b">0100</span>. 0101 + 0100 = <span class="b">1001</span>. Elde yok, sonuç negatif. 1001'in 2's complement'i <span class="b">0111</span> → <b>−0111</b> = −7. Kontrol: 5 − 12 = −7.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">1100<span class="arr" data-l="2's"></span>0100</span></p><div class="calc"><span class="l"></span><span class="v carry">c   </span><span class="c">elde</span><span class="l"></span><span class="v">0101</span><span class="c">5</span><span class="l">+</span><span class="v">0100</span><span class="c"></span><hr><span class="l"></span><span class="v">1001</span><span class="c"></span><span class="l"></span><span class="v">↑   </span><span class="c">OF yok: negatif</span></div><p><span class="m">(1001)<span class="arr" data-l="2's"></span><span class="circ">(0111)<sub>2</sub></span></span> → <b>−0111</b> = −7. Kontrol: 5 − 12 = −7.</p></details></li>
     <li><span class="b">1010 − 0011</span> işlemini 1's complement ile yap.
-      <details class="solution"><summary>Çözümü göster</summary><p>0011'in 1's complement'i <span class="b">1100</span>. 1010 + 1100 = <span class="b">1 0110</span>. Elde var, en sağa ekle: 0110 + 1 = <span class="b">0111</span> = +7. Kontrol: 10 − 3 = 7.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">0011<span class="arr" data-l="1's"></span>1100</span></p><div class="calc"><span class="l"></span><span class="v carry">c    </span><span class="c">elde</span><span class="l"></span><span class="v">1010</span><span class="c">10</span><span class="l">+</span><span class="v">1100</span><span class="c"></span><hr><span class="l"></span><span class="v"><span class="circ hl">1</span>0110</span><span class="c">OF</span><span class="l">+</span><span class="v">1</span><span class="c">Move</span><hr><span class="l"></span><span class="v"><span class="dbl">0111</span></span><span class="c">= +7</span></div><p>Kontrol: 10 − 3 = 7.</p></details></li>
     <li><span class="b">0011 − 1010</span> işlemini 1's complement ile yap.
-      <details class="solution"><summary>Çözümü göster</summary><p>1010'un 1's complement'i <span class="b">0101</span>. 0011 + 0101 = <span class="b">1000</span>. Elde yok, sonuç negatif. 1000'in 1's complement'i <span class="b">0111</span> → <b>−0111</b> = −7. Kontrol: 3 − 10 = −7.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">1010<span class="arr" data-l="1's"></span>0101</span></p><div class="calc"><span class="l"></span><span class="v carry">ccc </span><span class="c">elde</span><span class="l"></span><span class="v">0011</span><span class="c">3</span><span class="l">+</span><span class="v">0101</span><span class="c"></span><hr><span class="l"></span><span class="v">1000</span><span class="c"></span><span class="l"></span><span class="v">↑   </span><span class="c">OF yok: negatif</span></div><p><span class="m">(1000)<span class="arr" data-l="1's"></span><span class="circ">(0111)<sub>2</sub></span></span> → <b>−0111</b> = −7. Kontrol: 3 − 10 = −7.</p></details></li>
     <li>2026 sayısını BCD ile yaz.
       <details class="solution"><summary>Çözümü göster</summary><p>2 → 0010, 0 → 0000, 2 → 0010, 6 → 0110 → <span class="b">0010 0000 0010 0110</span>.</p></details></li>
     <li>7 rakamını 4812 kodunda yaz.

@@ -34,24 +34,24 @@
   const pick = arr => arr[rnd(0, arr.length - 1)];
 
   const SIMPLIFY = [
-    { q: 'A+AB', a: 'A', why: 'A(1 + B) = A · 1 = A (yutma)' },
-    { q: 'A(A+B)', a: 'A', why: 'AA + AB = A + AB = A (yutma)' },
-    { q: "A+A'B", a: 'A+B', why: "(A + A')(A + B) = 1 · (A + B) = A + B" },
-    { q: "AB+AB'", a: 'A', why: "A(B + B') = A · 1 = A" },
-    { q: "(A+B)(A+B')", a: 'A', why: "Dağılma 2: A + BB' = A + 0 = A" },
-    { q: "A'B'+A'B+AB", a: "A'+B", why: "A'(B' + B) + AB = A' + AB = A' + B" },
-    { q: "ABC+ABC'+AB'C", a: 'AB+AC', why: "ABC + ABC' = AB. ABC'yi tekrar kullan: ABC + AB'C = AC. Sonuç AB + AC" },
-    { q: "A(A'+B)", a: 'AB', why: "AA' + AB = 0 + AB = AB" },
-    { q: "(A+B')'+A'B'", a: "A'", why: "De Morgan: A'B + A'B' = A'(B + B') = A'" },
-    { q: "(AB)'+A", a: '1', why: "A' + B' + A = (A + A') + B' = 1 + B' = 1" },
-    { q: "ABC'+A'BC'", a: "BC'", why: "BC'(A + A') = BC'" },
-    { q: '(A+B)(A+C)', a: 'A+BC', why: 'Dağılmanın ikinci hali' },
-    { q: "(A'B')'", a: 'A+B', why: "De Morgan: A'' + B'' = A + B" },
-    { q: "AB'+ABC", a: "AB'+AC", why: "A(B' + BC) = A(B' + C) = AB' + AC (ters değişkenli yutma)" },
-    { q: "(AB')'+B", a: "A'+B", why: "De Morgan: A' + B + B = A' + B" },
-    { q: "((AB)'+C)'", a: "ABC'", why: "De Morgan: (AB)'' · C' = ABC'" },
-    { q: "A'BC+AB'C+ABC'+ABC", a: 'AB+AC+BC', why: 'ABC terimini üç kez kullan: (A\'BC + ABC) + (AB\'C + ABC) + (ABC\' + ABC) = BC + AC + AB' },
-    { q: '(A+B)^A', a: "A'B", why: "x = A + B: xA' + x'A = (A + B)A' + A'B'A = A'B + 0" }
+    { q: 'A+AB', a: 'A', why: '{A+AB} = {A(1+B)} = {A·1} = {A}' },
+    { q: 'A(A+B)', a: 'A', why: '{AA+AB} = {A+AB} = {A(1+B)} = {A·1} = {A}' },
+    { q: "A+A'B", a: 'A+B', why: "Dağılma 2: {A+A'B} = {(A+A')(A+B)} = {1·(A+B)} = {A+B}" },
+    { q: "AB+AB'", a: 'A', why: "{A(B+B')} = {A·1} = {A}" },
+    { q: "(A+B)(A+B')", a: 'A', why: "Dağılma 2: {(A+B)(A+B')} = {A+BB'} = {A+0} = {A}" },
+    { q: "A'B'+A'B+AB", a: "A'+B", why: "{A'(B'+B)+AB} = {A'+AB} = {(A'+A)(A'+B)} = {1·(A'+B)} = {A'+B}" },
+    { q: "ABC+ABC'+AB'C", a: 'AB+AC', why: "{ABC} terimini iki kez kullan ({X+X=X}): {ABC+ABC'} = {AB(C+C')} = {AB}, {ABC+AB'C} = {AC(B+B')} = {AC}. Sonuç {AB+AC}" },
+    { q: "A(A'+B)", a: 'AB', why: "{AA'+AB} = {0+AB} = {AB}" },
+    { q: "(A+B')'+A'B'", a: "A'", why: "De Morgan: {A'B+A'B'} = {A'(B+B')} = {A'·1} = {A'}" },
+    { q: "(AB)'+A", a: '1', why: "De Morgan: {A'+B'+A} = {(A+A')+B'} = {1+B'} = {1}" },
+    { q: "ABC'+A'BC'", a: "BC'", why: "{BC'(A+A')} = {BC'·1} = {BC'}" },
+    { q: '(A+B)(A+C)', a: 'A+BC', why: 'Dağılmanın ikinci hali: {(A+B)(A+C)} = {A+BC}' },
+    { q: "(A'B')'", a: 'A+B', why: "De Morgan: {A''+B''} = {A+B}" },
+    { q: "AB'+ABC", a: "AB'+AC", why: "{A(B'+BC)} = {A(B'+B)(B'+C)} = {A·1·(B'+C)} = {AB'+AC} (dağılma 2)" },
+    { q: "(AB')'+B", a: "A'+B", why: "De Morgan: {A'+B''+B} = {A'+B+B} = {A'+B}" },
+    { q: "((AB)'+C)'", a: "ABC'", why: "De Morgan: {(AB)''C'} = {ABC'}" },
+    { q: "A'BC+AB'C+ABC'+ABC", a: 'AB+AC+BC', why: "{ABC} terimini üç kez kullan ({X+X=X}): {(A'BC+ABC)+(AB'C+ABC)+(ABC'+ABC)} = {BC(A'+A)+AC(B'+B)+AB(C'+C)} = {BC+AC+AB}" },
+    { q: '(A+B)^A', a: "A'B", why: "x = {A+B} de: {xA'+x'A} = {(A+B)A'+A'B'A} = {AA'+A'B+0} = {A'B}" }
   ];
   const THEOREMS = [
     { e: 'A+B = B+A', t: 'Değişme' }, { e: 'AB = BA', t: 'Değişme' },
@@ -67,6 +67,9 @@
   const VALUE_POOL = ['A+BC', "(A'+B)'⊙A", "(((A'B)^C)B')'", "A'B+AB'", "(A+B)(A'+C)", "((AB)'+C)'", 'A^B^C', "(AB)'+A'C", "A+B'C"];
 
   let current = null, score = 0, total = 0, answered = false;
+
+  /* Açıklama metni: {…} içindekiler üstü çizgili formül, gerisi düz yazı */
+  const fmtWhy = t => t.split(/({[^}]*})/).map(p => p[0] === '{' ? `<span class="m">${prettyExpr(p.slice(1, -1))}</span>` : esc(p)).join('');
 
   function prettyIdentity(e) {
     return e.split('=').map(s => prettyExpr(s.trim())).join(' = ');
@@ -155,7 +158,7 @@
         b.classList.toggle('picked-wrong', b === btn && !r.ok);
       });
     }
-    const why = current.why ? `<div class="why">${esc(current.why)}</div>` : '';
+    const why = current.why ? `<div class="why">${fmtWhy(current.why)}</div>` : '';
     $('quiz-fb').innerHTML = r.ok
       ? `<div class="feedback ok"><b>Doğru!</b>${current.type === 'text' ? ` Örnek cevap: ${current.ans}` : ''}</div>`
       : `<div class="feedback no"><b>Olmadı.</b> ${r.msg ? esc(r.msg) + ' ' : ''}Doğru cevap: ${current.ans}${why}</div>`;

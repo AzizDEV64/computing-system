@@ -16,6 +16,35 @@
   }
   const err = msg => `<p class="err">${esc(msg)}</p>`;
 
+  /* Bölme merdiveni (elle yazılan biçim): her adımda bölüm bir sağ-alta iner, kalan altına yazılır.
+     steps: [{q, quotient, rem}] (sayı ya da BigInt) */
+  function ladder(steps, base) {
+    const D = '0123456789ABCDEF';
+    const cell = (row, col, cls, html) => `<span class="${cls}" style="grid-row:${row};grid-column:${col}">${html}</span>`;
+    let h = cell(1, 1, 'ld-n', esc(String(steps[0].q)));
+    steps.forEach((s, k) => {
+      const used = BigInt(s.q) - BigInt(s.rem);
+      h += cell(k + 1, k + 2, 'ld-dv', base);
+      h += cell(k + 2, k + 1, 'ld-sub', '−' + used);
+      h += cell(k + 2, k + 2, 'ld-n ld-qt', esc(String(s.quotient)));
+      h += cell(k + 3, k + 1, 'ld-rem', D[s.rem] + (s.rem > 9 ? `<small>(${s.rem})</small>` : ''));
+    });
+    const digits = steps.slice().reverse().map(s => D[s.rem]).join('');
+    return `<div class="ladder-wrap"><div class="ladder" role="img" aria-label="${esc(String(steps[0].q))} sayısının ${base}'ye ardışık bölünmesi, kalanlar sırayla ${steps.map(s => D[s.rem]).join(', ')}">${h}</div></div>`;
+  }
+  function ladderSteps(n, base) {
+    const steps = []; let q = BigInt(n); const b = BigInt(base);
+    if (q === 0n) return [{ q: 0n, quotient: 0n, rem: 0 }];
+    while (q > 0n) { steps.push({ q, quotient: q / b, rem: Number(q % b) }); q = q / b; }
+    return steps;
+  }
+  function renderLadders() {
+    document.querySelectorAll('[data-ladder]').forEach(el => {
+      const [n, base] = el.dataset.ladder.split('/').map(Number);
+      el.innerHTML = ladder(ladderSteps(n, base), base);
+    });
+  }
+
   /* Segmentli düğme grupları */
   function seg(id, onChange) {
     const g = $(id); if (!g) return () => null;
@@ -67,10 +96,10 @@
       const t = r.target;
       const step = from !== 10 ? 'Adım 2: ' : '';
       h += `<h4>${step}Tam kısım: sürekli ${to}'ye böl</h4>
-        <div class="table-wrap"><table class="data"><thead><tr><th>İşlem</th><th>Bölüm</th><th>Kalan</th></tr></thead><tbody>
+        ${t.divSteps.length <= 12 ? ladder(t.divSteps, to) : `<div class="table-wrap"><table class="data"><thead><tr><th>İşlem</th><th>Bölüm</th><th>Kalan</th></tr></thead><tbody>
         ${t.divSteps.map(s => `<tr><td>${s.q} ÷ ${to}</td><td>${s.quotient}</td><td class="b">${N.DIGITS[s.rem]}${s.rem > 9 ? ` <small>(${s.rem})</small>` : ''}</td></tr>`).join('')}
-        </tbody></table></div>
-        <p>Kalanları aşağıdan yukarı oku: ${B(t.intDigits)}</p>`;
+        </tbody></table></div>`}
+        <p>Bölüm 0 olunca dur. Kalanları <b>sondan başa</b> (sağ alttan sol üste) oku: ${B(t.intDigits)}</p>`;
       if (t.mulSteps.length) {
         h += `<h4>Kesir kısım: sürekli ${to} ile çarp</h4>
           <div class="table-wrap"><table class="data"><thead><tr><th>İşlem</th><th>Sonuç</th><th>Basamak</th></tr></thead><tbody>
@@ -145,17 +174,17 @@
     const carryStr = s.add.carries.slice(0, s.n).map((c, i) => c ? '1' : ' ').join('') + ' ';
     const carryShown = base === 2 && /1/.test(carryStr);
     const rows = [];
-    if (carryShown) rows.push({ v: carryStr.slice(1), cls: 'carry', c: 'elde' });
+    if (carryShown) rows.push({ v: carryStr.slice(1).replace(/1/g, 'c'), cls: 'carry', c: 'elde (c)' });
     rows.push({ v: s.Mp, c: 'M' }, { l: '+', v: s.comp, c: `N'nin ${r} complement'i` }, 'hr');
     if (s.add.carryOut) {
       if (method === 'r') {
-        rows.push({ raw: true, v: `<span class="strike">1</span>${esc(s.add.sum)}`, c: 'taşan eldeyi at' });
+        rows.push({ raw: true, v: `<span class="strike">1</span><span class="dbl">${esc(s.add.sum)}</span>`, c: "OF: taşan 1'i üstünü çizerek at" });
       } else {
-        rows.push({ raw: true, v: `<span class="hl">1</span>${esc(s.add.sum)}`, c: 'elde taştı' });
-        rows.push({ l: '+', v: '1', c: 'eldeyi en sağa ekle (end-around carry)' }, 'hr', { v: s.result, c: 'sonuç' });
+        rows.push({ raw: true, v: `<span class="circ hl">1</span>${esc(s.add.sum)}`, c: 'OF (overflow bit)' });
+        rows.push({ l: '+', v: '1', c: "Move: OF'u en sağa ekle (end-around carry)" }, 'hr', { raw: true, v: `<span class="dbl">${esc(s.result)}</span>`, c: 'sonuç' });
       }
     } else {
-      rows.push({ v: s.add.sum, c: 'elde taşmadı' });
+      rows.push({ v: s.add.sum, c: '' }, { v: '↑' + ' '.repeat(s.add.sum.length - 1), c: 'en solda elde taşmadı (OF yok)' });
     }
     h += calc(rows);
     h += '<ol class="steps" start="4">';
@@ -379,6 +408,7 @@
 
   /* ================= Başlat ================= */
   document.addEventListener('DOMContentLoaded', () => {
+    renderLadders();
     fillCodeTable();
     $('conv-go').addEventListener('click', runConv); onEnter(['conv-in'], runConv);
     $('conv-from').addEventListener('change', runConv); $('conv-to').addEventListener('change', runConv);

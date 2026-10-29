@@ -729,3 +729,39 @@ button.kmap-cell:hover { background: var(--tip-bg); }
 .content sup { font-size: .72em; line-height: 0; }
 .circuit > .wire-legend { padding: 0 1.1rem .8rem; }
 .tt td.miss { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); font-weight: 700; }
+
+/* Bölme merdiveni */
+.ladder-wrap { overflow-x: auto; padding: .4rem 0 .2rem; }
+.ladder { display: inline-grid; grid-auto-columns: minmax(2.4rem, auto); font-family: var(--mono); font-size: 1.05rem; line-height: 1.55; }
+.ladder > span { padding: .1rem .55rem; white-space: nowrap; }
+.ladder .ld-dv { border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.ladder .ld-qt { border-left: 2px solid var(--ink); }
+.ladder .ld-sub { color: var(--muted); font-size: .9em; border-bottom: 1px solid var(--muted); text-align: right; }
+.ladder .ld-rem { color: var(--copper-ink); font-weight: 700; text-align: right; }
+.ladder .ld-rem small { font-weight: 400; font-size: .7em; margin-left: .15em; }
+.ladder-pair { display: flex; flex-wrap: wrap; gap: .5rem 2.5rem; }
+.ladder-pair > div { flex: 1 1 15rem; min-width: 0; }
+
+/* ---------- Hocanın yazım biçimi için ortak parçalar ---------- */
+/* Sınav yazımı kutusu: <div class="note exam"><span class="note-title">Sınavda hocanın yazdığı gibi</span>…</div> */
+.note.exam { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.note.exam .note-title { color: var(--ink); }
+/* Daire içine alınmış rakam (OF biti): <span class="circ">1</span> */
+.circ { display: inline-block; border: 1.6px solid currentColor; border-radius: 50%; padding: 0 .22em; line-height: 1.15; letter-spacing: 0; }
+/* Çift alt çizgi (hocanın sonucun altını iki kez çizmesi): <span class="dbl">001</span> */
+.dbl { text-decoration: underline double; text-underline-offset: .22em; text-decoration-thickness: 1.5px; }
+/* Kutu içinde son cevap: <span class="boxed">F = Ā + B̄</span> */
+.boxed { display: inline-block; border: 2px solid var(--ink); border-radius: 3px; padding: .05em .45em; }
+/* Üstü etiketli ok: <span class="arr" data-l="1's comp."></span> */
+.arr { display: inline-block; text-align: center; margin: 0 .35em; line-height: 1; }
+.arr::before { content: attr(data-l); display: block; margin-bottom: -.1em; font-size: .68em; color: var(--muted); font-family: var(--font); white-space: nowrap; }
+.arr::after { content: "⟶"; font-size: 1.35em; }
+/* Altına not düşülen parça (ör. (1 + B) altına "1"): <span class="ub" data-u="1">(1 + B)</span> */
+.ub { display: inline-block; text-align: center; vertical-align: top; }
+.ub::after { content: attr(data-u); display: block; text-align: center; font-size: .72em; color: var(--copper-ink); border-top: 1.5px solid currentColor; border-radius: 0 0 40% 40%; padding: 0 .4em; line-height: 1.3; margin-top: .1em; }
+/* Satır satır eşitlik zinciri: <div class="formula chain"><span class="m">F = …</span><span class="m">= …</span></div> */
+.formula.chain { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; }
+/* Tabloda sadece açıklama amaçlı sütun (sınavda yazılmaz): <th class="help">…</th> */
+.tt th.help, .tt td.help, .data th.help, .data td.help { color: var(--muted); font-family: var(--font); font-size: .85em; font-weight: 400; border-left: 1px dashed var(--rule); }
+/* Tablo üstünde giriş/çıkış grup başlığı: <tr class="grp"><th colspan="3">Inputs</th>…</tr> */
+.tt tr.grp th { font-size: .78em; font-weight: 600; color: var(--muted); border-bottom: 0; padding-bottom: 0; }

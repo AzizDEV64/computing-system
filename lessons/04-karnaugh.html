@@ -102,7 +102,18 @@
         <li>Grubun içinde A değişiyor (0 ve 1), B sabit 0. Değişen gider, sabit kalır: <span class="m"><span class="ov">B</span></span>.</li>
       </ol>
       <p class="answer">F(A, B) = <span class="m"><span class="ov">B</span></span></p>
-      <p>Hoca cebirle de sağlamış: <span class="m">m₀ + m₂ = <span class="ov">A</span><span class="ov">B</span> + A<span class="ov">B</span> = <span class="ov">B</span>(<span class="ov">A</span> + A) = <span class="ov">B</span> · 1 = <span class="ov">B</span></span>. Harita aynı sonuca hiç işlem yapmadan ulaştı.</p>
+      <p>Hoca haritanın yanına doğruluk tablosunu da yazmış, sonra sonucu cebirle sağlamış:</p>
+      <div class="table-wrap"><table class="tt" style="width:auto">
+        <thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td></tr>
+          <tr><td>1</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>1</td><td class="out">0</td></tr>
+        </tbody>
+      </table></div>
+      <div class="formula"><span class="m" style="white-space:normal">in SOP: m₀ + m₂ = Σ(0, 2) = <span class="ov">A</span><span class="ov">B</span> + A<span class="ov">B</span> = <span class="ov">B</span>(<span class="ov">A</span> + A) = <span class="ov">B</span> · 1 = <span class="ov">B</span></span></div>
+      <p>Harita aynı sonuca hiç işlem yapmadan ulaştı.</p>
     </div>
   </div>
 
@@ -239,6 +250,10 @@
     <li>Kalan harfleri çarp. Bu, grubun terimi.</li>
     <li>Bütün grupların terimlerini + ile topla.</li>
   </ol>
+  <div class="note">
+    <span class="note-title">Sınavda hocanın yazdığı gibi yaz</span>
+    <p>Hoca her grubu daire içine alıp grubun yanından bir <b>ok</b> çiziyor ve okun ucuna o grubun terimini yazıyor (ör. "→ AC"). Bütün gruplar bitince haritanın yanına <b>F = …</b> yazıyor. Haritada sadece 0 ve 1 var, hücre numarası yazmıyor. Sitede grupların terimleri haritanın altındaki renkli listede duruyor. Listedeki bir terime dokununca haritada o grup vurgulanır.</p>
+  </div>
   <div class="note tip">
     <span class="note-title">Hızlı kontrol</span>
     <p>Terimdeki harf sayısı = toplam değişken − log₂(grup boyutu). 4 değişkenli haritada 4'lü grup 2 harf vermeli. Fazla harf yazdıysan bir değişkeni yanlışlıkla sabit sanmışsındır.</p>
@@ -338,8 +353,7 @@
   <h2><span class="n">9</span>Doğruluk tablosundan haritaya</h2>
   <p class="lead">"What is the simplest form of F?" Sınavın tipik sorusu: doğruluk tablosu verilir, en sade ifade istenir.</p>
   <ol class="steps">
-    <li>Tablonun her satırının minterm numarasını yaz (ABCD ikili sayısı).</li>
-    <li>F = 1 olan numaraları haritada doğru hücreye koy. Harita köşesindeki küçük numaraları referans al. 3. ve 4. satır ile sütunlara dikkat.</li>
+    <li>F = 1 olan satırları haritada doğru hücreye koy (ipucu: satırın ABCD değeri ikili sayı olarak minterm numarasıdır; bunu kafanda yap, kâğıda yazman gerekmez). Hücre numaraları için yukarıdaki numaralı boş haritalara bak. 3. ve 4. satır ile sütunlara dikkat.</li>
     <li>Grupla, oku, topla.</li>
   </ol>
   <div class="example">

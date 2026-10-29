@@ -24,7 +24,7 @@
     const zeros = [];
     for (let x = 0; x < (1 << n); x++) if (!ones.includes(x) && !dcs.includes(x)) zeros.push(x);
     K.renderKMap(holder, {
-      n, values: valuesFrom(ones, dcs), groups,
+      n, values: valuesFrom(ones, dcs), groups, showIndex: false,
       pos: !!(pos && pos.length) && !(sop && sop.length),
       rowLabel: dn === 'A' ? 'A₁' : dn ? 'D₃D₂' : undefined, colLabel: dn === 'A' ? 'A₀' : dn ? 'D₁D₀' : undefined
     });
@@ -83,6 +83,12 @@
     });
   }
 
+  // Hocanın a segmentinde yaptığı gibi tümleyen çiftleri XNOR/XOR'a topla (0–9'da doğrulandı)
+  const SEG_SHORT = { f: "B'+C⊙D", g: "A+B^C+CD'" };
+  const SEG_NOTE = {
+    f: 'Hocanın a segmentinde yaptığı gibi: <span class="m"><span class="ov">D₁</span><span class="ov">D₀</span> + D₁D₀ = D₁ ⊙ D₀</span>.',
+    g: 'Hocanın a segmentinde yaptığı gibi: <span class="m"><span class="ov">D₂</span>D₁ + D₂<span class="ov">D₁</span> = D₂ ⊕ D₁</span>.'
+  };
   function renderSegments() {
     $('seg-demo').innerHTML = seg7SVG({ on: 'abcdefg', title: '8: hepsi yanık' }) + seg7SVG({ on: segsOn(7), title: '7' }) +
       seg7SVG({ on: segsOn(3), title: '3' }) + seg7SVG({ on: segsOn(1), title: '1' });
@@ -94,7 +100,7 @@
     for (let x = 0; x < 16; x++) {
       const bits = x.toString(2).padStart(4, '0').split('');
       const out = x < 10 ? TABLE[x].split('') : Array(7).fill('X');
-      h += `<tr${x >= 10 ? ' style="color:var(--muted)"' : ''}><td>${x < 10 ? x : '—'}</td>${bits.map(b => `<td>${b}</td>`).join('')}${out.map((v, i) => `<td class="${i === 0 ? 'out ' : ''}${v === '1' ? 'one' : ''}">${v}</td>`).join('')}</tr>`;
+      h += `<tr${x >= 10 ? ' style="color:var(--muted)"' : ''}>${bits.map(b => `<td>${b}</td>`).join('')}${out.map((v, i) => `<td class="${i === 0 ? 'out ' : ''}${v === '1' ? 'one' : ''}">${v}</td>`).join('')}<td class="help">${x < 10 ? x : '—'}</td></tr>`;
     }
     tb.innerHTML = h;
     // kalan segmentler
@@ -104,7 +110,7 @@
       const box = document.createElement('div');
       box.className = 'example';
       const where = { c: 'sol alt', d: 'alt', e: 'sağ alt', f: 'sağ üst', g: 'orta' }[s];
-      box.innerHTML = `<div class="example-head"><h4>${s} segmenti (${where})</h4><span class="src">Ek çözüm</span></div><div class="example-body"><p>${s} = 1 olan rakamlar: ${eq.ones.join(', ')}.</p><div class="kmap-figure"><div class="m-holder"></div></div><p class="answer">${s} = ${M(eq.text.split('+').join(' + '), true)}</p></div>`;
+      box.innerHTML = `<div class="example-head"><h4>${s} segmenti (${where})</h4><span class="src">Ek çözüm</span></div><div class="example-body"><p>${s} = 1 olan rakamlar: ${eq.ones.join(', ')}.</p><div class="kmap-figure"><div class="m-holder"></div></div><p class="answer">${s} = ${M(eq.text.split('+').join(' + '), true)}${SEG_SHORT[s] ? ` = ${M(SEG_SHORT[s], true)}` : ''}</p>${SEG_SHORT[s] ? `<p>${SEG_NOTE[s]}</p>` : ''}</div>`;
       rest.appendChild(box);
       renderStaticMap(box.querySelector('.m-holder'), { n: 4, ones: eq.ones, dcs: [10, 11, 12, 13, 14, 15], sop: eq.res.terms.map(t => K.termText(t, 4)), dn: true });
     });

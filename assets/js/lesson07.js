@@ -65,29 +65,29 @@
   }
 
   function drawDec(svg) {
-    // NOT kapıları doğrudan ilgili AND'in girişine yerleştirildi: ters sinyal için ayrı uzun kablo yok
+    // Hocanın sırası: I₀ önce, I₁ sonra. NOT kapıları doğrudan ilgili AND'in girişinde.
     const s = Sketch();
-    s.rail(50, 24, 235, 'I1'); s.rail(80, 24, 255, 'I0');
-    // F0 = NOR(I1, I0)
-    s.hline(40, 50, 304, 'I1'); s.dot(50, 40);
-    s.path('M80 60H304', 'I0'); s.dot(80, 60);
+    s.rail(50, 24, 235, 'I0'); s.rail(80, 24, 255, 'I1');
+    // F0 = NOR(I0, I1)
+    s.hline(40, 50, 304, 'I0'); s.dot(50, 40);
+    s.path('M80 60H304', 'I1'); s.dot(80, 60);
     const f0 = s.or(300, 50, 40, true); s.path(`M${f0} 50H420`, 'F0');
     // F1 = Ī1 · I0
-    s.hline(105, 50, 170, 'I1'); s.dot(50, 105);
-    let o = s.not(170, 105); s.path(`M${o} 105H300`, 'nI1');
-    s.path('M80 125H300', 'I0'); s.dot(80, 125);
+    s.hline(105, 50, 300, 'I0'); s.dot(50, 105);
+    s.path('M80 125H170', 'I1'); s.dot(80, 125);
+    let o = s.not(170, 125); s.path(`M${o} 125H300`, 'nI1');
     const f1 = s.and(300, 115); s.path(`M${f1} 115H420`, 'F1');
     // F2 = I1 · Ī0
-    s.hline(170, 50, 300, 'I1'); s.dot(50, 170);
-    s.path('M80 190H170', 'I0'); s.dot(80, 190);
-    o = s.not(170, 190); s.path(`M${o} 190H300`, 'nI0');
+    s.hline(170, 50, 170, 'I0'); s.dot(50, 170);
+    o = s.not(170, 170); s.path(`M${o} 170H300`, 'nI0');
+    s.path('M80 190H300', 'I1'); s.dot(80, 190);
     const f2 = s.and(300, 180); s.path(`M${f2} 180H420`, 'F2');
     // F3 = I1 · I0
-    s.hline(235, 50, 300, 'I1');
-    s.path('M80 255H300', 'I0');
+    s.hline(235, 50, 300, 'I0');
+    s.path('M80 255H300', 'I1');
     const f3 = s.and(300, 245); s.path(`M${f3} 245H420`, 'F3');
-    s.text(42, 18, 'I₁'); s.text(72, 18, 'I₀');
-    s.text(218, 97, '<tspan style="text-decoration:overline">I₁</tspan>', 'tag'); s.text(218, 182, '<tspan style="text-decoration:overline">I₀</tspan>', 'tag');
+    s.text(42, 18, 'I₀'); s.text(72, 18, 'I₁');
+    s.text(218, 120, '<tspan style="text-decoration:overline">I₁</tspan>', 'tag'); s.text(218, 165, '<tspan style="text-decoration:overline">I₀</tspan>', 'tag');
     s.text(316, 22, 'NOR', 'tag');
     [50, 115, 180, 245].forEach((y, i) => { s.text(426, y + 6, 'F' + SUBS[i]); s.val(396, y - 8, 'F' + i); });
     svg.setAttribute('viewBox', '0 0 460 270'); svg.innerHTML = s.html();
@@ -97,11 +97,12 @@
     const s = Sketch();
     const ys = k => 40 + 26 * k;                 // decoder çıkışlarının yüksekliği
     s.rect(90, 22, 110, 218);
-    [['A', 75, 'I₂'], ['B', 131, 'I₁'], ['Cin', 187, 'I₀']].forEach(([n, y, lab]) => { s.path(`M30 ${y}H90`, n); s.text(95, y + 4, lab, 'tag'); });
-    s.text(8, 81, 'A'); s.text(8, 137, 'B'); s.text(2, 193, 'C<tspan font-size="10" dy="3">in</tspan>');
+    // hocanın çizimi gibi: I₀ üstte. I₀ = Cin (en düşük bit), I₁ = B, I₂ = A (en yüksek bit)
+    [['Cin', 75, 'I₀'], ['B', 131, 'I₁'], ['A', 187, 'I₂']].forEach(([n, y, lab]) => { s.path(`M30 ${y}H90`, n); s.text(95, y + 4, lab, 'tag'); });
+    s.text(2, 81, 'C<tspan font-size="10" dy="3">in</tspan>'); s.text(8, 137, 'B'); s.text(8, 193, 'A');
     s.text(142, 102, '3×8', 'lbl', 'text-anchor="middle"'); s.text(142, 120, 'Decoder', 'tag', 'text-anchor="middle"');
     for (let k = 0; k < 8; k++) s.text(190, ys(k) + 4, String(k), 'tag', 'text-anchor="end"');
-    s.path(`M200 ${ys(0)}H214`, 'o0');
+    s.path(`M200 ${ys(0)}H226`, 'o0'); s.ground(226, ys(0));
     // OR girişleri: arka eğrinin üstünde bitsin
     const OX = 370, H = 96;
     const inX = (cy, y) => { const t = (y - (cy - H / 2)) / H; return OX + 28 * t * (1 - t); };
@@ -136,9 +137,10 @@
     s.hline(190, 50, 300, 'A'); s.dot(50, 190);
     const gt = s.and(300, 175); s.path(`M${gt} 175H400`, 'gt');
     s.text(42, 18, 'A'); s.text(72, 18, 'B');
-    s.text(406, 55, 'A=B', 'tag'); s.text(406, 117, 'A&lt;B', 'tag'); s.text(406, 180, 'A&gt;B', 'tag');
+    const F = sub => `F<tspan font-size="11" dy="4">${sub}</tspan>`;
+    s.text(406, 55, F('A=B')); s.text(406, 117, F('B&gt;A')); s.text(406, 180, F('A&gt;B'));
     s.val(384, 42, 'eq'); s.val(384, 104, 'lt'); s.val(384, 167, 'gt');
-    svg.setAttribute('viewBox', '0 0 450 205'); svg.innerHTML = s.html();
+    svg.setAttribute('viewBox', '0 0 470 205'); svg.innerHTML = s.html();
   }
 
   /* ================= Tuş takımı ================= */
@@ -163,7 +165,7 @@
     for (let m = 0; m < 16; m++) {
       const w = peOut(m), v = Math.max(w, 0);
       const bits = [3, 2, 1, 0].map(i => (m >> i) & 1);
-      h += `<tr>${bits.map(b => `<td>${b}</td>`).join('')}<td style="font-family:var(--font)">${w < 0 ? 'hiçbiri' : 'I' + SUBS[w]}</td><td class="out ${v >> 1 ? 'one' : ''}">${v >> 1}</td><td class="${v & 1 ? 'one' : ''}">${v & 1}</td></tr>`;
+      h += `<tr>${bits.map(b => `<td>${b}</td>`).join('')}<td class="out ${v >> 1 ? 'one' : ''}">${v >> 1}</td><td class="${v & 1 ? 'one' : ''}">${v & 1}</td><td class="help">${w < 0 ? 'hiçbiri' : 'I' + SUBS[w]}</td></tr>`;
     }
     tb.innerHTML = h;
   }
@@ -174,7 +176,7 @@
       const groups = el.dataset.groups.split('|').map((s, i) => ({ t: K.parseTerm(s, 4), color: COLORS[i], s }));
       const cap = document.createElement('div'); cap.className = 'kmap-cap'; cap.textContent = el.dataset.title; el.appendChild(cap);
       const holder = document.createElement('div'); el.appendChild(holder);
-      K.renderKMap(holder, { n: 4, values: new Map(ones.map(x => [x, 1])), groups, rowLabel: 'I₃I₂', colLabel: 'I₁I₀' });
+      K.renderKMap(holder, { n: 4, values: new Map(ones.map(x => [x, 1])), groups, rowLabel: 'I₃I₂', colLabel: 'I₁I₀', showIndex: false });
       const ul = document.createElement('div');
       ul.innerHTML = '<ul class="group-list">' + groups.map(g => `<li style="--gc:${g.color}"><span class="m">${prettyExpr(g.s).replace(/[ABCD]/g, c => NAMES[c])}</span> <span class="why">${1 << popcount(g.t.m)} hücre</span></li>`).join('') + '</ul>';
       el.appendChild(ul);
@@ -189,7 +191,7 @@
       const m = env.I3 * 8 + env.I2 * 4 + env.I1 * 2 + env.I0, w = peOut(m);
       return { nI2, and1, B: B_, A, note: w < 0 ? 'Hiçbir giriş aktif değil → AB = 00' : `Aktif girişlerin en büyüğü I${SUBS[w]} → ${w} → AB = ${A}${B_}` };
     });
-    bindCircuit($('c-dec'), ['I1', 'I0'], env => {
+    bindCircuit($('c-dec'), ['I0', 'I1'], env => {
       const nI0 = env.I0 ^ 1, nI1 = env.I1 ^ 1;
       const F = [+!(env.I0 | env.I1), nI1 & env.I0, env.I1 & nI0, env.I1 & env.I0];
       const k = env.I1 * 2 + env.I0;

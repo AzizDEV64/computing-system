@@ -231,30 +231,52 @@
     </div>
   </div>
 
+  <div class="note exam">
+    <span class="note-title">Sınavda hocanın yazdığı gibi: hazırlık</span>
+    <p>1st Step'ten önce 0 ve 1'in anlamını yaz (kapı için "On" açık demek):</p>
+    <div class="formula chain"><span class="m">Alarm: On <span class="arr" data-l=""></span> True <span class="arr" data-l=""></span> 1, &nbsp; Off <span class="arr" data-l=""></span> False <span class="arr" data-l=""></span> 0</span><span class="m">Door: On <span class="arr" data-l=""></span> True <span class="arr" data-l=""></span> 1, &nbsp; Off <span class="arr" data-l=""></span> False <span class="arr" data-l=""></span> 0</span></div>
+  </div>
+
   <h3>1st Step: doğruluk tablosu</h3>
   <p>Her satır için iki soruyu sor: "En az iki kapı açık mı?" ve "Sadece B mi açık?" Biri evetse F = 1.</p>
   <div class="table-wrap"><table class="tt">
-    <thead><tr><th>A</th><th>B</th><th>C</th><th>Açık kapı</th><th>Neden?</th><th class="out">F</th><th>Minterm</th></tr></thead>
+    <thead><tr class="grp"><th colspan="3">Inputs (Doors)</th><th class="out">Outputs (Alarm)</th><th></th><th class="help" colspan="2">Yardımcı, sınavda yazma</th></tr>
+      <tr><th>A</th><th>B</th><th>C</th><th class="out">F</th><th>Minterms</th><th class="help">Açık kapı</th><th class="help">Neden?</th></tr></thead>
     <tbody>
-      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td style="font-family:var(--font)">hiçbiri açık değil</td><td class="out">0</td><td>m₀</td></tr>
-      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td style="font-family:var(--font)">sadece C açık</td><td class="out">0</td><td>m₁</td></tr>
-      <tr class="hit"><td>0</td><td>1</td><td>0</td><td>1</td><td style="font-family:var(--font)">sadece B açık</td><td class="out one">1</td><td>m₂</td></tr>
-      <tr class="hit"><td>0</td><td>1</td><td>1</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₃</td></tr>
-      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td style="font-family:var(--font)">sadece A açık</td><td class="out">0</td><td>m₄</td></tr>
-      <tr class="hit"><td>1</td><td>0</td><td>1</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₅</td></tr>
-      <tr class="hit"><td>1</td><td>1</td><td>0</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₆</td></tr>
-      <tr class="hit"><td>1</td><td>1</td><td>1</td><td>3</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₇</td></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>m₀</td><td class="help">0</td><td class="help">hiçbiri açık değil</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td class="out">0</td><td>m₁</td><td class="help">1</td><td class="help">sadece C açık</td></tr>
+      <tr class="hit"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td>m₂</td><td class="help">1</td><td class="help">sadece B açık</td></tr>
+      <tr class="hit"><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td>m₃</td><td class="help">2</td><td class="help">en az iki</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td class="out">0</td><td>m₄</td><td class="help">1</td><td class="help">sadece A açık</td></tr>
+      <tr class="hit"><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td>m₅</td><td class="help">2</td><td class="help">en az iki</td></tr>
+      <tr class="hit"><td>1</td><td>1</td><td>0</td><td class="out one">1</td><td>m₆</td><td class="help">2</td><td class="help">en az iki</td></tr>
+      <tr class="hit"><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td>m₇</td><td class="help">3</td><td class="help">en az iki</td></tr>
     </tbody>
   </table></div>
 
   <h3>2nd Step: kanonik form</h3>
   <p>1 olan satırlar 2, 3, 5, 6, 7 (hoca bunları kırmızıyla daire içine almış):</p>
-  <div class="formula"><span class="m" style="white-space:normal">F(A,B,C) = Σ(2, 3, 5, 6, 7) = <span class="ov">A</span>B<span class="ov">C</span> + <span class="ov">A</span>BC + A<span class="ov">B</span>C + AB<span class="ov">C</span> + ABC</span></div>
+  <div class="formula chain"><span class="m">F(A,B,C) = Σ(2, 3, 5, 6, 7)</span><span class="m">F(A,B,C) = m₂ + m₃ + m₅ + m₆ + m₇</span><span class="m" style="white-space:normal">F(A,B,C) = <span class="ov">A</span>B<span class="ov">C</span> + <span class="ov">A</span>BC + A<span class="ov">B</span>C + AB<span class="ov">C</span> + ABC</span></div>
+  <p class="hint">Hoca bu üç satırı alt alta, her birini F(A,B,C) = ile başlatarak yazmış.</p>
 
   <h3>3rd Step: sadeleştirme (hocanın yolu)</h3>
+  <div class="note exam">
+    <span class="note-title">Sınavda hocanın yazdığı gibi</span>
+    <p>Hoca sadeleştirmeyi tek bir eşitlik zinciri olarak yazmış. Altında "1" yazan parantezler 1'e eşit olduğu için düşüyor:</p>
+    <div class="formula chain">
+      <span class="m" style="white-space:normal">F = <span class="ov">A</span>B<span class="ub" data-u="1"><span>(<span class="ov">C</span> + C)</span></span> + A<span class="ov">B</span>C + AB<span class="ub" data-u="1"><span>(<span class="ov">C</span> + C)</span></span></span>
+      <span class="m">= <span class="ov">A</span>B + AB + A<span class="ov">B</span>C</span>
+      <span class="m">= B<span class="ub" data-u="1"><span>(<span class="ov">A</span> + A)</span></span> + A<span class="ov">B</span>C</span>
+      <span class="m">= B + A<span class="ov">B</span>C</span>
+      <span class="m">= (B + A)<span class="ub" data-u="1"><span>(B + <span class="ov">B</span>)</span></span>(B + C)</span>
+      <span class="m">= <span class="boxed">(A + B)(B + C)</span> &nbsp;I. opt</span>
+    </div>
+    <p>B + A<span class="ov">B</span>C satırında hoca B'yi oklarla tek seferde üç çarpana dağıtmış: X + YZW = (X + Y)(X + Z)(X + W). Aşağıdaki açıklama aynı şeyi iki adımda yapıyor, sonuç aynı.</p>
+  </div>
+  <p>Adım adım açıklama:</p>
   <ol class="steps">
     <li>Hoca altlarını çizerek eşleştirmiş: 1. ile 2. terimde <span class="m"><span class="ov">A</span>B</span>, 4. ile 5. terimde <span class="m">AB</span> ortak.</li>
-    <li><span class="m">= <span class="ov">A</span>B(<span class="ov">C</span> + C) + A<span class="ov">B</span>C + AB(<span class="ov">C</span> + C) = <span class="ov">A</span>B + A<span class="ov">B</span>C + AB</span></li>
+    <li><span class="m">= <span class="ov">A</span>B(<span class="ov">C</span> + C) + A<span class="ov">B</span>C + AB(<span class="ov">C</span> + C) = <span class="ov">A</span>B + AB + A<span class="ov">B</span>C</span></li>
     <li><span class="m"><span class="ov">A</span>B + AB = B(<span class="ov">A</span> + A) = B</span>. Yani <span class="m">F = B + A<span class="ov">B</span>C</span>.</li>
     <li>Dağılmanın ikinci halini (X + YZ = (X + Y)(X + Z)) iki kez uygula: önce <span class="m">B + (A<span class="ov">B</span>)·C = (B + A<span class="ov">B</span>)(B + C)</span>, sonra <span class="m">B + A<span class="ov">B</span> = (B + A)(B + <span class="ov">B</span>)</span>. Sonuç: <span class="m">(B + A)(B + <span class="ov">B</span>)(B + C)</span>.</li>
     <li><span class="m">B + <span class="ov">B</span> = 1</span>: <span class="m">F = (A + B)(B + C)</span>. Hocanın <b>I. seçeneği</b>.</li>
@@ -330,12 +352,12 @@
   </div>
   <div class="tables-row">
     <div class="table-wrap"><table class="tt">
-      <thead><tr><th>A</th><th>B</th><th class="out">S</th><th>C<sub>out</sub></th><th>Ondalık toplam</th></tr></thead>
+      <thead><tr><th>A</th><th>B</th><th class="out">S</th><th>C<sub>out</sub></th><th class="help">Ondalık toplam (yardımcı)</th></tr></thead>
       <tbody>
-        <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td></tr>
-        <tr><td>0</td><td>1</td><td class="out one">1</td><td>0</td><td>1</td></tr>
-        <tr><td>1</td><td>0</td><td class="out one">1</td><td>0</td><td>1</td></tr>
-        <tr><td>1</td><td>1</td><td class="out">0</td><td class="one">1</td><td>2 = 10₂</td></tr>
+        <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td class="help">0</td></tr>
+        <tr><td>0</td><td>1</td><td class="out one">1</td><td>0</td><td class="help">1</td></tr>
+        <tr><td>1</td><td>0</td><td class="out one">1</td><td>0</td><td class="help">1</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="one">1</td><td class="help">2 = 10₂</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -350,6 +372,15 @@
     <span class="m">C<sub>out</sub> = AB</span>
   </div>
   <p>Devresi: bir XOR ve bir AND kapısı. Hoca bunu kesik çizgili bir kutu içine alıp "HA" diye adlandırmış ve tek bir blok olarak (iki giriş, iki çıkış) çizmiş. Büyük devrelerde iç yapıyı her seferinde çizmek yerine bu blokları kullanırız.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 230 110" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 35H70M20 75H70M150 35H195M150 75H195"/><rect x="70" y="15" width="80" height="80" rx="4"/></g>
+        <g fill="currentColor" font-family="Archivo, sans-serif" font-size="15" font-weight="700"><text x="4" y="40">A</text><text x="4" y="80">B</text><text x="110" y="61" text-anchor="middle">HA</text><text x="200" y="40">S</text><text x="200" y="80">C<tspan font-size="10" dy="3">out</tspan></text></g>
+      </svg>
+      <figcaption><b>Hocanın HA bloğu</b>: solda A, B; sağda S, C<sub>out</sub>.</figcaption>
+    </figure>
+  </div>
 
   <div class="circuit" id="c-ha">
     <div class="circuit-head">
@@ -384,16 +415,16 @@
   <p class="lead">Tam toplayıcı üç biti toplar: A, B ve sağdaki sütundan gelen elde <b>C<sub>in</sub></b> (<span class="en">carry in</span>).</p>
   <p>1. derste alt alta toplama yaparken her sütunda tam olarak bunu yaptın: iki rakam + yukarıdan gelen elde. Üç bitin toplamı 0 ile 3 arasındadır, yine iki çıkışla (C<sub>out</sub> S) yazılır.</p>
   <div class="table-wrap"><table class="tt">
-    <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th>1'lerin sayısı</th><th class="out">S</th><th>C<sub>out</sub></th></tr></thead>
+    <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th class="out">S</th><th>C<sub>out</sub></th><th class="help">1'lerin sayısı (yardımcı)</th></tr></thead>
     <tbody>
-      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td></tr>
-      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td>0</td></tr>
-      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td></tr>
-      <tr><td>0</td><td>1</td><td>1</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
-      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td></tr>
-      <tr><td>1</td><td>0</td><td>1</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
-      <tr><td>1</td><td>1</td><td>0</td><td>2</td><td class="out">0</td><td class="one">1</td></tr>
-      <tr><td>1</td><td>1</td><td>1</td><td>3</td><td class="out one">1</td><td class="one">1</td></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td><td class="help">0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td>0</td><td class="help">1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td>0</td><td class="help">1</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td class="out">0</td><td class="one">1</td><td class="help">2</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td class="out one">1</td><td>0</td><td class="help">1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td class="out">0</td><td class="one">1</td><td class="help">2</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td class="out">0</td><td class="one">1</td><td class="help">2</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td class="one">1</td><td class="help">3</td></tr>
     </tbody>
   </table></div>
   <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b> (çok girişli XOR'un kuralı). <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
@@ -422,6 +453,14 @@
         <li><span class="m" style="white-space:normal">C<sub>out</sub> = BC<sub>in</sub>(<span class="ov">A</span> + A) + A(<span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span>)</span></li>
         <li><span class="m"><span class="ov">A</span> + A = 1</span> ve parantez içi bir XOR: <span class="m"><span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span> = B ⊕ C<sub>in</sub></span>.</li>
       </ol>
+      <div class="note exam">
+        <span class="note-title">Sınavda hocanın yazdığı gibi</span>
+        <div class="formula chain">
+          <span class="m" style="white-space:normal">C<sub>out</sub> = BC<sub>in</sub><span class="ub" data-u="1"><span>(<span class="ov">A</span> + A)</span></span> + A(<span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span>)</span>
+          <span class="m">= BC<sub>in</sub> + A<span class="ub" data-u="B ⊕ Cin"><span>(<span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span>)</span></span></span>
+          <span class="m">= <span class="boxed">BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</span></span>
+        </div>
+      </div>
       <p class="answer">C<sub>out</sub> = <span class="m">BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</span></p>
     </div>
   </div>
@@ -432,7 +471,7 @@
   </div>
 
   <p>Hocanın tam toplayıcı devresi: S için 3 girişli bir XOR. C<sub>out</sub> için B ⊕ C<sub>in</sub>'i A ile VE'leyen bir AND, BC<sub>in</sub> için ayrı bir AND ve ikisini birleştiren bir OR. Hoca girişleri dikey hatlar (bus) halinde çizmiş, yatay kablolar dikey hatların üstünden köprüyle geçiyor.</p>
-  <p>Hocanın çiziminde aslında 6 dikey hat var: her girişin yanına küçük bir NOT kapısıyla tersini (<span class="ov">A</span>, <span class="ov">B</span>, <span class="ov">C<sub>in</sub></span>) de hat olarak eklemiş. Bu devrede ters hatlar hiç kullanılmıyor, bütün kapılar düz A, B, C<sub>in</sub> hatlarına bağlı. Bu, "her girişin hem düzü hem tersi hazır olsun" alışkanlığından gelir: kanonik SOP devrelerinde ters hatlar gerekir. Sitedeki çizimde kullanılmayan ters hatlar gösterilmedi.</p>
+  <p>Hocanın çiziminde aslında 6 dikey hat var: her girişin yanına küçük bir NOT kapısıyla tersini (<span class="ov">A</span>, <span class="ov">B</span>, <span class="ov">C<sub>in</sub></span>) de hat olarak eklemiş. Bu devrede ters hatlar hiç kullanılmıyor, bütün kapılar düz A, B, C<sub>in</sub> hatlarına bağlı. Bu, "her girişin hem düzü hem tersi hazır olsun" alışkanlığından gelir: kanonik SOP devrelerinde ters hatlar gerekir. Sitedeki çizimde kullanılmayan ters hatlar gösterilmedi. Sınavda hocanın çizimini örnek alacaksan 6 dikey hattın hepsini çiz: A, B, C<sub>in</sub> ve her birinin NOT kapısından geçen tersi.</p>
 
   <div class="circuit" id="c-fa">
     <div class="circuit-head">
@@ -499,7 +538,7 @@
       <div class="pins" aria-label="Girişler"></div>
     </div>
     <div class="circuit-svg">
-      <svg viewBox="0 0 560 230" role="img" aria-label="Üç tam toplayıcı yan yana. En sağdaki FA0'ın Cin girişi toprakta. Her FA'nın Cout'u solundakinin Cin'ine bağlı. En soldaki Cout taşma çıkışı OF.">
+      <svg viewBox="0 0 560 230" role="img" aria-label="Üç tam toplayıcı yan yana. En sağdaki FA0'ın Cin0 girişi toprakta. Cout0 FA1'in Cin1'ine, Cout1 FA2'nin Cin2'sine bağlı. Cout2 taşma çıkışı OF.">
         <path class="w" data-n="B2" d="M155 30V80"/><path class="w" data-n="A2" d="M185 30V80"/>
         <path class="w" data-n="B1" d="M305 30V80"/><path class="w" data-n="A1" d="M335 30V80"/>
         <path class="w" data-n="B0" d="M455 30V80"/><path class="w" data-n="A0" d="M485 30V80"/>
@@ -511,12 +550,15 @@
         <rect class="g" x="120" y="80" width="100" height="70" rx="4"/>
         <rect class="g" x="270" y="80" width="100" height="70" rx="4"/>
         <rect class="g" x="420" y="80" width="100" height="70" rx="4"/>
-        <text class="lbl" x="152" y="121">FA₂</text><text class="lbl" x="302" y="121">FA₁</text><text class="lbl" x="452" y="121">FA₀</text>
+        <text class="lbl" x="170" y="112" text-anchor="middle">FA₂</text><text class="lbl" x="320" y="112" text-anchor="middle">FA₁</text><text class="lbl" x="470" y="112" text-anchor="middle">FA₀</text>
+        <text class="tag" x="124" y="138">C<tspan font-size="10" dy="3">out2</tspan></text><text class="tag" x="216" y="138" text-anchor="end">C<tspan font-size="10" dy="3">in2</tspan></text>
+        <text class="tag" x="274" y="138">C<tspan font-size="10" dy="3">out1</tspan></text><text class="tag" x="366" y="138" text-anchor="end">C<tspan font-size="10" dy="3">in1</tspan></text>
+        <text class="tag" x="424" y="138">C<tspan font-size="10" dy="3">out0</tspan></text><text class="tag" x="516" y="138" text-anchor="end">C<tspan font-size="10" dy="3">in0</tspan></text>
         <text class="tag" x="146" y="22">B₂</text><text class="tag" x="178" y="22">A₂</text>
         <text class="tag" x="296" y="22">B₁</text><text class="tag" x="328" y="22">A₁</text>
         <text class="tag" x="446" y="22">B₀</text><text class="tag" x="478" y="22">A₀</text>
-        <text class="tag" x="374" y="108">C₀ =</text><text class="val" x="402" y="108" data-v="c0"></text>
-        <text class="tag" x="224" y="108">C₁ =</text><text class="val" x="252" y="108" data-v="c1"></text>
+        <text class="val" x="395" y="108" text-anchor="middle" data-v="c0"></text>
+        <text class="val" x="245" y="108" text-anchor="middle" data-v="c1"></text>
         <text class="tag" x="524" y="108">GND</text>
         <text class="lbl" x="38" y="192">OF</text><text class="val" x="60" y="160" data-v="c2"></text>
         <text class="lbl" x="162" y="212">S₂</text><text class="lbl" x="312" y="212">S₁</text><text class="lbl" x="462" y="212">S₀</text>
@@ -535,10 +577,10 @@
     <div class="example-head"><h4>Örnek: 011 + 110 (3 + 6)</h4></div>
     <div class="example-body">
       <ol class="steps">
-        <li>FA₀: A₀ = 1, B₀ = 0, C<sub>in</sub> = 0 (GND). Toplam 1 → S₀ = 1, C₀ = 0.</li>
-        <li>FA₁: A₁ = 1, B₁ = 1, C<sub>in</sub> = C₀ = 0. Toplam 2 → S₁ = 0, C₁ = 1.</li>
-        <li>FA₂: A₂ = 0, B₂ = 1, C<sub>in</sub> = C₁ = 1. Toplam 2 → S₂ = 0, C₂ = 1.</li>
-        <li>OF = C₂ = 1. Sonuç 3 bite sığmadı.</li>
+        <li>FA₀: A₀ = 1, B₀ = 0, C<sub>in0</sub> = 0 (GND). Toplam 1 → S₀ = 1, C<sub>out0</sub> = 0.</li>
+        <li>FA₁: A₁ = 1, B₁ = 1, C<sub>in1</sub> = C<sub>out0</sub> = 0. Toplam 2 → S₁ = 0, C<sub>out1</sub> = 1.</li>
+        <li>FA₂: A₂ = 0, B₂ = 1, C<sub>in2</sub> = C<sub>out1</sub> = 1. Toplam 2 → S₂ = 0, C<sub>out2</sub> = 1.</li>
+        <li>OF = C<sub>out2</sub> = 1. Sonuç 3 bite sığmadı.</li>
       </ol>
       <p class="answer">OF S₂S₁S₀ = <span class="b">1001</span> = 9. Kontrol: 3 + 6 = 9. 3 bitle en fazla 7 yazılabildiği için OF = 1.</p>
     </div>
@@ -581,7 +623,7 @@
         <li>2: F = Σ(…) ve açık hali</li>
         <li>3: sadeleştir</li>
         <li>4: devreyi çiz</li>
-        <li>Alarm: F = B + AC</li>
+        <li>Alarm: F = (A + B)(B + C) (hocanın cevabı) = B + AC (en sade)</li>
       </ul>
     </div>
     <div>

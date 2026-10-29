@@ -26,7 +26,7 @@
       const groups = (el.dataset.groups || '').split('|').filter(Boolean).map((s, i) => ({ t: K.parseTerm(s, n), color: COLORS[i % COLORS.length], s }));
       const holder = document.createElement('div');
       el.appendChild(holder);
-      const opts = { n, values: valuesFrom(ones), groups };
+      const opts = { n, values: valuesFrom(ones), groups, showIndex: false };
       if (labels === 'terms') opts.cellLabel = idx => `<span class="m" style="font-size:.95rem">${prettyExpr(L.mintermText(idx, K.VARS.slice(0, n)))}</span>`;
       if (labels === 'index') opts.cellLabel = idx => `<span style="font-family:var(--font);font-size:.95rem">m${SUB(idx)}</span>`;
       K.renderKMap(holder, opts);

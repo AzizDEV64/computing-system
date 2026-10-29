@@ -239,6 +239,18 @@
         <li><span class="m"><span class="ov">A</span> · 1 + C = <span class="ov">A</span> + C</span>.</li>
       </ol>
       <p class="answer">F = <span class="m"><span class="ov">A</span> + C</span></p>
+      <div class="note exam">
+        <span class="note-title">Sınavda hocanın yazdığı gibi</span>
+        <p>Hoca iki parçayı ayrı ayrı yazmıyor, tek bir eşitlik zinciri kuruyor. Çift çizgi adımını da kâğıda yazmıyor, doğrudan sonucunu yazıyor:</p>
+        <div class="formula chain">
+          <span class="m">F = (<span class="ov">A</span> · BC) + <span class="ov">A</span> + C</span>
+          <span class="m">= <span class="ov">A</span>BC + <span class="ov">A</span> + C</span>
+          <span class="m">= <span class="ov">A</span><span class="ub" data-u="1"><span>(BC + 1)</span></span> + C</span>
+          <span class="m">= <span class="ub" data-u="Ā"><span><span class="ov">A</span> · 1</span></span> + C</span>
+          <span class="m">= <span class="boxed"><span class="ov">A</span> + C</span></span>
+        </div>
+        <p class="hint">(BC + 1) parantezinin üstüne "x + 1" yazıp altına 1 koyuyor.</p>
+      </div>
       <p>Hocanın "x + 1" notu önemli bir taktik: bir grup ne kadar karmaşık olursa olsun (BC, <span class="ov">A</span>C, …) tek bir harf gibi düşünüp kuralları uygulayabilirsin. 11. bölümde bu taktiği tekrar göreceğiz.</p>
     </div>
   </div>
@@ -253,7 +265,7 @@
   <h2><span class="n">7</span>Yutma teoremleri</h2>
   <div class="note extra">
     <span class="note-title">Ek bilgi, ama çok önemli</span>
-    <p>Bu teoremler hocanın listesinde yok. Ama hocanın teoremlerinden türetilirler ve hem bu dersin örneklerini hem de sınav sorularını çok kısaltırlar. 11. bölümdeki doğru çözüm bunlardan birine ihtiyaç duyuyor.</p>
+    <p>Bu teoremler hocanın listesinde yok. Ama hocanın teoremlerinden türetilirler ve hem bu dersin örneklerini hem de sınav sorularını çok kısaltırlar. 11. bölümdeki doğru çözüm hocanın kendi kurallarıyla da yapılabiliyor, ama bu teoremler işi birkaç satır kısaltıyor.</p>
   </div>
   <div class="theorem">
     <span class="tlabel">Yutma (absorption)</span>
@@ -483,10 +495,19 @@
         <li>Hocanın taktiği: karmaşık parçaya bir harf ver. <span class="m">x = A<span class="ov">B</span></span> dersek <span class="m">F = x ⊙ A</span>.</li>
         <li>XNOR'un açılımı (1. dersten; aşağıdaki kutuda da var): <span class="m">x ⊙ A = <span class="ov">x</span><span class="ov">A</span> + xA</span>.</li>
         <li><b>Dikkat, kritik adım:</b> <span class="m"><span class="ov">x</span> = <span class="ov">A<span class="ov">B</span></span> = <span class="ov">A</span> + B</span> (De Morgan). x'i yerine koyarken üstündeki çizgiyi unutma!</li>
-        <li><span class="m">F = (<span class="ov">A</span> + B)<span class="ov">A</span> + A<span class="ov">B</span>A</span>.</li>
-        <li>Birinci terim: <span class="m">(<span class="ov">A</span> + B)<span class="ov">A</span> = <span class="ov">A</span></span> (yutma: <span class="m">X(X + Y) = X</span>). İkinci terim: <span class="m">A<span class="ov">B</span>A = A<span class="ov">B</span></span> (AA = A).</li>
-        <li><span class="m">F = <span class="ov">A</span> + A<span class="ov">B</span></span>. Ters değişkenli yutma (<span class="m">X + <span class="ov">X</span>Y = X + Y</span>, burada X = <span class="ov">A</span>): <span class="m">F = <span class="ov">A</span> + <span class="ov">B</span></span>.</li>
+        <li><span class="m">F = (<span class="ov">A</span> + B)<span class="ov">A</span> + A<span class="ov">B</span>A</span>. Şimdi parantezi aç ve sadece hocanın kurallarıyla (XX = X, X + 1 = 1, dağılma) sadeleştir:</li>
       </ol>
+      <div class="formula chain">
+        <span class="m">F = <span class="ov">x</span><span class="ov">A</span> + xA</span>
+        <span class="m">= (<span class="ov">A</span> + B)<span class="ov">A</span> + A<span class="ov">B</span>A</span>
+        <span class="m">= <span class="ov">A</span><span class="ov">A</span> + <span class="ov">A</span>B + AA<span class="ov">B</span></span>
+        <span class="m">= <span class="ov">A</span> + <span class="ov">A</span>B + A<span class="ov">B</span></span>
+        <span class="m">= <span class="ov">A</span><span class="ub" data-u="1"><span>(1 + B)</span></span> + A<span class="ov">B</span></span>
+        <span class="m">= <span class="ov">A</span> + A<span class="ov">B</span></span>
+        <span class="m">= <span class="ub" data-u="1"><span>(<span class="ov">A</span> + A)</span></span>(<span class="ov">A</span> + <span class="ov">B</span>)</span>
+        <span class="m">= <span class="boxed"><span class="ov">A</span> + <span class="ov">B</span></span></span>
+      </div>
+      <p class="hint">Sondan bir önceki satır dağılmanın ikinci hali: X + YZ = (X + Y)(X + Z), burada X = <span class="ov">A</span>, Y = A, Z = <span class="ov">B</span>. <b>Kısa yol:</b> yutma teoremlerini (7. bölüm) bilirsen <span class="m">(<span class="ov">A</span> + B)<span class="ov">A</span> = <span class="ov">A</span></span> ve <span class="m"><span class="ov">A</span> + A<span class="ov">B</span> = <span class="ov">A</span> + <span class="ov">B</span></span> diye iki adımda biter.</p>
       <p class="answer">F = <span class="m"><span class="ov">A</span> + <span class="ov">B</span> = <span class="ov">AB</span></span>. Bütün devre tek bir NAND kapısına eşit!</p>
 
       <div class="note warn">
@@ -592,9 +613,15 @@
         <li>Kalan: <span class="m">F = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>BC + B</span>.</li>
         <li>Grupla: ilk ikisinde <span class="ov">C</span>, son ikisinde B ortak. <span class="m">F = <span class="ov">C</span>(A + <span class="ov">B</span>) + B(<span class="ov">A</span>C + 1)</span>.</li>
         <li><span class="m"><span class="ov">A</span>C + 1 = 1</span>: <span class="m">F = <span class="ov">C</span>(A + <span class="ov">B</span>) + B = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + B</span>.</li>
-        <li><span class="m"><span class="ov">B</span><span class="ov">C</span> + B</span> kısmına dağılmanın ikinci halini uygula: <span class="m">B + <span class="ov">B</span><span class="ov">C</span> = (B + <span class="ov">B</span>)(B + <span class="ov">C</span>) = 1 · (B + <span class="ov">C</span>) = B + <span class="ov">C</span></span>.</li>
-        <li><span class="m">F = A<span class="ov">C</span> + B + <span class="ov">C</span></span>. <span class="ov">C</span> ortak: <span class="m"><span class="ov">C</span>(A + 1) + B = <span class="ov">C</span> + B</span>.</li>
+        <li><span class="m"><span class="ov">B</span><span class="ov">C</span> + B</span> kısmına dağılmanın ikinci halini uygula, sonra <span class="ov">C</span>'yi ortak paranteze al. Hoca her satırda F'nin tamamını yeniden yazıyor:</li>
       </ol>
+      <div class="formula chain">
+        <span class="m">F = A<span class="ov">C</span> + B + <span class="ov">B</span><span class="ov">C</span></span>
+        <span class="m">= A<span class="ov">C</span> + <span class="ub" data-u="1"><span>(B + <span class="ov">B</span>)</span></span>(B + <span class="ov">C</span>)</span>
+        <span class="m">= A<span class="ov">C</span> + B + <span class="ov">C</span></span>
+        <span class="m">= <span class="ov">C</span><span class="ub" data-u="1"><span>(A + 1)</span></span> + B</span>
+        <span class="m">= <span class="boxed">B + <span class="ov">C</span></span></span>
+      </div>
       <p class="answer">F = <span class="m">B + <span class="ov">C</span></span>. Hocanın sonucu ile aynı, doğru.</p>
       <p>Sonucun anlamı: F, A'ya hiç bağlı değil! Dört kapılık devre tek bir OR kapısı (ve C için bir NOT) ile yapılabilir.</p>
 
@@ -689,6 +716,7 @@
         <li>De Morgan ile çizgileri indir, parantezleri aç</li>
         <li>X<span class="ov">X</span> = 0 terimleri sil, grupla, yutmaları uygula</li>
         <li>Birkaç satırı yerine koyarak sağlama yap</li>
+        <li>Son cevabı kutu içine al (F = …)</li>
       </ul>
     </div>
   </div>

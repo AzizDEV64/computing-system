@@ -153,12 +153,12 @@
         <path class="g-line" d="M132 80Q152 90 172 80"/><path class="g" d="M132 86Q152 96 172 86Q172 112 152 124Q132 112 132 86Z"/><rect class="g" x="120" y="150" width="100" height="70" rx="4"/><path class="g-line" d="M282 80Q302 90 322 80"/><path class="g" d="M282 86Q302 96 322 86Q322 112 302 124Q282 112 282 86Z"/><rect class="g" x="270" y="150" width="100" height="70" rx="4"/><path class="g-line" d="M432 80Q452 90 472 80"/><path class="g" d="M432 86Q452 96 472 86Q472 112 452 124Q432 112 432 86Z"/><rect class="g" x="420" y="150" width="100" height="70" rx="4"/>
         <path class="g" d="M580 168H565A17 17 0 0 0 565 202H580Z"/>
         <text class="tag" x="135" y="56">B₂</text><text class="tag" x="188" y="56">A₂</text><text class="val" x="159" y="141" data-v="x2"></text><text class="lbl" x="152" y="191">FA₂</text><text class="lbl" x="162" y="268">F₂</text><text class="val" x="177" y="242" data-v="s2"></text><text class="tag" x="285" y="56">B₁</text><text class="tag" x="338" y="56">A₁</text><text class="val" x="309" y="141" data-v="x1"></text><text class="lbl" x="302" y="191">FA₁</text><text class="lbl" x="312" y="268">F₁</text><text class="val" x="327" y="242" data-v="s1"></text><text class="tag" x="435" y="56">B₀</text><text class="tag" x="488" y="56">A₀</text><text class="val" x="459" y="141" data-v="x0"></text><text class="lbl" x="452" y="191">FA₀</text><text class="lbl" x="462" y="268">F₀</text><text class="val" x="477" y="242" data-v="s0"></text>
-        <text class="tag" x="608" y="22">Op</text>
-        <text class="tag" x="374" y="178">C₀ =</text><text class="val" x="406" y="178" data-v="c0"></text>
-        <text class="tag" x="224" y="178">C₁ =</text><text class="val" x="256" y="178" data-v="c1"></text>
+        <text class="tag" x="632" y="20" text-anchor="end">Op: 0 → toplama, 1 → çıkarma</text>
+        <text class="tag" x="373" y="177">C<tspan font-size="10" dy="3">in1</tspan><tspan dy="-3"></tspan></text><text class="val" x="401" y="177" data-v="c0"></text><text class="tag" x="383" y="204">C<tspan font-size="10" dy="3">out0</tspan><tspan dy="-3"></tspan></text>
+        <text class="tag" x="223" y="177">C<tspan font-size="10" dy="3">in2</tspan><tspan dy="-3"></tspan></text><text class="val" x="251" y="177" data-v="c1"></text><text class="tag" x="233" y="204">C<tspan font-size="10" dy="3">out1</tspan><tspan dy="-3"></tspan></text>
         <text class="tag" x="522" y="176">C<tspan font-size="10" dy="3">in0</tspan></text><text class="val" x="530" y="203" data-v="cin"></text>
 
-        <text class="lbl" x="12" y="238">F₃</text><text class="val" x="40" y="224" data-v="c2"></text>
+        <text class="tag" x="76" y="177">C<tspan font-size="10" dy="3">out2</tspan><tspan dy="-3"></tspan></text><text class="lbl" x="12" y="238">F₃</text><text class="val" x="40" y="224" data-v="c2"></text>
       </svg>
     </div>
     <div class="circuit-foot"><div class="row"><span data-v="mode"></span><span data-v="expl"></span></div></div>
@@ -168,18 +168,23 @@
     <div class="example-head"><h4>Örnek: A = 101, B = 100, çıkarma</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
     <div class="example-body">
       <ol class="steps">
-        <li>Op = 1. XOR'lar B'yi ters çevirir: 100 → <span class="b">011</span>.</li>
-        <li>Toplayıcı 101 + 011 hesaplar:</li>
+        <li>Op = 1. XOR'lar B'yi ters çevirir (1's complement).</li>
+        <li>Toplayıcı A ile ters çevrilmiş B'yi toplar. Taşan elde (OF) AND kapısından C<sub>in0</sub>'a döner ve en sağa eklenir.</li>
       </ol>
-      <div class="calc">
-        <span class="l"></span><span class="v carry"> 11 </span><span class="c">elde (hocanın "cc"si)</span>
-        <span class="l"></span><span class="v">101</span><span class="c">A = 5</span>
-        <span class="l">+</span><span class="v">011</span><span class="c">B'nin 1's complement'i</span>
-        <hr>
-        <span class="l"></span><span class="v"><span class="hl">1</span>000</span><span class="c">elde taştı (OF)</span>
-        <span class="l">+</span><span class="v">1</span><span class="c">AND kapısı eldeyi C<sub>in0</sub>'a verir</span>
-        <hr>
-        <span class="l"></span><span class="v">001</span><span class="c">= 1</span>
+      <div class="note exam">
+        <span class="note-title">Sınavda hocanın yazdığı gibi</span>
+        <p class="m">A = 101 &nbsp;&nbsp; B = 100<span class="arr" data-l="1's"></span>011</p>
+        <div class="calc">
+          <span class="l"></span><span class="v carry"> cc </span><span class="c">c: elde</span>
+          <span class="l"></span><span class="v">101</span><span class="c">A = 5</span>
+          <span class="l">+</span><span class="v">011</span><span class="c">B'nin 1's complement'i</span>
+          <hr>
+          <span class="l"></span><span class="v"><span class="circ">1</span>000</span><span class="c">daire içindeki 1: OF (overflow bit)</span>
+          <span class="l">+</span><span class="v">1</span><span class="c">OF en sağa eklenir (C<sub>in0</sub> = 1)</span>
+          <hr>
+          <span class="l"></span><span class="v"><span class="dbl">001</span></span><span class="c">= 1</span>
+        </div>
+        <p>Hoca elde düşen sütunların üstüne <b>c</b> yazıyor, taşan 1'i daire içine alıp yanına <b>OF</b> yazıyor, sonucun altını iki kez çiziyor.</p>
       </div>
       <p class="answer">Sonuç <span class="b">001</span> = 1. Kontrol: 5 − 4 = 1.</p>
       <p>Bu örneği yukarıdaki devrede deneyebilirsin: A₂A₁A₀ = 101, B₂B₁B₀ = 100, Op = 1.</p>
@@ -249,18 +254,19 @@
   <div class="example">
     <div class="example-head"><h4>2×1 MUX</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
     <div class="example-body">
+      <div class="formula chain"><span class="m">S = 0 → I₀</span><span class="m">S = 1 → I₁</span></div>
       <div class="tables-row">
         <div class="table-wrap"><table class="tt">
-          <thead><tr><th>I₁</th><th>I₀</th><th>S</th><th class="out">F</th><th>Neden</th></tr></thead>
+          <thead><tr><th>I₁</th><th>I₀</th><th>S</th><th class="out">F</th><th class="help">Neden (sınavda yazma)</th></tr></thead>
           <tbody>
-            <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td style="font-family:var(--font)">S=0 → I₀ = 0</td></tr>
-            <tr><td>0</td><td>0</td><td>1</td><td class="out">0</td><td style="font-family:var(--font)">S=1 → I₁ = 0</td></tr>
-            <tr class="hit"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td style="font-family:var(--font)">S=0 → I₀ = 1</td></tr>
-            <tr><td>0</td><td>1</td><td>1</td><td class="out">0</td><td style="font-family:var(--font)">S=1 → I₁ = 0</td></tr>
-            <tr><td>1</td><td>0</td><td>0</td><td class="out">0</td><td style="font-family:var(--font)">S=0 → I₀ = 0</td></tr>
-            <tr class="hit"><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td style="font-family:var(--font)">S=1 → I₁ = 1</td></tr>
-            <tr class="hit"><td>1</td><td>1</td><td>0</td><td class="out one">1</td><td style="font-family:var(--font)">S=0 → I₀ = 1</td></tr>
-            <tr class="hit"><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td style="font-family:var(--font)">S=1 → I₁ = 1</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td class="help">S=0 → I₀ = 0</td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td class="out">0</td><td class="help">S=1 → I₁ = 0</td></tr>
+            <tr class="hit"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td class="help">S=0 → I₀ = 1</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td class="out">0</td><td class="help">S=1 → I₁ = 0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td class="out">0</td><td class="help">S=0 → I₀ = 0</td></tr>
+            <tr class="hit"><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="help">S=1 → I₁ = 1</td></tr>
+            <tr class="hit"><td>1</td><td>1</td><td>0</td><td class="out one">1</td><td class="help">S=0 → I₀ = 1</td></tr>
+            <tr class="hit"><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td class="help">S=1 → I₁ = 1</td></tr>
           </tbody>
         </table></div>
       </div>
@@ -320,6 +326,7 @@
   <div class="example">
     <div class="example-head"><h4>4×1 MUX</h4><span class="src">Hocanın formülü ve devresi, PDF s.4–5</span></div>
     <div class="example-body">
+      <p class="hint">Hocanın cevap sırası: önce blok şeması (I₀–I₃ girişleri, F çıkışı, altta S₁ S₀), sonra formül, sonra kapılarla devre. Yukarıdaki S₁S₀ tablosu sadece çalışma yardımı, hoca tablo çizmiyor.</p>
       <p>2×1'deki fikri genişlet: her veri girişini, kendi seçme kombinasyonunun mintermiyle AND'le, hepsini OR'la.</p>
       <div class="formula"><span class="m" style="white-space:normal">F = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</span></div>
       <p>Formülün her terimi, tablodaki satırın mintermi ile o satırın veri girişinin çarpımı. Hocanın devresi: dört tane 3 girişli AND (her biri bir veri girişi ve iki seçme hattı), S₁ ve S₀ için birer NOT, sonda 4 girişli bir OR.</p>
@@ -423,7 +430,7 @@
     <div class="example-head"><h4>Write the output expressions for 1×4 DEMUX</h4><span class="src">Hocanın sorusu, PDF s.6</span></div>
     <div class="example-body">
       <p>Her çıkış, girişin kendi seçme kombinasyonuyla AND'lenmiş hali. MUX'ta olduğu gibi S₁ yüksek bit: S₁S₀ = 00 → F₀, 01 → F₁, 10 → F₂, 11 → F₃.</p>
-      <div class="formula"><span class="m" style="white-space:normal">F₀ = <span class="ov">S₁</span><span class="ov">S₀</span>I &nbsp; F₁ = <span class="ov">S₁</span>S₀I &nbsp; F₂ = S₁<span class="ov">S₀</span>I &nbsp; F₃ = S₁S₀I</span></div>
+      <div class="formula chain"><span class="m">F₀ = <span class="ov">S₁</span><span class="ov">S₀</span>I</span><span class="m">F₁ = <span class="ov">S₁</span>S₀I</span><span class="m">F₂ = S₁<span class="ov">S₀</span>I</span><span class="m">F₃ = S₁S₀I</span></div>
       <div class="note warn">
         <span class="note-title">Hocanın notunda F₁ ile F₂ yer değiştirmiş</span>
         <div class="hoca-row">
@@ -521,9 +528,28 @@
     <li>1×4 DEMUX'ta I = 1, S₁S₀ = 11 ise çıkışlar nedir?
       <details class="solution"><summary>Çözümü göster</summary><p>11 = 3 → <b>F₃ = 1</b>, diğerleri 0.</p></details></li>
     <li>Toplayıcı/çıkarıcıda A = 110, B = 011, Op = 1. Çıkışı ve sonucu bul.
-      <details class="solution"><summary>Çözümü göster</summary><p><span class="ov">B</span> = 100. 110 + 100 = 1010. Elde taştı → C<sub>in0</sub> = 1 → 010 + 1 = <span class="b">011</span>. F₃ = 1 (pozitif). Sonuç +3. Kontrol: 6 − 3 = 3.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p class="m">B = 011<span class="arr" data-l="1's"></span>100</p>
+        <div class="calc">
+          <span class="l"></span><span class="v">110</span><span class="c">A = 6</span>
+          <span class="l">+</span><span class="v">100</span><span class="c">B'nin 1's complement'i</span>
+          <hr>
+          <span class="l"></span><span class="v"><span class="circ">1</span>010</span><span class="c">OF var (F₃ = 1)</span>
+          <span class="l">+</span><span class="v">1</span><span class="c">OF en sağa eklenir</span>
+          <hr>
+          <span class="l"></span><span class="v"><span class="dbl">011</span></span><span class="c">= +3</span>
+        </div>
+        <p>OF var, sonuç pozitif: <b>+3</b>. Kontrol: 6 − 3 = 3.</p></details></li>
     <li>Toplayıcı/çıkarıcıda A = 010, B = 101, Op = 1. Çıkışı ve sonucu bul.
-      <details class="solution"><summary>Çözümü göster</summary><p><span class="ov">B</span> = 010. 010 + 010 = 0100. Elde yok → C<sub>in0</sub> = 0. Çıkış F₃F₂F₁F₀ = <span class="b">0100</span>. F₃ = 0 → negatif. 100'ün tersi 011 = 3 → <b>−3</b>. Kontrol: 2 − 5 = −3.</p></details></li>
+      <details class="solution"><summary>Çözümü göster</summary><p class="m">B = 101<span class="arr" data-l="1's"></span>010</p>
+        <div class="calc">
+          <span class="l"></span><span class="v carry"> c  </span><span class="c">c: elde</span>
+          <span class="l"></span><span class="v">010</span><span class="c">A = 2</span>
+          <span class="l">+</span><span class="v">010</span><span class="c">B'nin 1's complement'i</span>
+          <hr>
+          <span class="l"></span><span class="v">0100</span><span class="c">OF yok (F₃ = 0), C<sub>in0</sub> = 0</span>
+        </div>
+        <p class="m">OF yok → sonuç negatif: 100<span class="arr" data-l="1's"></span><span class="dbl">011</span> = 3 → <b>−3</b></p>
+        <p>Çıkış F₃F₂F₁F₀ = <span class="b">0100</span>. Kontrol: 2 − 5 = −3.</p></details></li>
     <li>Toplayıcı/çıkarıcıda A = 011, B = 010, Op = 0. Çıkış nedir?
       <details class="solution"><summary>Çözümü göster</summary><p>Toplama: 3 + 2 = 5 → F₃F₂F₁F₀ = <span class="b">0101</span>.</p></details></li>
     <li>8×1 MUX'un çıkış ifadesini yaz.

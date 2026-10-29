@@ -96,7 +96,7 @@
   <div class="example">
     <div class="example-head"><h4>Örnek 1</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
     <div class="example-body">
-      <p>F = Σm(0, 2, 3, 4, 9, 12) + d(5, 6, 7, 8, 13)</p>
+      <p>Hoca soruyu doğrudan dolu bir haritayla veriyor (1, 0 ve X hücreleri). Aynı haritanın liste gösterimi: <span class="m">F = Σm(0, 2, 3, 4, 9, 12) + d(5, 6, 7, 8, 13)</span>. Hoca bu listeyi yazmıyor, sen de sınavda haritayı doğrudan doldurursun.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,2,3,4,9,12" data-dcs="5,6,7,8,13" data-groups="A'D'|A'C|AC'"></div></div>
       <ol class="steps">
         <li><b><span class="ov">A</span><span class="ov">D</span></b>: üst iki satırda sol ve sağ sütun (kenarlar komşu). İçinde m₀, m₄, m₂ (1'ler) ve m₆ (X). m₆'yı 1 kabul ettik, böylece 4'lü kare oldu.</li>
@@ -112,7 +112,7 @@
   <div class="example">
     <div class="example-head"><h4>Örnek 2</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
     <div class="example-body">
-      <p>F = Σm(0, 3, 7, 8, 13) + d(2, 6, 9, 10, 11, 12, 14, 15)</p>
+      <p>Haritanın liste gösterimi (hoca yazmıyor): <span class="m">F = Σm(0, 3, 7, 8, 13) + d(2, 6, 9, 10, 11, 12, 14, 15)</span>.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,3,7,8,13" data-dcs="2,6,9,10,11,12,14,15" data-groups="C|A|B'D'"></div></div>
       <ol class="steps">
         <li><b>C</b>: sağ iki sütunun tamamı (8 hücre). İçindeki 1'ler m₃, m₇, geri kalanı X.</li>
@@ -126,6 +126,10 @@
   <div class="note tip">
     <span class="note-title">Sınav ipucu</span>
     <p>X'li soruda önce sadece 1'lere bak ve her 1 için "bunu içeren en büyük grup ne, X'leri de sayarsam?" diye sor. Grupları X'ler sayesinde 8'e, 16'ya kadar büyütebilirsin. Çözümünde hangi X'i 1, hangisini 0 kabul ettiğini belirtmen gerekmez, ama gruplar haritada açıkça görünmeli.</p>
+  </div>
+  <div class="note exam">
+    <span class="note-title">Sınavda hocanın yazdığı gibi</span>
+    <p>Hoca haritanın her hücresine sadece <b>1, 0 ya da X</b> yazıyor, hücre numarası yazmıyor. Her grubu daire içine alıyor, gruptan bir <b>ok</b> çizip okun ucuna grubun terimini yazıyor (ör. "→ <span class="m">A<span class="ov">C</span></span>"). Bütün gruplar bitince haritanın yanına <b>F = …</b> yazıyor. POS sorusunda da aynısı: 0'ların gruplarına ok, uçlarına toplam terimleri, sonra F = (…)(…).</p>
   </div>
 </section>
 
@@ -155,7 +159,7 @@
         <li><b>B + <span class="ov">D</span></b>: CD = 01 ve 11 sütunlarında üst ve alt satır (m₁, m₃, m₉, m₁₁). Üst ve alt kenar komşu. B = 0, D = 1.</li>
       </ol>
       <p class="answer">F = <span class="m">(A + <span class="ov">C</span>)(A + <span class="ov">B</span>)(B + <span class="ov">D</span>)</span></p>
-      <p>Liste gösterimiyle: <span class="m">F = ΠM(2, 3, 4, 5, 7, 9, 11) · d(1, 6, 8, 14, 15)</span>.</p>
+      <p>Liste gösterimiyle (sitenin kısa yazımı, hoca yazmıyor): <span class="m">F = ΠM(2, 3, 4, 5, 7, 9, 11) · d(1, 6, 8, 14, 15)</span>.</p>
     </div>
   </div>
 
@@ -170,7 +174,7 @@
       </ol>
       <p class="answer">F = <span class="m">(B + C)(A + <span class="ov">B</span> + <span class="ov">D</span>)(<span class="ov">A</span> + <span class="ov">C</span> + <span class="ov">D</span>)</span></p>
       <p>m₅'i m₇ yerine m₁ (X) ile, m₁₅'i m₁₁ yerine m₇ (X) ile de gruplayabilirdin. Sonuç yine 3 grup, her biri 3 harf: aynı uzunlukta başka bir doğru cevap.</p>
-      <p>Liste gösterimiyle: <span class="m">F = ΠM(0, 5, 8, 9, 15) · d(1, 2, 7, 11, 12, 14)</span>.</p>
+      <p>Liste gösterimiyle (sitenin kısa yazımı, hoca yazmıyor): <span class="m">F = ΠM(0, 5, 8, 9, 15) · d(1, 2, 7, 11, 12, 14)</span>.</p>
     </div>
   </div>
   <div class="note warn">
@@ -187,17 +191,25 @@
     <div class="example-head"><h4>Draw the logic circuit diagram of a circuit that calculates the square of 2-bit inputs</h4><span class="src">Hocanın örneği, PDF s.2–3</span></div>
     <div class="example-body">
       <p>2 bitlik bir giriş (A₁A₀) 0–3 arası bir sayıdır. Karesi en fazla 9 olur. 9'u yazmak için 4 bit gerekir, o yüzden devrenin <b>4 çıkışı</b> var: F₃F₂F₁F₀.</p>
-      <div class="tables-row">
-        <div class="table-wrap"><table class="tt">
-          <thead><tr><th>A₁</th><th>A₀</th><th>Onluk</th><th>Kare</th><th class="out">F₃</th><th>F₂</th><th>F₁</th><th>F₀</th></tr></thead>
-          <tbody>
-            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td><td>0</td></tr>
-            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td class="out">0</td><td>0</td><td>0</td><td class="one">1</td></tr>
-            <tr><td>1</td><td>0</td><td>2</td><td>4</td><td class="out">0</td><td class="one">1</td><td>0</td><td>0</td></tr>
-            <tr><td>1</td><td>1</td><td>3</td><td>9</td><td class="out one">1</td><td>0</td><td>0</td><td class="one">1</td></tr>
-          </tbody>
-        </table></div>
-      </div>
+      <p>Hoca önce devreyi bir kutu olarak çizmiş: 2 giriş, 4 çıkış.</p>
+      <figure style="margin:.6rem 0;max-width:360px">
+        <svg viewBox="0 0 360 120" role="img" aria-label="A1 ve A0 girişleri 2-bit Square Circuit kutusuna giriyor, kutudan F3, F2, F1, F0 çıkıyor" style="width:100%;height:auto">
+          <g fill="none" stroke="currentColor" stroke-width="2"><rect x="110" y="10" width="140" height="100" rx="4"/><path d="M50 45H110M50 75H110M250 25H300M250 48H300M250 72H300M250 95H300"/></g>
+          <g fill="currentColor" font-family="Archivo, sans-serif" font-size="14"><text x="22" y="50">A₁</text><text x="22" y="80">A₀</text><text x="180" y="56" text-anchor="middle" font-weight="700">2-bit Square</text><text x="180" y="74" text-anchor="middle" font-weight="700">Circuit</text><text x="306" y="30">F₃</text><text x="306" y="53">F₂</text><text x="306" y="77">F₁</text><text x="306" y="100">F₀</text></g>
+        </svg>
+      </figure>
+      <p>Sonra her girişin karşılığını bir zincirle yazmış: <b>Input → Dec. → BCD</b> (girişin karesinin onluk değeri ve 4 bitlik yazılışı):</p>
+      <div class="formula chain"><span class="m">00 → 0 → 0000</span><span class="m">01 → 1 → 0001</span><span class="m">10 → 4 → 0100</span><span class="m">11 → 9 → 1001</span></div>
+      <p>En son bunu girişler | çıkışlar ayrımıyla temiz bir doğruluk tablosuna dökmüş:</p>
+      <div class="table-wrap"><table class="tt" style="width:auto">
+        <thead><tr class="grp"><th colspan="2">Inputs</th><th colspan="4">Outputs</th></tr><tr><th>A₁</th><th>A₀</th><th class="out">F₃</th><th>F₂</th><th>F₁</th><th>F₀</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td><td>0</td><td>0</td><td class="one">1</td></tr>
+          <tr><td>1</td><td>0</td><td class="out">0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td class="out one">1</td><td>0</td><td>0</td><td class="one">1</td></tr>
+        </tbody>
+      </table></div>
       <p>Hocanın notunda çıkış sütununun başlığı "BCD". 0, 1, 4, 9 sayıları 10'dan küçük olduğu için BCD ile düz ikili burada aynı, sorun yok.</p>
       <p><b>Anahtar fikir:</b> Çok çıkışlı bir devrede her çıkış ayrı bir fonksiyondur. Her biri için ayrı doğruluk tablosu sütunu, ayrı formül.</p>
       <ol class="steps">
@@ -289,12 +301,15 @@
 <!-- ============================================================ 7 -->
 <section id="donusturucu">
   <h2><span class="n">7</span>İkili → 7 segment dönüştürücü</h2>
-  <p class="lead">"Design a 4-bit binary to 7-segment display converter." Hocanın blok çizimi: Inputs → Logic System → Outputs → <b>Binary to 7-Segment Display Converter</b> → 7-Segment Display.</p>
+  <p class="lead">"Design a 4-bit binary to 7-segment display converter."</p>
+  <p>Hoca çözüme önce bir blok çizimiyle başlıyor. Sınavda bu satırı yazarak başla:</p>
+  <p style="line-height:2.4"><b class="nw">Inputs</b><span class="arr" data-l=""></span><b class="nw">Logic System</b><span class="arr" data-l="Outputs"></span><b>Binary to 7-Segment Display Converter</b><span class="arr" data-l=""></span><b class="nw">7-Segment Display</b></p>
   <p>Dönüştürücünün 4 girişi (D₃D₂D₁D₀) ve 7 çıkışı (a–g) var. Yani aslında <b>7 ayrı fonksiyon</b> tasarlayacağız, her segment için bir tane. 4. bölümdeki kare devresiyle aynı fikir. (Hoca LED'lere de D₃–D₀ demişti. Orada D diyot, burada ise göstergeyi süren 4 veri biti.)</p>
 
   <h3>1. adım: doğruluk tablosu</h3>
+  <p>Hocanın tablosunda sadece D₃ D₂ D₁ D₀ | a b c d e f g sütunları var. En sağdaki soluk "rakam" sütunu sadece sana yardım için, sınavda yazma.</p>
   <div class="table-wrap"><table class="tt" id="seg-table">
-    <thead><tr><th>Rakam</th><th>D₃</th><th>D₂</th><th>D₁</th><th>D₀</th><th class="out">a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>g</th></tr></thead>
+    <thead><tr class="grp"><th colspan="4">Inputs</th><th colspan="7">Outputs</th><th></th></tr><tr><th>D₃</th><th>D₂</th><th>D₁</th><th>D₀</th><th class="out">a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>g</th><th class="help">rakam</th></tr></thead>
     <tbody></tbody>
   </table></div>
   <p><b>10–15 neden X?</b> Girişe sadece 0–9 arası rakamlar gelecek (BCD). 1010–1111 desenleri hiç gelmeyeceği için o satırların çıkışı umurumuzda değil. Bu X'ler haritalarda grupları çok büyütecek.</p>
