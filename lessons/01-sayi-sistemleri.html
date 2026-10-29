@@ -657,17 +657,11 @@
   </div>
   <p>Bu tür bir soruda yöntem hep aynı: ağırlıkları bitlerin üstüne yaz, rakamı bu ağırlıkların toplamı olarak oluştur, kullandığın ağırlıkların altına 1, diğerlerine 0 yaz.</p>
   <div class="table-wrap"><table class="data">
-    <caption style="caption-side:top;text-align:left;font-weight:700;padding-bottom:.4rem">Sık kullanılan dört bitlik kodlar</caption>
-    <thead><tr><th>Rakam</th><th>BCD (8421)</th><th>4812</th><th>2421</th><th>8 4 −2 −1</th><th>Excess-3</th></tr></thead>
+    <caption style="caption-side:top;text-align:left;font-weight:700;padding-bottom:.4rem">Hocanın iki kodu, 0–9 arası bütün rakamlar</caption>
+    <thead><tr><th>Rakam</th><th>BCD (8421)</th><th>4812</th></tr></thead>
     <tbody id="code-table"></tbody>
   </table></div>
-  <ul>
-    <li><b>2421</b> ve <b>84−2−1</b> de ağırlıklı kodlardır. 84−2−1'de bazı ağırlıklar negatiftir: 1 = <span class="b">0111</span> = 4 − 2 − 1.</li>
-    <li><b>Excess-3</b> ağırlıklı değildir. Rakamın BCD'sine 3 eklenerek bulunur: 5 → 5 + 3 = 8 → <span class="b">1000</span>.</li>
-    <li>2421, 84−2−1 ve Excess-3 <span class="term">kendini tümleyen</span> (<span class="en">self-complementing</span>) kodlardır. Bir rakamın kodundaki bitleri ters çevirirsen o rakamın 9's complement'inin kodu çıkar. Excess-3'te 2 = <span class="b">0101</span>, tersi <span class="b">1010</span> = 7, ve 9 − 2 = 7.</li>
-  </ul>
-
-
+  
   <div class="widget" id="w-codes">
     <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: onluk sayıyı kodla</h4></div>
     <div class="widget-body">
@@ -1154,7 +1148,6 @@
       <ul>
         <li>BCD = 8421: her onluk rakam ayrı 4 bit. 1010–1111 geçersiz</li>
         <li>Ağırlıklı kod: değer = 1 olan bitlerin ağırlıkları toplamı (4812'de 9 = 0110)</li>
-        <li>Excess-3 = BCD + 3</li>
         <li>Gray: komşular arasında 1 bit fark</li>
         <li>İkili → Gray: en soldaki bit aynen; sonraki her Gray biti = ikilide o bit ⊕ solundaki bit</li>
         <li>Gray → ikili: en soldaki bit aynen; sonraki her ikili bit = bulunan son ikili bit ⊕ o Gray biti</li>

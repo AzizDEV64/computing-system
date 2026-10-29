@@ -212,7 +212,7 @@
     const tb = $('code-table'); if (!tb) return;
     const T = N.CODE_TABLES;
     tb.innerHTML = [...Array(10).keys()].map(d =>
-      `<tr><td>${d}</td><td class="b">${T.bcd[d]}</td><td class="b">${N.weightedEncode(d, [4, 8, 1, 2])}</td><td class="b">${T.c2421[d]}</td><td class="b">${T.c84m2m1[d]}</td><td class="b">${T.excess3[d]}</td></tr>`
+      `<tr><td>${d}</td><td class="b">${T.bcd[d]}</td><td class="b">${N.weightedEncode(d, [4, 8, 1, 2])}</td></tr>`
     ).join('');
   }
   function parseWeights(text) {
@@ -220,7 +220,7 @@
     if (!t) return null;
     let parts = /[\s,;]/.test(t) ? t.split(/[\s,;]+/) : (/^\d+$/.test(t) ? t.split('') : [t]);
     const w = parts.map(Number);
-    if (w.some(x => !Number.isInteger(x)) || w.length < 2 || w.length > 6) return { error: 'Ağırlıkları boşlukla ayırarak yaz, ör. 4 8 1 2 ya da 8 4 -2 -1.' };
+    if (w.some(x => !Number.isInteger(x)) || w.length < 2 || w.length > 6) return { error: 'Ağırlıkları boşlukla ayırarak yaz, ör. 4 8 1 2.' };
     return w;
   }
   function runCodes() {
@@ -232,9 +232,9 @@
     const T = N.CODE_TABLES;
     const digits = s.split('').map(Number);
     const custom = w ? digits.map(d => N.weightedEncode(d, w)) : null;
-    let h = `<div class="table-wrap"><table class="data"><thead><tr><th>Rakam</th><th>BCD</th>${w ? `<th>${esc(w.join(' '))}</th>` : ''}<th>2421</th><th>Excess-3</th></tr></thead><tbody>`;
+    let h = `<div class="table-wrap"><table class="data"><thead><tr><th>Rakam</th><th>BCD</th>${w ? `<th>${esc(w.join(' '))}</th>` : ''}</tr></thead><tbody>`;
     digits.forEach((d, i) => {
-      h += `<tr><td>${d}</td><td class="b">${T.bcd[d]}</td>${w ? `<td class="b">${custom[i] || '—'}</td>` : ''}<td class="b">${T.c2421[d]}</td><td class="b">${T.excess3[d]}</td></tr>`;
+      h += `<tr><td>${d}</td><td class="b">${T.bcd[d]}</td>${w ? `<td class="b">${custom[i] || '—'}</td>` : ''}</tr>`;
     });
     h += '</tbody></table></div>';
     h += `<p class="result">BCD: ${B(digits.map(d => T.bcd[d]).join(' '))}</p>`;
