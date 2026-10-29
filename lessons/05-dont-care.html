@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>K-Maps with Don't Care | YAM205</title>
+  <meta name="description" content="Ders 5: Don't care (X) değerleri, Karnaugh haritasıyla POS, çok çıkışlı tasarım, 2 bitlik kare devresi, 7 segment gösterge ve ikili–7 segment dönüştürücü.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="05">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 5 / 7 <strong>K-Maps with Don't Care</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 5, 7 Ekim 2026</p>
+      <h1>K-Maps with Don't Care</h1>
+      <p>Bazen bir girişin hiç gelmeyeceğini biliriz ya da o durumda çıkışın ne olduğu umurumuzda değildir. Bu hücrelere X (don't care) yazarız ve onları işimize geldiği gibi kullanırız. Bu derste X'lerle sadeleştirmeyi, haritadan POS yazmayı ve gerçek bir tasarımı öğreneceksin: sayıları ekranda gösteren 7 segment dönüştürücü.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>X = don't care</li>
+        <li>K-maps with X</li>
+        <li>K-maps in POS</li>
+        <li>2-bit square circuit</li>
+        <li>LED outputs</li>
+        <li>7-segment display</li>
+        <li>Binary → 7-segment converter</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#x"><span class="n">1</span><span>Don't care (X) nedir?</span></a></li>
+          <li><a href="#x-ornek"><span class="n">2</span><span>X'li haritayı çözmek</span></a></li>
+          <li><a href="#pos"><span class="n">3</span><span>Haritadan POS</span></a></li>
+          <li><a href="#kare"><span class="n">4</span><span>Çok çıkışlı tasarım: kare devresi</span></a></li>
+          <li><a href="#led"><span class="n">5</span><span>Çıkışı göstermek: LED</span></a></li>
+          <li><a href="#seg"><span class="n">6</span><span>7 segment gösterge</span></a></li>
+          <li><a href="#donusturucu"><span class="n">7</span><span>İkili → 7 segment dönüştürücü</span></a></li>
+          <li><a href="#cozucu"><span class="n">8</span><span>X'li harita çözücü</span></a></li>
+          <li><a href="#ozet"><span class="n">9</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">10</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="x">
+  <h2><span class="n">1</span>Don't care (X) nedir?</h2>
+  <p class="lead">Hoca dersi üç satırla açmış: 0 → False, 1 → True, <b>X → Don't Care</b>.</p>
+  <p>Şimdiye kadar her satırın çıkışı ya 0 ya 1'di. Bazı problemlerde ise bir satırın çıkışının ne olduğu önemli değildir. Bunun iki sebebi olabilir:</p>
+  <ul>
+    <li><b>O giriş hiç gelmez.</b> Örneğin girişe BCD bir rakam geliyorsa 1010–1111 desenleri asla gelmez (1. dersten hatırla: bunlar BCD'de geçersiz). Gelmeyecek bir girişe ne cevap verdiğimizin önemi yok.</li>
+    <li><b>O durumda çıkış kullanılmaz.</b> Örneğin bir ekran o durumda kapalıysa, ona hangi sinyali gönderdiğimiz fark etmez.</li>
+  </ul>
+  <p>Bu satırların çıkışına <b>X</b> yazarız (bazı kitaplarda d ya da –). Kanonik formda ayrı bir listeyle gösterilir: <span class="m">F = Σm(…) + d(…)</span>. d listesindeki numaralar X'lerdir. POS tarafında da aynı fikir: <span class="m">F = ΠM(…) · d(…)</span>.</p>
+
+  <h3>X'ler nasıl kullanılır?</h3>
+  <p>X bir <b>joker</b> gibi davranır. Karnaugh haritasında:</p>
+  <ul>
+    <li>Bir X, bir grubu <b>büyütmeye</b> yarıyorsa onu 1 kabul edip gruba katarsın.</li>
+    <li>İşine yaramıyorsa 0 kabul edip dışarıda bırakırsın.</li>
+    <li>Her X için ayrı karar verilir. Bazıları 1, bazıları 0 olabilir.</li>
+  </ul>
+  <div class="note warn">
+    <span class="note-title">İki kural</span>
+    <p><b>1. Sadece X'lerden oluşan grup yapma.</b> X'ler 1'leri örtmeye yardım etmek için var, tek başlarına örtülmeleri gerekmez.</p>
+    <p><b>2. X'leri örtmek zorunda değilsin.</b> Bütün 1'ler en az bir grupta olmalı, ama X'ler dışarıda kalabilir.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="x-ornek">
+  <h2><span class="n">2</span>X'li haritayı çözmek</h2>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 1</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <p>F = Σm(0, 2, 3, 4, 9, 12) + d(5, 6, 7, 8, 13)</p>
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,2,3,4,9,12" data-dcs="5,6,7,8,13" data-groups="A'D'|A'C|AC'"></div></div>
+      <ol class="steps">
+        <li><b><span class="ov">A</span><span class="ov">D</span></b>: üst iki satırda sol ve sağ sütun (kenarlar komşu). İçinde m₀, m₄, m₂ (1'ler) ve m₆ (X). m₆'yı 1 kabul ettik, böylece 4'lü kare oldu.</li>
+        <li><b><span class="ov">A</span>C</b>: üst iki satırın sağ iki sütunu: m₃, m₂ (1), m₇, m₆ (X). İki X'i de 1 kabul ettik.</li>
+        <li><b>A<span class="ov">C</span></b>: alt iki satırın sol iki sütunu: m₁₂, m₉ (1), m₁₃, m₈ (X).</li>
+        <li>m₅ (X) hiçbir grupta değil. Ona 0 dedik, çünkü işimize yaramadı.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span><span class="ov">D</span> + A<span class="ov">C</span> + <span class="ov">A</span>C</span></p>
+      <p><b>X'siz olsaydı?</b> Bütün X'leri 0 kabul edersek en sade sonuç <span class="m"><span class="ov">A</span><span class="ov">B</span><span class="ov">D</span> + <span class="ov">A</span><span class="ov">B</span>C + B<span class="ov">C</span><span class="ov">D</span> + A<span class="ov">B</span><span class="ov">C</span>D</span> olur: 13 harf. X'leri kullanınca 6 harfe düştü.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 2</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <p>F = Σm(0, 3, 7, 8, 13) + d(2, 6, 9, 10, 11, 12, 14, 15)</p>
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,3,7,8,13" data-dcs="2,6,9,10,11,12,14,15" data-groups="C|A|B'D'"></div></div>
+      <ol class="steps">
+        <li><b>C</b>: sağ iki sütunun tamamı (8 hücre). İçindeki 1'ler m₃, m₇, geri kalanı X.</li>
+        <li><b>A</b>: alt iki satırın tamamı (8 hücre). İçindeki 1'ler m₁₃, m₈.</li>
+        <li><b><span class="ov">B</span><span class="ov">D</span></b>: dört köşe. m₀ (1), m₂, m₈, m₁₀. m₀'ı örtmenin en büyük yolu bu.</li>
+      </ol>
+      <p class="answer">F = <span class="m">A + C + <span class="ov">B</span><span class="ov">D</span></span></p>
+      <p>X'siz olsaydı <span class="m"><span class="ov">B</span><span class="ov">C</span><span class="ov">D</span> + <span class="ov">A</span>CD + AB<span class="ov">C</span>D</span> (10 harf) çıkardı. X'lerle 4 harf.</p>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu</span>
+    <p>X'li soruda önce sadece 1'lere bak ve her 1 için "bunu içeren en büyük grup ne, X'leri de sayarsam?" diye sor. Grupları X'ler sayesinde 8'e, 16'ya kadar büyütebilirsin. Çözümünde hangi X'i 1, hangisini 0 kabul ettiğini belirtmen gerekmez, ama gruplar haritada açıkça görünmeli.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="pos">
+  <h2><span class="n">3</span>Haritadan POS (K-maps in POS)</h2>
+  <p class="lead">Şimdiye kadar 1'leri grupladık ve SOP (çarpımlar toplamı) yazdık. Aynı haritada 0'ları gruplarsak POS (toplamlar çarpımı) çıkar.</p>
+  <h3>Nasıl?</h3>
+  <ol class="steps">
+    <li>Bu sefer <b>0'ları</b> grupla. Kurallar aynı: 2ⁿ'lik dikdörtgenler, olabildiğince büyük, kenarlar komşu. X'leri yine işine gelirse gruba kat (bu sefer 0 kabul etmiş olursun).</li>
+    <li>Her grubu bir <b>toplam terimine</b> çevir. Maxterm kuralı geçerli: grubun her yerinde <b>0</b> olan değişken <b>düz</b>, <b>1</b> olan <b>çizgili</b>, değişen yazılmaz. Harfler arasına + koy.</li>
+    <li>Bütün toplam terimlerini çarp.</li>
+  </ol>
+  <div class="note tip">
+    <span class="note-title">Neden çizgiler ters?</span>
+    <p>0'ların grubu aslında <span class="m"><span class="ov">F</span></span>'nin bir terimidir. Örneğin A = 0, C = 1 olan 0'ların grubu <span class="m"><span class="ov">F</span></span> için <span class="m"><span class="ov">A</span>C</span> terimini verir. F'ye geçmek için De Morgan uygularız: <span class="m"><span class="ov"><span class="ov">A</span>C</span> = A + <span class="ov">C</span></span>. Çizgiler yer değiştirir, · işareti + olur. 3. dersteki maxterm kuralının aynısı.</p>
+    <p>0'ların bütün grupları birlikte <span class="m"><span class="ov">F</span> = T₁ + T₂ + T₃</span> verir. De Morgan ile <span class="m">F = <span class="ov">T₁</span> · <span class="ov">T₂</span> · <span class="ov">T₃</span></span>: her grubun tersi alınır (bu tersler toplam terimleridir) ve çarpılır.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>What is F in POS?</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,10,12,13" data-dcs="1,6,8,14,15" data-pos-groups="(A+C')|(A+B')|(B+D')"></div></div>
+      <ol class="steps">
+        <li><b>A + <span class="ov">C</span></b>: üst iki satırın sağ iki sütunu (m₃, m₂, m₇, m₆). Bu grupta A = 0 (düz A), C = 1 (çizgili C).</li>
+        <li><b>A + <span class="ov">B</span></b>: ikinci satırın tamamı (AB = 01: m₄, m₅, m₇, m₆). A = 0, B = 1.</li>
+        <li><b>B + <span class="ov">D</span></b>: CD = 01 ve 11 sütunlarında üst ve alt satır (m₁, m₃, m₉, m₁₁). Üst ve alt kenar komşu. B = 0, D = 1.</li>
+      </ol>
+      <p class="answer">F = <span class="m">(A + <span class="ov">C</span>)(A + <span class="ov">B</span>)(B + <span class="ov">D</span>)</span></p>
+      <p>Liste gösterimiyle: <span class="m">F = ΠM(2, 3, 4, 5, 7, 9, 11) · d(1, 6, 8, 14, 15)</span>.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Write F in POS</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-body">
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="3,4,6,13,10" data-dcs="1,2,7,12,14,11" data-pos-groups="(B+C)|(A+B'+D')|(A'+C'+D')"></div></div>
+      <ol class="steps">
+        <li><b>B + C</b>: CD = 00 ve 01 sütunlarında üst ve alt satır (m₀, m₁, m₈, m₉). B = 0, C = 0.</li>
+        <li><b>A + <span class="ov">B</span> + <span class="ov">D</span></b>: m₅ ve m₇ (X). A = 0, B = 1, D = 1.</li>
+        <li><b><span class="ov">A</span> + <span class="ov">C</span> + <span class="ov">D</span></b>: m₁₅ ve m₁₁ (X). A = 1, C = 1, D = 1.</li>
+      </ol>
+      <p class="answer">F = <span class="m">(B + C)(A + <span class="ov">B</span> + <span class="ov">D</span>)(<span class="ov">A</span> + <span class="ov">C</span> + <span class="ov">D</span>)</span></p>
+      <p>m₅'i m₇ yerine m₁ (X) ile, m₁₅'i m₁₁ yerine m₇ (X) ile de gruplayabilirdin. Sonuç yine 3 grup, her biri 3 harf: aynı uzunlukta başka bir doğru cevap.</p>
+      <p>Liste gösterimiyle: <span class="m">F = ΠM(0, 5, 8, 9, 15) · d(1, 2, 7, 11, 12, 14)</span>.</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Sık hata</span>
+    <p>POS'ta grup okurken SOP alışkanlığıyla çizgileri ters koymak. Kural: <b>0 → düz, 1 → çizgili</b>. Kontrol için gruptaki bir hücrenin değerlerini terime koy: toplam terimi o hücrede <b>0</b> çıkmalı.</p>
+    <p>Bir de şu: aynı X, SOP çözümünde 1, POS çözümünde 0 kabul edilmiş olabilir. Bu yüzden X'li bir fonksiyonun en sade SOP'u ile en sade POS'u X hücrelerinde farklı değer verebilir. İkisi de doğrudur, çünkü X'lerin değeri önemsiz.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="kare">
+  <h2><span class="n">4</span>Çok çıkışlı tasarım: 2 bitlik kare devresi</h2>
+  <div class="example">
+    <div class="example-head"><h4>Draw the logic circuit diagram of a circuit that calculates the square of 2-bit inputs</h4><span class="src">Hocanın örneği, PDF s.2–3</span></div>
+    <div class="example-body">
+      <p>2 bitlik bir giriş (A₁A₀) 0–3 arası bir sayıdır. Karesi en fazla 9 olur. 9'u yazmak için 4 bit gerekir, o yüzden devrenin <b>4 çıkışı</b> var: F₃F₂F₁F₀.</p>
+      <div class="tables-row">
+        <div class="table-wrap"><table class="tt">
+          <thead><tr><th>A₁</th><th>A₀</th><th>Onluk</th><th>Kare</th><th class="out">F₃</th><th>F₂</th><th>F₁</th><th>F₀</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td class="out">0</td><td>0</td><td>0</td><td class="one">1</td></tr>
+            <tr><td>1</td><td>0</td><td>2</td><td>4</td><td class="out">0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>3</td><td>9</td><td class="out one">1</td><td>0</td><td>0</td><td class="one">1</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <p>Hocanın notunda çıkış sütununun başlığı "BCD". 0, 1, 4, 9 sayıları 10'dan küçük olduğu için BCD ile düz ikili burada aynı, sorun yok.</p>
+      <p><b>Anahtar fikir:</b> Çok çıkışlı bir devrede her çıkış ayrı bir fonksiyondur. Her biri için ayrı doğruluk tablosu sütunu, ayrı formül.</p>
+      <ol class="steps">
+        <li><b>F₃</b> sadece 11 satırında 1 → <span class="m">F₃ = A₁A₀</span> (AND).</li>
+        <li><b>F₂</b> sadece 10 satırında 1 → <span class="m">F₂ = A₁<span class="ov">A₀</span></span>.</li>
+        <li><b>F₁</b> hiçbir satırda 1 değil → <span class="m">F₁ = 0</span>. Bu çıkış doğrudan GND'ye bağlanır.</li>
+        <li><b>F₀</b> 01 ve 11 satırlarında 1. Hoca bunu 2 değişkenli haritayla çözmüş: sağ sütun (A₀ = 1) tamamen 1 → <span class="m">F₀ = A₀</span>. Kapıya bile gerek yok, A₀ kablosu doğrudan çıkışa gider.
+          <div class="kmap-figure"><div class="kmap5" data-n="2" data-ones="1,3" data-groups="B"></div></div>
+          <p class="hint">Bu haritada A = A₁ (satır), B = A₀ (sütun). Grup: B = A₀.</p></li>
+      </ol>
+      <div class="circuit" id="c-square">
+        <div class="circuit-head"><h4>Kare devresi: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+        <div class="circuit-svg">
+          <svg viewBox="0 0 380 240" role="img" aria-label="A1 ve A0 dikey hatlar. A1 AND A0 F3'ü verir. A0 bir NOT kapısından geçip A1 ile AND'lenir ve F2'yi verir. F1 toprağa bağlı. A0 doğrudan F0'a gider.">
+            <path class="w" data-n="A0" d="M60 24V220"/>
+            <path class="w" data-n="A1" d="M100 24V144"/>
+            <path class="w" data-n="A0" d="M60 48H92A8 8 0 0 1 108 48H200"/>
+            <path class="w" data-n="A1" d="M100 72H200"/>
+            <path class="w" data-n="A0" d="M60 120H92A8 8 0 0 1 108 120H140"/>
+            <path class="w" data-n="nA0" d="M180 120H200"/>
+            <path class="w" data-n="A1" d="M100 144H200"/>
+            <path class="w" data-n="F3" d="M247 60H320"/>
+            <path class="w" data-n="F2" d="M247 132H320"/>
+            <path class="w" d="M200 180H320M200 180V192M190 192H210M194 198H206M198 204H202"/>
+            <path class="w" data-n="A0" d="M60 220H320"/>
+            <circle class="dot" cx="60" cy="48" r="4"/><circle class="dot" cx="100" cy="72" r="4"/><circle class="dot" cx="60" cy="120" r="4"/><circle class="dot" cx="100" cy="144" r="4"/>
+            <path class="g" d="M200 35H222A25 25 0 0 1 222 85H200Z"/>
+            <path class="g" d="M140 106L170 120L140 134Z"/><circle class="g" cx="175" cy="120" r="5"/>
+            <path class="g" d="M200 107H222A25 25 0 0 1 222 157H200Z"/>
+            <text class="lbl" x="50" y="18">A₀</text><text class="lbl" x="90" y="18">A₁</text>
+            <text class="lbl" x="328" y="66">F₃</text><text class="lbl" x="328" y="138">F₂</text><text class="lbl" x="328" y="186">F₁</text><text class="lbl" x="328" y="226">F₀</text>
+            <text class="val" x="290" y="52" data-v="F3"></text><text class="val" x="290" y="124" data-v="F2"></text><text class="val" x="290" y="172">0</text><text class="val" x="290" y="212" data-v="F0"></text>
+          </svg>
+        </div>
+        <div class="circuit-foot"><div class="row"><span>Giriş: <b data-v="inDec"></b></span><span>Çıkış F₃F₂F₁F₀ = <b data-v="outBin"></b> = <b data-v="outDec"></b></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="led">
+  <h2><span class="n">5</span>Çıkışı göstermek: LED</h2>
+  <p class="lead">Devrenin çıkışı bir ikili sayı. Bunu bir insana göstermenin en basit yolu her bit için bir ışık (LED).</p>
+  <p>Hoca 5 girişli, 4 çıkışlı bir sistem çizmiş (kablonun üstündeki eğik çizgi ve yanındaki sayı, o kabloda kaç bit olduğunu gösterir). Her çıkış biti bir direnç (R) üzerinden bir LED'e (D) bağlı, LED'in diğer ucu toprağa. Bit 1 ise LED yanar (ON), 0 ise söner (OFF).</p>
+  <div class="gates"><figure>
+    <svg viewBox="0 0 240 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 40H40L46 30L56 50L66 30L76 50L86 30L92 40H120"/><path d="M120 28L144 40L120 52Z"/><path d="M146 26V54"/><path d="M146 40H190V52M178 52H202M183 58H197M188 64H192"/><path d="M128 22L138 10M136 10H138V12M140 24L150 12M148 12H150V14"/></g><g fill="currentColor" font-family="Archivo, sans-serif" font-size="13"><text x="56" y="66">R</text><text x="124" y="68">D</text></g></svg>
+    <figcaption><b>Bir çıkış biti</b>: direnç → LED → toprak</figcaption>
+  </figure></div>
+  <p><b>Şekildeki semboller:</b> Zikzak çizgi <b>direnç</b>tir (R): LED'den geçen akımı sınırlar, yoksa LED bozulur. Ucunda dik çizgi olan üçgen bir <b>diyot</b>tur, akım sadece üçgenin gösterdiği yönde geçer. Üstündeki iki küçük ok ışık saçtığını gösterir: <b>LED</b> (<span class="en">Light Emitting Diode</span>, ışık yayan diyot). Üç kısa yatay çizgi <b>toprak</b>tır (GND, 0 V; 2. dersten hatırla). Çıkış biti 1 olunca akım R → D → toprak yolundan akar ve LED yanar. Bit 0 olunca iki uç da 0 V'tadır, akım akmaz, LED söner.</p>
+  <div class="example">
+    <div class="example-head"><h4>LED'ler: ON, ON, OFF, ON</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-body">
+      <p>D₃ = ON, D₂ = ON, D₁ = OFF, D₀ = ON → ikili <span class="b">1101</span> → onluk 8 + 4 + 1 = <b>13</b>.</p>
+      <p>Sorun şu: bir insanın LED'lere bakıp kafasında ikiliden onluğa çevirmesi gerekiyor. Daha kullanışlı olanı sayıyı doğrudan rakam olarak göstermek. Bunun için 7 segment gösterge kullanılır.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="seg">
+  <h2><span class="n">6</span>7 segment gösterge</h2>
+  <p class="lead">Hesap makinelerindeki, dijital saatlerdeki rakamlar. Yedi tane çubuk (segment) var, hangilerinin yanacağını seçerek 0–9 arası her rakamı yazabilirsin.</p>
+  <div class="seg7" id="seg-demo"></div>
+  <p>Hoca önce bütün segmentlerin yandığı 8'i, sonra bazı segmentleri sönmüş 7, 3 ve 1'i çizmiş. Her rakam için hangi segmentlerin yanacağı bir doğruluk tablosuyla belirlenir. Bazı göstergelerde 6 üst segmentsiz, 9 alt segmentsiz, 7 sol üst segmentli çizilir. Bu, tabloyu ve formülleri değiştirir. Sınavda hocanın tablosunu esas al.</p>
+
+  <h3>Segmentlerin adları</h3>
+  <div class="seg7" id="seg-names"></div>
+  <div class="note warn">
+    <span class="note-title">Hocanın segment adları standarttan farklı</span>
+        <figure class="hoca-fig" style="max-width:180px"><img src="../assets/img/hoca/l5-segment.png" alt="Hocanın 7 segment çizimi ve segment harfleri" loading="lazy"><figcaption>Hocanın notu, PDF s.3: a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt (d alt, bir sonraki sayfada)</figcaption></figure>
+    <p>Hoca segmentleri şöyle adlandırmış: <b>a</b> üst, <b>b</b> sol üst, <b>f</b> sağ üst, <b>g</b> orta, <b>c</b> sol alt, <b>e</b> sağ alt, <b>d</b> alt. Veri sayfalarında ve çoğu kitapta kullanılan standart düzende ise a üstten başlayıp <b>saat yönünde</b> döner: <b>b</b> sağ üst, <b>c</b> sağ alt, <b>d</b> alt, <b>e</b> sol alt, <b>f</b> sol üst, <b>g</b> orta.</p>
+    <p>Yani hocanın b'si standart f, hocanın f'si standart b, hocanın c'si standart e, hocanın e'si standart c. Bu sayfada hocanın düzeni kullanılıyor. Sınavda soru hangi düzeni veriyorsa onu kullan. Bir şekil verilmemişse hangi düzeni kullandığını cevabının başına bir çizimle belirt.</p>
+  </div>
+
+  <div class="circuit" id="c-seg">
+    <div class="circuit-head"><h4>Dönüştürücüyü dene: D₃D₂D₁D₀ girişlerine bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg" style="display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;padding:1rem 1.1rem">
+      <div class="seg7" id="seg-live"></div>
+      <div>
+        <p style="margin:0">Giriş: <b data-v="dec"></b> <span data-v="note"></span></p>
+        <p class="seg-values" style="margin:.4rem 0 0">a=<b data-v="a"></b> b=<b data-v="b"></b> c=<b data-v="c"></b> d=<b data-v="d"></b> e=<b data-v="e"></b> f=<b data-v="f"></b> g=<b data-v="g"></b></p>
+      </div>
+    </div>
+    <div class="circuit-foot">Segmentler aşağıdaki en sade formüllerle hesaplanıyor. 10–15 girişleri don't care: bu formüllerle kurulan gerçek devre o girişlerde bazı segmentleri yakar (ör. 1010'da a = 1), ama bu girişler hiç gelmeyeceği için önemi yok. Karışmasın diye burada gösterge kapalı çizildi.</div>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="donusturucu">
+  <h2><span class="n">7</span>İkili → 7 segment dönüştürücü</h2>
+  <p class="lead">"Design a 4-bit binary to 7-segment display converter." Hocanın blok çizimi: Inputs → Logic System → Outputs → <b>Binary to 7-Segment Display Converter</b> → 7-Segment Display.</p>
+  <p>Dönüştürücünün 4 girişi (D₃D₂D₁D₀) ve 7 çıkışı (a–g) var. Yani aslında <b>7 ayrı fonksiyon</b> tasarlayacağız, her segment için bir tane. 4. bölümdeki kare devresiyle aynı fikir. (Hoca LED'lere de D₃–D₀ demişti. Orada D diyot, burada ise göstergeyi süren 4 veri biti.)</p>
+
+  <h3>1. adım: doğruluk tablosu</h3>
+  <div class="table-wrap"><table class="tt" id="seg-table">
+    <thead><tr><th>Rakam</th><th>D₃</th><th>D₂</th><th>D₁</th><th>D₀</th><th class="out">a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>g</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p><b>10–15 neden X?</b> Girişe sadece 0–9 arası rakamlar gelecek (BCD). 1010–1111 desenleri hiç gelmeyeceği için o satırların çıkışı umurumuzda değil. Bu X'ler haritalarda grupları çok büyütecek.</p>
+  <div class="note warn">
+    <span class="note-title">Hocanın başlığına dikkat</span>
+    <p>Soru "4-bit binary" diyor ama tabloda 10–15 X. Yani bu aslında bir <b>BCD → 7 segment</b> dönüştürücü: giriş sadece 0–9. Gerçekten 4 bitlik ikili (0–15) gösterilecek olsaydı 10–15 için X değil A, b, C, d, E, F harf desenleri gerekirdi. 5. bölümdeki 13 gibi bir sayıyı göstermek için de iki gösterge (iki BCD rakam: 0001 0011) gerekir. Sınavda hocanın tablosunu kullan.</p>
+  </div>
+
+  <h3>2. adım: her segment için bir harita</h3>
+  <div class="example">
+    <div class="example-head"><h4>a segmenti</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-body">
+      <p>a = 1 olan rakamlar: 0, 2, 3, 5, 6, 7, 8, 9. Sadece 1 ve 4'te sönük.</p>
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-vars="D" data-ones="0,2,3,5,6,7,8,9" data-dcs="10,11,12,13,14,15" data-groups="C|A|BD|B'D'"></div></div>
+      <ol class="steps">
+        <li><b>D₁</b>: sağ iki sütun (D₁D₀ = 11, 10). 8 hücre: 1'ler ve X'ler.</li>
+        <li><b>D₃</b>: alt iki satır (D₃D₂ = 11, 10). 8 hücre.</li>
+        <li><b>D₂D₀</b>: orta iki satır ile orta iki sütun: m₅, m₇, m₁₃, m₁₅.</li>
+        <li><b><span class="ov">D₂</span><span class="ov">D₀</span></b>: dört köşe: m₀, m₂, m₈, m₁₀.</li>
+      </ol>
+      <p class="answer">a = <span class="m">D₁ + D₃ + D₂D₀ + <span class="ov">D₂</span><span class="ov">D₀</span> = D₁ + D₃ + D₂ ⊙ D₀</span></p>
+      <p>Hoca son iki terimi XNOR olarak tanımış: <span class="m">D₂D₀ + <span class="ov">D₂</span><span class="ov">D₀</span> = D₂ ⊙ D₀</span>.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>b segmenti (hocanın düzeninde sol üst)</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-body">
+      <p>b = 1 olan rakamlar: 0, 4, 5, 6, 8, 9.</p>
+      <div class="kmap-figure"><div class="kmap5" data-n="4" data-vars="D" data-ones="0,4,5,6,8,9" data-dcs="10,11,12,13,14,15" data-groups="A|BD'|BC'|C'D'"></div></div>
+      <ol class="steps">
+        <li><b>D₃</b>: alt iki satır.</li>
+        <li><b>D₂<span class="ov">D₀</span></b>: orta iki satırın sol ve sağ sütunu (kenarlar komşu): m₄, m₆, m₁₂, m₁₄.</li>
+        <li><b>D₂<span class="ov">D₁</span></b>: orta iki satırın sol iki sütunu: m₄, m₅, m₁₂, m₁₃.</li>
+        <li><b><span class="ov">D₁</span><span class="ov">D₀</span></b>: sol sütunun tamamı: m₀, m₄, m₁₂, m₈.</li>
+      </ol>
+      <p class="answer">b = <span class="m">D₃ + D₂<span class="ov">D₀</span> + D₂<span class="ov">D₁</span> + <span class="ov">D₁</span><span class="ov">D₀</span></span></p>
+    </div>
+  </div>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: kalan segmentler (c, d, e, f, g)</span>
+    <p>Hoca a ve b'yi çözmüş. Diğer beşi aynı yöntemle çözülür ve sınavda biri sorulabilir. Aşağıda hocanın segment düzenine göre hepsi var. Birden fazla en sade gruplama varsa biri gösterildi. Aynı uzunlukta farklı bir gruplama da doğrudur.</p>
+  </div>
+  <div id="seg-rest"></div>
+
+  <h3>3. adım: devre</h3>
+  <p>Her segmentin formülü kendi kapılarıyla çizilir. Ortak terimler (ör. <span class="m"><span class="ov">D₂</span><span class="ov">D₀</span></span> hem a'da hem başka segmentlerde) tek bir kapıyla üretilip paylaşılabilir. Bu, büyük tasarımlarda kapı sayısını azaltmanın yoludur.</p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="cozucu">
+  <h2><span class="n">8</span>X'li harita çözücü</h2>
+  <p class="lead">Hücrelere tıkladıkça 0 → 1 → X → 0 diye değişir. SOP (1'leri grupla) ya da POS (0'ları grupla) modunu seç.</p>
+  <div class="widget" id="w-solver">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Don't care destekli harita çözücü</h4></div>
+    <div class="widget-body">
+      <div class="controls">
+        <div class="field"><span class="lbl">Değişken sayısı</span>
+          <div class="seg" role="group" aria-label="Değişken sayısı" id="sv-n">
+            <button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="true">4</button><button type="button" data-v="5" aria-pressed="false">5</button>
+          </div></div>
+        <div class="field"><span class="lbl">Biçim</span>
+          <div class="seg" role="group" aria-label="Biçim" id="sv-form">
+            <button type="button" data-v="sop" aria-pressed="true">SOP (1'ler)</button><button type="button" data-v="pos" aria-pressed="false">POS (0'lar)</button>
+          </div></div>
+      </div>
+      <div class="controls" style="margin-top:.6rem">
+        <div class="field"><label for="sv-sigma">Σm listesi</label><input id="sv-sigma" type="text" placeholder="ör. 0,2,3" size="14" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="sv-d">d listesi (X)</label><input id="sv-d" type="text" placeholder="ör. 5,6" size="12" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" type="button" id="sv-fill">Doldur</button>
+        <button class="btn ghost" type="button" id="sv-clear">Temizle</button>
+      </div>
+      <div id="sv-map"></div>
+      <div class="wout" id="sv-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="ozet">
+  <h2><span class="n">9</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Don't care</h4>
+      <ul>
+        <li>X: bu satırın çıkışı önemsiz (giriş gelmez ya da çıkış kullanılmaz)</li>
+        <li>F = Σm(…) + d(…)</li>
+        <li>X işe yarıyorsa 1 (ya da POS'ta 0) say, yaramıyorsa dışarıda bırak</li>
+        <li>Sadece X'ten grup yapma, X'leri örtmek zorunlu değil</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Haritadan POS</h4>
+      <ul>
+        <li>0'ları grupla (X'ler yardımcı)</li>
+        <li>Grupta 0 olan değişken düz, 1 olan çizgili</li>
+        <li>Harfler arası +, terimler çarpılır</li>
+        <li>Kontrol: terim gruptaki hücrelerde 0 vermeli</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Çok çıkışlı tasarım</h4>
+      <ul>
+        <li>Her çıkış ayrı bir fonksiyon, ayrı harita</li>
+        <li>Hep 0 olan çıkış → GND</li>
+        <li>Kare devresi: F₃ = A₁A₀, F₂ = A₁<span class="ov">A₀</span>, F₁ = 0, F₀ = A₀</li>
+      </ul>
+    </div>
+    <div>
+      <h4>7 segment (hocanın adları)</h4>
+      <ul>
+        <li>a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt, d alt</li>
+        <li>Giriş 10–15: X (BCD'de yok)</li>
+        <li>a = D₁ + D₃ + D₂ ⊙ D₀</li>
+        <li>b = D₃ + D₂<span class="ov">D₀</span> + D₂<span class="ov">D₁</span> + <span class="ov">D₁</span><span class="ov">D₀</span></li>
+      </ul>
+    </div>
+  </div>
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>don't care</dt><dd>önemsiz değer (X)</dd>
+    <dt>product of sums (POS)</dt><dd>toplamlar çarpımı</dd>
+    <dt>multiple-output circuit</dt><dd>çok çıkışlı devre</dd>
+    <dt>LED, resistor</dt><dd>ışık yayan diyot, direnç</dd>
+    <dt>7-segment display</dt><dd>7 parçalı gösterge</dd>
+    <dt>converter / decoder</dt><dd>dönüştürücü / kod çözücü</dd>
+    <dt>square</dt><dd>kare (sayının kendisiyle çarpımı)</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="alistirma">
+  <h2><span class="n">10</span>Alıştırmalar ve test</h2>
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li>F(A,B,C,D) = Σm(1, 3, 7, 11, 15) + d(0, 2, 5)'i SOP olarak sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p><b>CD</b>: CD = 11 sütunu tamamen (m₃, m₇, m₁₅, m₁₁). <b><span class="ov">A</span>D</b>: üst iki satırın orta iki sütunu (m₁, m₃, m₅, m₇), m₅ X. Sonuç: <span class="m"><b>F = CD + <span class="ov">A</span>D</b></span>. (m₁ için <span class="m"><span class="ov">A</span><span class="ov">B</span></span> grubu da aynı uzunlukta: m₀, m₁, m₃, m₂.)</p></details></li>
+    <li>F(A,B,C,D) = Σm(0, 1, 2, 5, 8, 9, 10)'u POS olarak yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>0'lar: 3, 4, 6, 7, 11, 12, 13, 14, 15. Gruplar: <span class="m">CD</span> bölgesi (m₃, m₇, m₁₅, m₁₁) → <span class="m">(<span class="ov">C</span> + <span class="ov">D</span>)</span>. <span class="m">B<span class="ov">D</span></span> bölgesi (m₄, m₆, m₁₂, m₁₄) → <span class="m">(<span class="ov">B</span> + D)</span>. <span class="m">AB</span> satırı (m₁₂–m₁₅) → <span class="m">(<span class="ov">A</span> + <span class="ov">B</span>)</span>. <span class="m"><b>F = (<span class="ov">C</span> + <span class="ov">D</span>)(<span class="ov">B</span> + D)(<span class="ov">A</span> + <span class="ov">B</span>)</b></span>.</p></details></li>
+    <li>Girişi BCD bir rakam (ABCD) olan bir devre, rakam 5 veya daha büyükse 1 versin. F'yi X'leri kullanarak sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>F = Σm(5, 6, 7, 8, 9) + d(10–15). Gruplar: <b>A</b> (alt iki satır), <b>BD</b> (m₅, m₇, m₁₃, m₁₅), <b>BC</b> (m₆, m₇, m₁₄, m₁₅). <span class="m"><b>F = A + BD + BC</b></span>. X'ler olmasaydı <span class="m"><span class="ov">A</span>BD + <span class="ov">A</span>BC + A<span class="ov">B</span><span class="ov">C</span></span> çıkardı.</p></details></li>
+    <li>Hocanın segment düzeninde 4 rakamı için hangi segmentler yanar?
+      <details class="solution"><summary>Çözümü göster</summary><p>Sol üst (b), sağ üst (f), orta (g), sağ alt (e): <b>b, e, f, g</b>. Tablo satırı: a=0, b=1, c=0, d=0, e=1, f=1, g=1.</p></details></li>
+    <li>2 bitlik kare devresinde F₁ neden GND'ye bağlandı?
+      <details class="solution"><summary>Çözümü göster</summary><p>0, 1, 4, 9 sayılarının hiçbirinde 2¹ basamağı (F₁) 1 değil. F₁ her zaman 0 olduğu için kapıya gerek yok, sabit 0 (toprak) yeterli.</p></details></li>
+    <li>F(A,B,C) = Σm(0, 2, 5) + d(1, 7)'yi sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>m₀, m₂: <span class="m"><span class="ov">A</span><span class="ov">C</span></span> (kenarlar komşu). m₅: m₁ (X) ile <span class="m"><span class="ov">B</span>C</span> ya da m₇ (X) ile <span class="m">AC</span>. <span class="m"><b>F = <span class="ov">A</span><span class="ov">C</span> + <span class="ov">B</span>C</b></span> (ya da <span class="m"><span class="ov">A</span><span class="ov">C</span> + AC</span>, ikisi de doğru).</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <p>Aynı fonksiyonu veren (X'ler hariç) ve en sade cevaptan uzun olmayan her yazılış doğru sayılır.</p>
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="sopdc">X'li harita (SOP)</option>
+            <option value="pos">Haritadan POS</option>
+            <option value="seg">7 segment: hangi segmentler yanar?</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-map"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="04-karnaugh.html">Önceki: Karnaugh Maps</a>
+    <a href="06-kombinasyonel-1.html">Sıradaki: Combinational Circuits 1</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/kmap.js"></script>
+  <script src="../assets/js/lesson05.js"></script>
+</body>
+</html>

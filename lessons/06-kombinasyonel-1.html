@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combinational Circuits 1 | YAM205</title>
+  <meta name="description" content="Ders 6: Kombinasyonel devreler, entegre devre ölçekleri, toplayıcı/çıkarıcı, op kodları, multiplexer ve demultiplexer. Etkileşimli devrelerle sıfırdan anlatım.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="06">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 6 / 7 <strong>Combinational Circuits 1</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 6, 7 Ekim 2026</p>
+      <h1>Combinational Circuits 1</h1>
+      <p>Şimdiye kadar öğrendiğin her şeyi (kapılar, sadeleştirme, toplayıcılar) birleştirip bilgisayarın gerçek yapı taşlarını kuruyoruz: hem toplayıp hem çıkarabilen bir devre, birçok veriden birini seçen multiplexer ve bir veriyi birçok hedeften birine gönderen demultiplexer.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>SSI, MSI, LSI, VLSI</li>
+        <li>3-bit adder</li>
+        <li>Adder/Subtractor</li>
+        <li>Op codes, instruction set</li>
+        <li>Multiplexer (2×1, 4×1)</li>
+        <li>Demultiplexer (1×2, 1×4)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#nedir"><span class="n">1</span><span>Kombinasyonel devre nedir?</span></a></li>
+          <li><a href="#olcek"><span class="n">2</span><span>Entegre devre ölçekleri</span></a></li>
+          <li><a href="#addsub"><span class="n">3</span><span>Toplayıcı/çıkarıcı</span></a></li>
+          <li><a href="#cpu"><span class="n">4</span><span>İşlemci ve op kodları</span></a></li>
+          <li><a href="#mux"><span class="n">5</span><span>Multiplexer (MUX)</span></a></li>
+          <li><a href="#mux4"><span class="n">6</span><span>4×1 ve daha büyük MUX</span></a></li>
+          <li><a href="#iletisim"><span class="n">7</span><span>MUX ve DEMUX ile iletişim</span></a></li>
+          <li><a href="#demux"><span class="n">8</span><span>Demultiplexer (DEMUX)</span></a></li>
+          <li><a href="#demux4"><span class="n">9</span><span>1×4 DEMUX</span></a></li>
+          <li><a href="#ozet"><span class="n">10</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">11</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="nedir">
+  <h2><span class="n">1</span>Kombinasyonel devre nedir?</h2>
+  <p class="lead">Çıkışı sadece <b>o anki girişlere</b> bağlı olan devre. Hafızası yoktur: aynı girişi verirsen her zaman aynı çıkışı alırsın.</p>
+  <p>Şimdiye kadar tasarladığımız her devre (alarm, toplayıcılar, 7 segment dönüştürücü) kombinasyonel devreydi. Hoca bunu küçük bir örnekle göstermiş: A = 1, B = 0, C = 1 iken A ve B bir AND'e, sonucu (0) ve C bir OR'a giriyor: F = 0 + 1 = <b>1</b>. Bu girişler değişmediği sürece F de değişmez.</p>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: karşıtı ardışıl devre</span>
+    <p>Çıkışı geçmiş girişlere de bağlı olan devrelere <span class="term">ardışıl</span> (<span class="en">sequential</span>) devre denir. Bunların hafızası vardır (flip-flop, sayaç, register gibi). "Combinational" kelimesi bu farkı vurgular: çıkış, girişlerin o anki <b>kombinasyonunun</b> bir fonksiyonudur.</p>
+  </div>
+  <p>Hocanın blok çizimi: N bitlik giriş → SSI₁ → SSI₂ → SSI₃ → M bitlik çıkış. Büyük bir kombinasyonel sistem, küçük kombinasyonel blokların art arda bağlanmasıyla kurulur. Kablonun üstündeki eğik çizgi ve yanındaki harf (N, M) o yolda kaç bit olduğunu gösterir.</p>
+  <p>Bu derste ve bir sonrakinde göreceğimiz yapı taşları (hocanın listesi): <b>Adders</b> (toplayıcılar), <b>Decoders and Encoders</b> (kod çözücüler ve kodlayıcılar), <b>Multiplexers and Demultiplexer</b>, <b>Adder/Subtractor</b> (toplayıcı/çıkarıcı), <b>Comparators</b> (karşılaştırıcılar).</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="olcek">
+  <h2><span class="n">2</span>Entegre devre ölçekleri</h2>
+  <p class="lead">Kapılar tek tek değil, bir silikon yonga (chip) içinde paketlenmiş halde satılır. Bir yongaya kaç kapı sığdığına göre isim verilir.</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Kısaltma</th><th>Açılımı</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td><b>SSI</b></td><td>Small Scale Integrated circuits (küçük ölçekli)</td><td>Birkaç kapı: 4 tane NAND kapısı olan bir yonga</td></tr>
+      <tr><td><b>MSI</b></td><td>Medium Scale Integrated circuits (orta ölçekli)</td><td>Toplayıcı, MUX, decoder gibi bloklar</td></tr>
+      <tr><td><b>LSI</b></td><td>Large Scale Integrated circuits (büyük ölçekli)</td><td>Bellek yongaları, basit işlemciler</td></tr>
+      <tr><td><b>VLSI</b></td><td>Very Large Scale Integrated circuits (çok büyük ölçekli)</td><td>Hoca: CPU, RAM</td></tr>
+      <tr><td><b>XLSI</b></td><td>Extremely Large Scale Integrated circuits</td><td>Hoca: anakart (motherboard)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: kaç kapı?</span>
+    <p>Kitaplarda sınırlar kabaca şöyle verilir: SSI 10'dan az kapı, MSI onlarca ile yüzlerce kapı, LSI binlerce, VLSI on binlerden milyonlara. Kaynaklar arasında farklılık var, bu yüzden sayıları değil sıralamayı ve örnekleri bil. Bazı kitaplar en büyük ölçek için XLSI yerine ULSI (Ultra Large Scale) der.</p>
+    <p>Not: anakart tek bir entegre devre değil, üzerinde birçok yonga taşıyan bir baskı devre kartıdır. Sınavda hocanın eşleştirmesini (XLSI → motherboard) yaz ama bunun gevşek bir örnek olduğunu bil.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="addsub">
+  <h2><span class="n">3</span>Toplayıcı / çıkarıcı (Adder / Subtractor)</h2>
+  <p class="lead">3. derste 3 bitlik toplayıcıyı kurduk. Şimdi aynı devreye birkaç kapı ekleyip bir "işlem seçme" girişiyle hem toplayan hem çıkaran bir devre yapacağız.</p>
+
+  <h3>Başlangıç: 3 bitlik toplayıcı</h3>
+  <p>Hoca önce 3. dersteki yapıyı tekrar çizmiş: üç tam toplayıcı (FA₀, FA₁, FA₂), C<sub>in0</sub> = 0, her C<sub>out</sub> bir soldakinin C<sub>in</sub>'ine bağlı, son elde F₃ olarak çıkıyor. Sonuç F₃F₂F₁F₀ dört bit.</p>
+
+  <h3>Çıkarma için ne lazım?</h3>
+  <p>1. dersten hatırla: A − B'yi toplayarak yapabiliriz. Hoca <b>1's complement</b>'i seçmiş ("Let's choose 1's complement for subtraction"). Tarif:</p>
+  <ol class="steps">
+    <li>B'nin bütün bitlerini ters çevir (1's complement).</li>
+    <li>A ile topla.</li>
+    <li>Elde taştıysa (OF) en sağa ekle (end-around carry), sonuç pozitif.</li>
+    <li>Taşmadıysa sonuç negatif, toplamın tersi büyüklüğü verir.</li>
+  </ol>
+  <p>Devrede bunları yapmak için iki şey lazım: B'yi <b>istediğimiz zaman</b> ters çevirmek ve taşan eldeyi C<sub>in0</sub>'a geri vermek.</p>
+
+  <h3>XOR: kontrollü tersleyici</h3>
+  <p>Hoca köşeye EXOR'un tablosunu yazmış, çünkü bütün hile XOR'da:</p>
+  <div class="table-wrap"><table class="tt"><thead><tr><th>A (kontrol)</th><th>B</th><th class="out">A ⊕ B</th></tr></thead><tbody>
+    <tr><td>0</td><td>0</td><td class="out">0</td></tr><tr><td>0</td><td>1</td><td class="out one">1</td></tr><tr><td>1</td><td>0</td><td class="out one">1</td></tr><tr><td>1</td><td>1</td><td class="out">0</td></tr>
+  </tbody></table></div>
+  <p>A = 0 olan iki satırda çıkış B'nin aynısı, A = 1 olan iki satırda B'nin tersi. Yani A bir "kontrol" girişi gibi davranır:</p>
+  <ul>
+    <li><span class="m">B ⊕ 0 = B</span>: kontrol 0 iken B aynen geçer.</li>
+    <li><span class="m">B ⊕ 1 = <span class="ov">B</span></span>: kontrol 1 iken B ters çevrilir.</li>
+  </ul>
+  <p>Her B bitinin önüne bir XOR koyup diğer girişlerini ortak bir <b>işlem seçme girişine</b> (Operation Choice Input) bağlarsak: seçim 0 → B olduğu gibi gider, devre <b>toplar</b>. Seçim 1 → B ters çevrilir, devre <b>çıkarır</b>.</p>
+
+  <h3>End-around carry: AND kapısı</h3>
+  <p>1's complement'te taşan elde en sağa eklenmeli. Hoca C<sub>out2</sub>'yi geri getirip bir AND kapısından C<sub>in0</sub>'a bağlamış. AND'in diğer girişi işlem seçme girişi:</p>
+  <ul>
+    <li>Toplama modunda (seçim = 0): AND çıkışı 0, C<sub>in0</sub> = 0. Normal toplayıcı.</li>
+    <li>Çıkarma modunda (seçim = 1): C<sub>in0</sub> = C<sub>out2</sub>. Hocanın notu: "OF ✓ ⇒ 1, OF ✗ ⇒ 0". Elde taştıysa en sağa 1 eklenir.</li>
+  </ul>
+
+  <div class="circuit" id="c-addsub">
+    <div class="circuit-head">
+      <h4>3 bitlik toplayıcı/çıkarıcı: A, B ve Op'a bas</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 -14 620 314" role="img" aria-label="Her B biti, Op girişiyle bir XOR kapısından geçip bir tam toplayıcıya giriyor. Üç tam toplayıcı zincir halinde. En soldaki eldeyi Op ile AND'leyen kapı en sağdaki toplayıcının Cin girişine bağlı.">
+        <path class="w" data-n="op" d="M600 40H503A8 8 0 0 0 487 40H453A8 8 0 0 0 437 40H353A8 8 0 0 0 337 40H303A8 8 0 0 0 287 40H203A8 8 0 0 0 187 40H159"/>
+        <path class="w" data-n="op" d="M590 40V176H580"/>
+        <path class="w" data-n="op" d="M159 40V74"/><path class="w" data-n="op" d="M309 40V74"/><path class="w" data-n="op" d="M459 40V74"/>
+        <path class="w" data-n="B2" d="M145 10V74"/><path class="w" data-n="B1" d="M295 10V74"/><path class="w" data-n="B0" d="M445 10V74"/>
+        <path class="w" data-n="A2" d="M195 10V150"/><path class="w" data-n="A1" d="M345 10V150"/><path class="w" data-n="A0" d="M495 10V150"/>
+        <path class="w" data-n="x2" d="M152 110V150"/><path class="w" data-n="x1" d="M302 110V150"/><path class="w" data-n="x0" d="M452 110V150"/>
+        <path class="w" data-n="c0" d="M420 185H370"/><path class="w" data-n="c1" d="M270 185H220"/>
+        <path class="w" data-n="c2" d="M120 185H70V285H610V194H580"/>
+        <path class="w" data-n="c2" d="M70 232H34"/>
+        <path class="w" data-n="cin" d="M550 185H520"/>
+        <path class="w" data-n="s2" d="M170 220V250"/><path class="w" data-n="s1" d="M320 220V250"/><path class="w" data-n="s0" d="M470 220V250"/>
+        <circle class="dot" cx="159" cy="40" r="4"/><circle class="dot" cx="309" cy="40" r="4"/><circle class="dot" cx="459" cy="40" r="4"/><circle class="dot" cx="590" cy="40" r="4"/><circle class="dot" cx="70" cy="232" r="4"/>
+        <g>
+          <path class="g-line" d="M136 66Q152 76 168 66"/><path class="g" d="M136 72Q152 82 168 72Q168 98 152 110Q136 98 136 72Z"/>
+          <path class="g-line" d="M286 66Q302 76 318 66"/><path class="g" d="M286 72Q302 82 318 72Q318 98 302 110Q286 98 286 72Z"/>
+          <path class="g-line" d="M436 66Q452 76 468 66"/><path class="g" d="M436 72Q452 82 468 72Q468 98 452 110Q436 98 436 72Z"/>
+        </g>
+        <rect class="g" x="120" y="150" width="100" height="70" rx="4"/><rect class="g" x="270" y="150" width="100" height="70" rx="4"/><rect class="g" x="420" y="150" width="100" height="70" rx="4"/>
+        <path class="g" d="M580 168H565A17 17 0 0 0 565 202H580Z"/>
+        <text class="lbl" x="152" y="191">FA₂</text><text class="lbl" x="302" y="191">FA₁</text><text class="lbl" x="452" y="191">FA₀</text>
+        <text class="tag" x="138" y="8">B₂</text><text class="tag" x="188" y="8">A₂</text><text class="tag" x="288" y="8">B₁</text><text class="tag" x="338" y="8">A₁</text><text class="tag" x="438" y="8">B₀</text><text class="tag" x="488" y="8">A₀</text>
+        <text class="tag" x="560" y="30">Op</text>
+        <text class="tag" x="374" y="178">C₀=</text><text class="val" x="400" y="178" data-v="c0"></text>
+        <text class="tag" x="224" y="178">C₁=</text><text class="val" x="250" y="178" data-v="c1"></text>
+        <text class="tag" x="524" y="178">C<tspan font-size="10" dy="3">in0</tspan></text><text class="val" x="532" y="200" data-v="cin"></text>
+        <text class="val" x="160" y="132" data-v="x2"></text><text class="val" x="310" y="132" data-v="x1"></text><text class="val" x="460" y="132" data-v="x0"></text>
+        <text class="lbl" x="12" y="238">F₃</text><text class="val" x="40" y="224" data-v="c2"></text>
+        <text class="lbl" x="162" y="268">F₂</text><text class="lbl" x="312" y="268">F₁</text><text class="lbl" x="462" y="268">F₀</text>
+        <text class="val" x="178" y="244" data-v="s2"></text><text class="val" x="328" y="244" data-v="s1"></text><text class="val" x="478" y="244" data-v="s0"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="mode"></span><span data-v="expl"></span></div></div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: A = 101, B = 100, çıkarma</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Op = 1. XOR'lar B'yi ters çevirir: 100 → <span class="b">011</span>.</li>
+        <li>Toplayıcı 101 + 011 hesaplar:</li>
+      </ol>
+      <div class="calc">
+        <span class="l"></span><span class="v carry"> 11 </span><span class="c">elde (hocanın "cc"si)</span>
+        <span class="l"></span><span class="v">101</span><span class="c">A = 5</span>
+        <span class="l">+</span><span class="v">011</span><span class="c">B'nin 1's complement'i</span>
+        <hr>
+        <span class="l"></span><span class="v"><span class="hl">1</span>000</span><span class="c">elde taştı (OF)</span>
+        <span class="l">+</span><span class="v">1</span><span class="c">AND kapısı eldeyi C<sub>in0</sub>'a verir</span>
+        <hr>
+        <span class="l"></span><span class="v">001</span><span class="c">= 1</span>
+      </div>
+      <p class="answer">Sonuç <span class="b">001</span> = 1. Kontrol: 5 − 4 = 1.</p>
+      <p>Bu örneği yukarıdaki devrede deneyebilirsin: A₂A₁A₀ = 101, B₂B₁B₀ = 100, Op = 1.</p>
+    </div>
+  </div>
+
+  <h3>Hocanın algoritması</h3>
+  <p>Hoca devrenin yaptığını adım adım bir algoritma olarak da yazmış. Sınavda "algoritmasını yaz" diye sorulabilir:</p>
+  <ol start="0">
+    <li><b>Start</b></li>
+    <li><b>Check Op. Choice</b>: işlem seçme girişine bak.</li>
+    <li><b>If Op. Choice is not 1 then go to step 6</b>: seçim 1 değilse (toplama) 6. adıma atla.</li>
+    <li><b>Invert B</b>: B'yi ters çevir.</li>
+    <li><b>Calculate R = A + Inverted B</b></li>
+    <li><b>If R has OF then find R = R + OF else invert R</b>: elde taştıysa en sağa ekle (sonuç pozitif). Taşmadıysa R'yi ters çevir (sonuç negatif, bu onun büyüklüğü). Sonra 7. adıma git.</li>
+    <li><b>R = A + B</b>: toplama.</li>
+    <li><b>End</b></li>
+  </ol>
+  <div class="note warn">
+    <span class="note-title">Hocanın algoritmasında bir eksik var</span>
+    <p>5. adımdan sonra "go to step 7" yazılmamış. Yazıldığı haliyle 5. adımdan sonra 6. adım (R = A + B) da çalışır ve çıkarma sonucunu siler. Yukarıdaki açıklamada bu atlamayı ekledik. Sınavda 5. adımın sonuna "then go to step 7" yaz.</p>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Dikkat: devre 5. adımın "invert R" kısmını yapmıyor</span>
+    <p>Sonuç negatifse (elde taşmadı), devrenin çıkışındaki F₂F₁F₀ cevabın büyüklüğü değil, büyüklüğün 1's complement'idir. Algoritmadaki "invert R" adımı bu sonucu okunabilir hale getirmek içindir. F₃ = C<sub>out2</sub> çıkarma modunda işaret bilgisi verir: <b>F₃ = 1 → sonuç pozitif</b>, <b>F₃ = 0 → sonuç negatif</b>. Örnek: 2 − 5'te çıkış 100 olur, tersi 011 = 3 → −3.</p>
+    <p>A = B olduğunda 1's complement'in bilinen bir tuhaflığı ortaya çıkar: A + <span class="ov">B</span> = 111 olur. Elde başlangıçta 0 ise devre 111'de kalır, bu "−0" demektir (1. dersteki negatif sıfır). Geri besleme hattı yüzünden 1000 (+0) durumu da kararlıdır, devre ikisinden birinde kalabilir. Bu, 1's complement tasarımının bir zayıflığıdır. 2's complement tasarımında böyle bir döngü yoktur.</p>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: 2's complement'li toplayıcı/çıkarıcı</span>
+    <p>Kitaplardaki standart tasarım 2's complement kullanır ve daha basittir: XOR'lar aynı, ama AND kapısı ve geri besleme yok. İşlem seçme girişi doğrudan C<sub>in0</sub>'a bağlanır. Çıkarmada C<sub>in0</sub> = 1 olur ve <span class="m"><span class="ov">B</span> + 1</span> = B'nin 2's complement'i kendiliğinden eklenir. Negatif sıfır sorunu da yoktur.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="cpu">
+  <h2><span class="n">4</span>İşlemci ve op kodları</h2>
+  <p class="lead">Toplayıcı/çıkarıcının "işlem seçme girişi", bir işlemcinin (CPU) nasıl çalıştığının minik bir modeli.</p>
+  <p>Hocanın çizimi: CPU'nun iki tür girişi var. <b>Data Input</b> (üzerinde işlem yapılacak sayılar) ve <b>Operation Input</b> (hangi işlemin yapılacağı). Toplayıcı/çıkarıcıda veri A ve B, işlem girişi Op idi.</p>
+  <ul>
+    <li><b>Op. Codes → Instructions</b>: Her işleme bir numara verilir. Hocanın örneğinde 7 → ADD (topla), 12 → MOV (veriyi bir yerden başka bir yere kopyala). Bu numaralara <span class="term">işlem kodu</span> (<span class="en">operation code, op code</span>) denir. Bunlar örnek numaralar, gerçek değerler işlemciden işlemciye değişir.</li>
+    <li><b>Instruction Set</b>: Bir işlemcinin tanıdığı bütün komutların listesi. Hocanın notu: Intel ve AMD işlemciler aynı ailenin (8086'dan gelen, x86 denen) komut setini kullanır. Bu yüzden aynı programlar ikisinde de çalışır.</li>
+  </ul>
+  <h3>Katmanlar</h3>
+  <p>Hocanın çizdiği zincir: <b>Actual Hardware → Op. Codes → Instruction Set → Assembly Language → Programming Language</b>.</p>
+  <ul>
+    <li><b>Assembly</b>: op kodlarına insanın okuyabileceği isimler verilmiş hali (ADD, MOV…).</li>
+    <li><b>Programlama dilleri</b> (C, Python…): derleyiciler bunları sonunda op kodlarına çevirir.</li>
+    <li>Hoca donanıma yakın kısma <b>System Programming</b>, üstteki programlama dili katmanına <b>Application Programming</b> demiş.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="mux">
+  <h2><span class="n">5</span>Multiplexer (MUX)</h2>
+  <p class="lead">Birçok girişten <b>birini seçip</b> tek çıkışa aktaran devre. Bir TV'nin kanal seçicisi ya da bir demiryolu makası gibi.</p>
+  <p>Hocanın çizimi: N girişli bir mantık devresi, 1 çıkış. Hangi girişin çıkışa gideceğini <b>seçme girişi</b> (<span class="en">select / choice input</span>) belirler.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 160 110" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M55 15L105 32V78L55 95Z"/><path d="M10 40H55M10 70H55M105 55H150M80 87V105"/></g><g fill="currentColor" font-family="Archivo, sans-serif" font-size="14" font-weight="700"><text x="0" y="36">A</text><text x="0" y="66">B</text><text x="140" y="50">F</text><text x="86" y="108">S</text></g></svg>
+      <figcaption><b>2×1 MUX sembolü</b>: yamuk (trapez). S = 0 → A, S = 1 → B.</figcaption>
+    </figure>
+  </div>
+
+  <h3>2×1 MUX'u tasarlayalım</h3>
+  <p>İki veri girişi I₀ ve I₁, bir seçme girişi S. Kural: <b>S = 0 → F = I₀</b>, <b>S = 1 → F = I₁</b>. Bu bir tasarım problemi, 3. dersteki adımlarla çözelim.</p>
+  <div class="example">
+    <div class="example-head"><h4>2×1 MUX</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-body">
+      <div class="tables-row">
+        <div class="table-wrap"><table class="tt">
+          <thead><tr><th>I₁</th><th>I₀</th><th>S</th><th class="out">F</th><th>Neden</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td style="font-family:var(--font)">S=0 → I₀ = 0</td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td class="out">0</td><td style="font-family:var(--font)">S=1 → I₁ = 0</td></tr>
+            <tr class="hit"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td style="font-family:var(--font)">S=0 → I₀ = 1</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td class="out">0</td><td style="font-family:var(--font)">S=1 → I₁ = 0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td class="out">0</td><td style="font-family:var(--font)">S=0 → I₀ = 0</td></tr>
+            <tr class="hit"><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td style="font-family:var(--font)">S=1 → I₁ = 1</td></tr>
+            <tr class="hit"><td>1</td><td>1</td><td>0</td><td class="out one">1</td><td style="font-family:var(--font)">S=0 → I₀ = 1</td></tr>
+            <tr class="hit"><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td style="font-family:var(--font)">S=1 → I₁ = 1</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <p>F = Σ(2, 5, 6, 7). Haritada satır I₁, sütunlar I₀S:</p>
+      <div class="kmap-figure"><div class="kmap6" data-ones="2,5,6,7" data-groups="AC|BC'" data-row="I₁" data-col="I₀S" data-names="I₁,I₀,S"></div></div>
+      <ol class="steps">
+        <li>Alt satırın orta iki hücresi: I₁ = 1, S = 1 sabit → <span class="m">I₁S</span>.</li>
+        <li>Sağ sütun (I₀S = 10): I₀ = 1, S = 0 sabit → <span class="m">I₀<span class="ov">S</span></span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m">I₀<span class="ov">S</span> + I₁S</span></p>
+      <p>Formülü sözle oku: "S = 0 iken <span class="ov">S</span> = 1, ilk terim I₀'ı geçirir, ikinci terim 0. S = 1 iken tersi." Devre: S bir NOT'tan geçip I₀ ile AND'lenir, S doğrudan I₁ ile AND'lenir, iki AND bir OR'da birleşir.</p>
+    </div>
+  </div>
+
+  <div class="circuit" id="c-mux2">
+    <div class="circuit-head"><h4>2×1 MUX: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 420 200" role="img" aria-label="S bir NOT kapısından geçip I0 ile AND'leniyor. S doğrudan I1 ile AND'leniyor. İki AND bir OR'da birleşip F'yi veriyor.">
+        <path class="w" data-n="I0" d="M34 50H220"/>
+        <path class="w" data-n="I1" d="M34 130H142A8 8 0 0 1 158 130H220"/>
+        <path class="w" data-n="S" d="M150 190V155H220"/>
+        <path class="w" data-n="S" d="M150 155V110"/>
+        <path class="w" data-n="nS" d="M150 87V75H220"/>
+        <path class="w" data-n="a0" d="M270 62H300V88H316"/>
+        <path class="w" data-n="a1" d="M270 142H300V112H316"/>
+        <path class="w" data-n="F" d="M385 100H410"/>
+        <circle class="dot" cx="150" cy="155" r="4"/>
+        <path class="g" d="M137 110L150 95L163 110Z"/><circle class="g" cx="150" cy="91" r="4"/>
+        <path class="g" d="M220 37H245A25 25 0 0 1 245 87H220Z"/>
+        <path class="g" d="M220 117H245A25 25 0 0 1 245 167H220Z"/>
+        <path class="g" d="M310 70Q355 70 385 100Q355 130 310 130Q327 100 310 70Z"/>
+        <text class="lbl" x="10" y="56">I₀</text><text class="lbl" x="10" y="136">I₁</text><text class="lbl" x="158" y="196">S</text><text class="lbl" x="392" y="90">F</text>
+        <text class="tag" x="272" y="52">I₀<tspan style="text-decoration:overline">S</tspan>=</text><text class="val" x="308" y="52" data-v="a0"></text>
+        <text class="tag" x="272" y="160">I₁S=</text><text class="val" x="304" y="160" data-v="a1"></text>
+        <text class="val" x="396" y="122" data-v="F"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+  <h3>MUX ile işlem seçmek (hocanın son sayfası)</h3>
+  <p>Hoca son sayfada 3. bölümdeki toplayıcı/çıkarıcıyı tekrar çizmiş. Bu sefer Op hattını bir 2×1 MUX sürüyor: I₀ = 0 ("ADD (0)"), I₁ = 1 ("SUB (1)") sabit girişler. Formülden: <span class="m">F = I₀<span class="ov">S</span> + I₁S = 0·<span class="ov">S</span> + 1·S = S</span>. Yani S = 0 → Op = 0 → toplama, S = 1 → Op = 1 → çıkarma. Çizimde S = 0, devre topluyor. Fikir şu: hangi işlemin yapılacağını başka bir devre (işlemcinin op kodu) seçer. 4. bölümdeki işlemci modelinin özü bu.</p>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="mux4">
+  <h2><span class="n">6</span>4×1 ve daha büyük MUX</h2>
+  <p class="lead">Hocanın listesi: 2×1, 4×1, 8×1, 16×1. Giriş sayısı hep 2'nin kuvveti.</p>
+  <p><b>Kaç seçme girişi gerekir?</b> n tane seçme biti 2ⁿ farklı değer alabilir, yani 2ⁿ girişten birini seçebilir:</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>MUX</th><th>Veri girişi</th><th>Seçme girişi</th></tr></thead>
+    <tbody><tr><td>2×1</td><td>2</td><td>1 (S)</td></tr><tr><td>4×1</td><td>4</td><td>2 (S₁S₀)</td></tr><tr><td>8×1</td><td>8</td><td>3 (S₂S₁S₀)</td></tr><tr><td>16×1</td><td>16</td><td>4</td></tr></tbody>
+  </table></div>
+  <p>Seçme bitleri ikili bir sayı gibi okunur, <b>S₁ yüksek bit</b>: S₁S₀ = 00 → I₀, 01 → I₁, 10 → I₂, 11 → I₃.</p>
+  <div class="table-wrap"><table class="tt"><thead><tr><th>S₁</th><th>S₀</th><th class="out">F</th><th>Satırın mintermi</th></tr></thead><tbody>
+    <tr><td>0</td><td>0</td><td class="out">I₀</td><td class="m"><span class="ov">S₁</span><span class="ov">S₀</span></td></tr><tr><td>0</td><td>1</td><td class="out">I₁</td><td class="m"><span class="ov">S₁</span>S₀</td></tr><tr><td>1</td><td>0</td><td class="out">I₂</td><td class="m">S₁<span class="ov">S₀</span></td></tr><tr><td>1</td><td>1</td><td class="out">I₃</td><td class="m">S₁S₀</td></tr>
+  </tbody></table></div>
+  <div class="example">
+    <div class="example-head"><h4>4×1 MUX</h4><span class="src">Hocanın formülü ve devresi, PDF s.4–5</span></div>
+    <div class="example-body">
+      <p>2×1'deki fikri genişlet: her veri girişini, kendi seçme kombinasyonunun mintermiyle AND'le, hepsini OR'la.</p>
+      <div class="formula"><span class="m" style="white-space:normal">F = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</span></div>
+      <p>Formülün her terimi, tablodaki satırın mintermi ile o satırın veri girişinin çarpımı. Hocanın devresi: dört tane 3 girişli AND (her biri bir veri girişi ve iki seçme hattı), S₁ ve S₀ için birer NOT, sonda 4 girişli bir OR.</p>
+      <figure class="hoca-fig" style="max-width:480px"><img src="../assets/img/hoca/l6-mux4-devre.png" alt="Hocanın el yazısıyla çizdiği 4x1 MUX devresi: dört 3 girişli AND, S1 ve S0 için NOT kapıları, 4 girişli OR" loading="lazy"><figcaption>Hocanın 4×1 MUX devresi, PDF s.5. Sınavda "4×1 MUX'u çiz" denirse bu yapıyı çiz.</figcaption></figure>
+      <p>Hoca 2×1'i de aynı kalıpta kırmızı kutuya almış: <span class="m">I₀<span class="ov">S</span> + I₁S</span>. Genel kural: <b>2ⁿ×1 MUX = Σ (seçme mintermi<sub>i</sub> · I<sub>i</sub>)</b>.</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-mux4">
+    <div class="circuit-head"><h4>4×1 MUX: hangi giriş seçiliyor?</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 420 220" role="img" aria-label="Dört veri girişi bir MUX bloğuna giriyor, S1 ve S0 seçme girişleri hangisinin F çıkışına aktarılacağını belirliyor.">
+        <path class="w sel-line" data-sel="0" data-n="I0" d="M40 50H170"/>
+        <path class="w sel-line" data-sel="1" data-n="I1" d="M40 90H170"/>
+        <path class="w sel-line" data-sel="2" data-n="I2" d="M40 130H170"/>
+        <path class="w sel-line" data-sel="3" data-n="I3" d="M40 170H170"/>
+        <path class="w" data-n="F" d="M250 110H360"/>
+        <path class="w" data-n="S1" d="M195 215V180"/><path class="w" data-n="S0" d="M225 215V172"/>
+        <path class="g" d="M170 25L250 55V165L170 195Z"/>
+        <text class="lbl" x="12" y="56">I₀</text><text class="lbl" x="12" y="96">I₁</text><text class="lbl" x="12" y="136">I₂</text><text class="lbl" x="12" y="176">I₃</text>
+        <text class="lbl" x="190" y="115">4×1</text>
+        <text class="lbl" x="368" y="116">F</text><text class="val" x="300" y="100" data-v="F"></text>
+        <text class="tag" x="174" y="214">S₁</text><text class="tag" x="232" y="214">S₀</text>
+        <path class="route" data-route="0" d="M170 50L250 110"/><path class="route" data-route="1" d="M170 90L250 110"/><path class="route" data-route="2" d="M170 130L250 110"/><path class="route" data-route="3" d="M170 170L250 110"/>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="iletisim">
+  <h2><span class="n">7</span>MUX ve DEMUX ile iletişim</h2>
+  <p class="lead">Hocanın örneği: dört bilgisayar (Host A–D) tek bir kablo üzerinden bir sunucuya veri gönderiyor.</p>
+  <ol class="steps">
+    <li>Dört host bir 4×1 MUX'un girişlerine bağlı. Seçme girişleri S₁S₀ sırayla 00, 01, 10, 11 değerlerini alıyor.</li>
+    <li>Her değer kısa bir süre (hocanın örneğinde 1 ms) kalıyor: 00 iken A'nın verisi, 01 iken B'nin verisi hatta çıkıyor… Hatta sırayla "ABCDABCD…" akıyor.</li>
+    <li>Sunucu tarafında bir <b>demultiplexer</b> aynı sırayla hattı dört ayrı çıkışa dağıtıyor. Her host'un verisi sunucuda kendi kutusuna gidiyor.</li>
+  </ol>
+  <p>Bu yönteme zaman paylaşımlı çoğullama (<span class="en">time-division multiplexing</span>) denir. Tek kablo, dört konuşma. Telefon hatlarından bilgisayar ağlarına kadar her yerde kullanılır. Hoca DEMUX'u önce "?" diye çizmiş, sonra adını koymuş. Şimdi onu tasarlayalım.</p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="demux">
+  <h2><span class="n">8</span>Demultiplexer (DEMUX)</h2>
+  <p class="lead">MUX'un tersi: <b>tek bir girişi</b>, seçme girişinin belirlediği <b>çıkışa</b> gönderir. Diğer çıkışlar 0 kalır.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 160 110" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M105 15L55 32V78L105 95Z"/><path d="M10 55H55M105 40H150M105 70H150M80 87V105"/></g><g fill="currentColor" font-family="Archivo, sans-serif" font-size="14" font-weight="700"><text x="0" y="50">I</text><text x="136" y="34">F₀</text><text x="136" y="92">F₁</text><text x="86" y="108">S</text></g></svg>
+      <figcaption><b>1×2 DEMUX sembolü</b>: MUX'un ters yamuğu.</figcaption>
+    </figure>
+  </div>
+  <div class="example">
+    <div class="example-head"><h4>Let's design 1×2 Demux</h4><span class="src">Hocanın çözümü, PDF s.5–6</span></div>
+    <div class="example-body">
+      <p>Kural: <b>S = 0 → I, F₀'a gider</b>, <b>S = 1 → I, F₁'e gider</b>.</p>
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>I</th><th>S</th><th class="out">F₀</th><th class="out">F₁</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td><td class="out">0</td></tr>
+          <tr><td>1</td><td>0</td><td class="out one">1</td><td class="out">0</td></tr>
+          <tr><td>1</td><td>1</td><td class="out">0</td><td class="out one">1</td></tr>
+        </tbody>
+      </table></div>
+      <p>İki çıkış, iki harita. Hoca her birini 2 değişkenli haritayla çözmüş. Her haritada tek bir 1 var, gruplanacak komşusu yok:</p>
+      <div class="kmap-figure">
+        <div class="kmap6" data-n="2" data-ones="2" data-groups="AB'" data-row="I" data-col="S" data-names="I,S" data-title="F₀"></div>
+        <div class="kmap6" data-n="2" data-ones="3" data-groups="AB" data-row="I" data-col="S" data-names="I,S" data-title="F₁"></div>
+      </div>
+      <p class="answer">F₀ = <span class="m">I<span class="ov">S</span></span> &nbsp;&nbsp; F₁ = <span class="m">IS</span></p>
+      <p>Devre: I iki AND kapısına dallanır. S bir NOT'tan geçip F₀'ın AND'ine, doğrudan F₁'in AND'ine gider.</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-demux2">
+    <div class="circuit-head"><h4>1×2 DEMUX: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 380 190" role="img" aria-label="I iki AND kapısına dallanıyor. S bir NOT'tan geçip ilk AND'e, doğrudan ikinci AND'e gidiyor. Çıkışlar F0 ve F1.">
+        <path class="w" data-n="I" d="M34 50H220"/>
+        <path class="w" data-n="I" d="M110 50V122H152A8 8 0 0 1 168 122H220"/>
+        <path class="w" data-n="S" d="M160 180V146H220"/>
+        <path class="w" data-n="S" d="M160 146V100"/>
+        <path class="w" data-n="nS" d="M160 80V74H220"/>
+        <path class="w" data-n="F0" d="M270 62H340"/>
+        <path class="w" data-n="F1" d="M270 134H340"/>
+        <circle class="dot" cx="110" cy="50" r="4"/><circle class="dot" cx="160" cy="146" r="4"/>
+        <path class="g" d="M147 100L160 88L173 100Z"/><circle class="g" cx="160" cy="84" r="4"/>
+        <path class="g" d="M220 37H245A25 25 0 0 1 245 87H220Z"/>
+        <path class="g" d="M220 109H245A25 25 0 0 1 245 159H220Z"/>
+        <text class="lbl" x="12" y="56">I</text><text class="lbl" x="168" y="186">S</text>
+        <text class="lbl" x="346" y="68">F₀</text><text class="lbl" x="346" y="140">F₁</text>
+        <text class="val" x="300" y="54" data-v="F0"></text><text class="val" x="300" y="126" data-v="F1"></text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="demux4">
+  <h2><span class="n">9</span>1×4 DEMUX</h2>
+  <div class="example">
+    <div class="example-head"><h4>Write the output expressions for 1×4 DEMUX</h4><span class="src">Hocanın sorusu, PDF s.6</span></div>
+    <div class="example-body">
+      <p>Her çıkış, girişin kendi seçme kombinasyonuyla AND'lenmiş hali. MUX'ta olduğu gibi S₁ yüksek bit: S₁S₀ = 00 → F₀, 01 → F₁, 10 → F₂, 11 → F₃.</p>
+      <div class="formula"><span class="m" style="white-space:normal">F₀ = <span class="ov">S₁</span><span class="ov">S₀</span>I &nbsp; F₁ = <span class="ov">S₁</span>S₀I &nbsp; F₂ = S₁<span class="ov">S₀</span>I &nbsp; F₃ = S₁S₀I</span></div>
+      <div class="note warn">
+        <span class="note-title">Hocanın notunda F₁ ile F₂ yer değiştirmiş</span>
+        <div class="hoca-row">
+        <figure class="hoca-fig" style="max-width:250px"><img src="../assets/img/hoca/l6-demux4.png" alt="Hocanın el yazısı 1x4 DEMUX ifadeleri F0 ile F3 arası" loading="lazy"><figcaption>Hocanın DEMUX ifadeleri, PDF s.6</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l6-mux4.png" alt="Hocanın el yazısı 4x1 MUX formülü" loading="lazy"><figcaption>Karşılaştırma için hocanın 4×1 MUX formülü, PDF s.4</figcaption></figure>
+        </div>
+        <p>PDF'te <span class="m">F₁ = <span class="ov">S₀</span>S₁I</span> ve <span class="m">F₂ = S₀<span class="ov">S₁</span>I</span> yazıyor. Yani F₁, S₁ = 1, S₀ = 0 iken seçiliyor. Bu, hocanın bir önceki sayfadaki 4×1 MUX formülüyle çelişiyor. Orada I₁, <span class="m"><span class="ov">S₁</span>S₀</span> ile seçiliyordu. S₁S₀ ikili sayı gibi okunursa (S₁ yüksek bit) 01 = 1 → F₁ olmalı. Doğrusu yukarıdaki gibi: <span class="m">F₁ = <span class="ov">S₁</span>S₀I</span>, <span class="m">F₂ = S₁<span class="ov">S₀</span>I</span>.</p>
+        <p>Hocanın yazdığı ancak S₀ yüksek bit kabul edilirse doğru olurdu. Sınavda hangi bitin yüksek olduğunu belirtip ona göre tutarlı yaz. En güvenlisi bu sayfadaki standart düzen.</p>
+      </div>
+    </div>
+  </div>
+  <p>Devre olarak: dört tane 3 girişli AND, her biri I'yı ve uygun S₁/S₀ (ya da tersleri) hatlarını alır. S₁ ve S₀ için birer NOT gerekir. MUX'tan farklı olarak sonda OR yok, dört AND'in çıkışı doğrudan F₀–F₃.</p>
+  <div class="circuit" id="c-demux4">
+    <div class="circuit-head"><h4>1×4 DEMUX: veri hangi çıkışa gidiyor?</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 420 220" role="img" aria-label="Tek veri girişi bir DEMUX bloğuna giriyor. S1 ve S0 hangi çıkışa gideceğini belirliyor.">
+        <path class="w" data-n="I" d="M40 110H170"/>
+        <path class="w" data-n="F0" d="M250 50H370"/><path class="w" data-n="F1" d="M250 90H370"/><path class="w" data-n="F2" d="M250 130H370"/><path class="w" data-n="F3" d="M250 170H370"/>
+        <path class="w" data-n="S1" d="M195 215V180"/><path class="w" data-n="S0" d="M225 215V172"/>
+        <path class="g" d="M250 25L170 55V165L250 195Z"/>
+        <text class="lbl" x="18" y="116">I</text><text class="lbl" x="180" y="115">1×4</text>
+        <text class="lbl" x="378" y="56">F₀</text><text class="lbl" x="378" y="96">F₁</text><text class="lbl" x="378" y="136">F₂</text><text class="lbl" x="378" y="176">F₃</text>
+        <text class="val" x="320" y="42" data-v="F0"></text><text class="val" x="320" y="82" data-v="F1"></text><text class="val" x="320" y="122" data-v="F2"></text><text class="val" x="320" y="162" data-v="F3"></text>
+        <text class="tag" x="174" y="214">S₁</text><text class="tag" x="232" y="214">S₀</text>
+        <path class="route" data-route="0" d="M170 110L250 50"/><path class="route" data-route="1" d="M170 110L250 90"/><path class="route" data-route="2" d="M170 110L250 130"/><path class="route" data-route="3" d="M170 110L250 170"/>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="ozet">
+  <h2><span class="n">10</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Kavramlar</h4>
+      <ul>
+        <li>Kombinasyonel: çıkış sadece o anki girişlere bağlı, hafıza yok</li>
+        <li>SSI &lt; MSI &lt; LSI &lt; VLSI (CPU, RAM) &lt; XLSI</li>
+        <li>Op code → instruction set → assembly → programlama dili</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Toplayıcı/çıkarıcı (1's)</h4>
+      <ul>
+        <li>Her B biti XOR(B, Op): Op = 0 → B, Op = 1 → <span class="ov">B</span></li>
+        <li>C<sub>in0</sub> = Op · C<sub>out2</sub> (end-around carry)</li>
+        <li>Çıkarmada F₃ = 1 → pozitif, F₃ = 0 → negatif (tersini al)</li>
+        <li>2's versiyonu: C<sub>in0</sub> = Op, geri besleme yok</li>
+      </ul>
+    </div>
+    <div>
+      <h4>MUX</h4>
+      <ul>
+        <li>2ⁿ giriş, n seçme, 1 çıkış</li>
+        <li>2×1: F = I₀<span class="ov">S</span> + I₁S</li>
+        <li>4×1: F = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</li>
+        <li>S₁ yüksek bit</li>
+      </ul>
+    </div>
+    <div>
+      <h4>DEMUX</h4>
+      <ul>
+        <li>1 giriş, n seçme, 2ⁿ çıkış</li>
+        <li>1×2: F₀ = I<span class="ov">S</span>, F₁ = IS</li>
+        <li>1×4: F<sub>i</sub> = (S₁S₀'ın i. mintermi) · I</li>
+        <li>MUX + DEMUX = tek hatta çok kanal (TDM)</li>
+      </ul>
+    </div>
+  </div>
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>combinational circuit</dt><dd>kombinasyonel (birleşimsel) devre</dd>
+    <dt>sequential circuit</dt><dd>ardışıl devre (hafızalı)</dd>
+    <dt>integrated circuit (IC)</dt><dd>tümleşik devre, entegre</dd>
+    <dt>adder/subtractor</dt><dd>toplayıcı/çıkarıcı</dd>
+    <dt>operation code (op code)</dt><dd>işlem kodu</dd>
+    <dt>instruction set</dt><dd>komut kümesi</dd>
+    <dt>multiplexer (MUX)</dt><dd>çoğullayıcı, veri seçici</dd>
+    <dt>demultiplexer (DEMUX)</dt><dd>çoğullama çözücü, veri dağıtıcı</dd>
+    <dt>select input</dt><dd>seçme girişi</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="alistirma">
+  <h2><span class="n">11</span>Alıştırmalar ve test</h2>
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li>16×1 bir MUX'ta kaç seçme girişi vardır? 1×8 DEMUX'ta?
+      <details class="solution"><summary>Çözümü göster</summary><p>16 = 2⁴ → <b>4</b>. 8 = 2³ → <b>3</b>.</p></details></li>
+    <li>4×1 MUX'ta I₀I₁I₂I₃ = 1, 0, 0, 1 ve S₁S₀ = 10 ise F kaçtır?
+      <details class="solution"><summary>Çözümü göster</summary><p>10 = 2 → I₂ seçilir → <b>F = 0</b>.</p></details></li>
+    <li>1×4 DEMUX'ta I = 1, S₁S₀ = 11 ise çıkışlar nedir?
+      <details class="solution"><summary>Çözümü göster</summary><p>11 = 3 → <b>F₃ = 1</b>, diğerleri 0.</p></details></li>
+    <li>Toplayıcı/çıkarıcıda A = 110, B = 011, Op = 1. Çıkışı ve sonucu bul.
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="ov">B</span> = 100. 110 + 100 = 1010. Elde taştı → C<sub>in0</sub> = 1 → 010 + 1 = <span class="b">011</span>. F₃ = 1 (pozitif). Sonuç +3. Kontrol: 6 − 3 = 3.</p></details></li>
+    <li>Toplayıcı/çıkarıcıda A = 010, B = 101, Op = 1. Çıkışı ve sonucu bul.
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="ov">B</span> = 010. 010 + 010 = 0100. Elde yok → C<sub>in0</sub> = 0. Çıkış F₃F₂F₁F₀ = <span class="b">0100</span>. F₃ = 0 → negatif. 100'ün tersi 011 = 3 → <b>−3</b>. Kontrol: 2 − 5 = −3.</p></details></li>
+    <li>Toplayıcı/çıkarıcıda A = 011, B = 010, Op = 0. Çıkış nedir?
+      <details class="solution"><summary>Çözümü göster</summary><p>Toplama: 3 + 2 = 5 → F₃F₂F₁F₀ = <span class="b">0101</span>.</p></details></li>
+    <li>8×1 MUX'un çıkış ifadesini yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m" style="white-space:normal">F = <span class="ov">S₂</span><span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₂</span><span class="ov">S₁</span>S₀I₁ + <span class="ov">S₂</span>S₁<span class="ov">S₀</span>I₂ + <span class="ov">S₂</span>S₁S₀I₃ + S₂<span class="ov">S₁</span><span class="ov">S₀</span>I₄ + S₂<span class="ov">S₁</span>S₀I₅ + S₂S₁<span class="ov">S₀</span>I₆ + S₂S₁S₀I₇</span></p></details></li>
+    <li>(İleri) F = AB + <span class="m"><span class="ov">A</span>C</span> fonksiyonunu tek bir 2×1 MUX ile gerçekle.
+      <details class="solution"><summary>Çözümü göster</summary><p>S = A seç. A = 0 iken F = C, A = 1 iken F = B. Yani <b>I₀ = C, I₁ = B, S = A</b>. Kontrol: <span class="m">I₀<span class="ov">S</span> + I₁S = C<span class="ov">A</span> + BA</span>. MUX'lar her fonksiyonu gerçekleyebilir.</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="mux">MUX çıkışı</option>
+            <option value="demux">DEMUX çıkışları</option>
+            <option value="addsub">Toplayıcı/çıkarıcı</option>
+            <option value="select">Seçme girişi sayısı</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="05-dont-care.html">Önceki: K-Maps with Don't Care</a>
+    <a href="07-kombinasyonel-2.html">Sıradaki: Combinational Circuits 2</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/kmap.js"></script>
+  <script src="../assets/js/lesson06.js"></script>
+</body>
+</html>

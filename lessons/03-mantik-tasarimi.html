@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logic Design | YAM205</title>
+  <meta name="description" content="Ders 3: Minterm, maxterm, kanonik formlar, 4 adımda devre tasarımı, yarım ve tam toplayıcı, 3 bitlik toplayıcı. Sıfırdan anlatım ve etkileşimli devreler.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="03">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 3 / 7 <strong>Logic Design</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 3, 28 Eylül 2026</p>
+      <h1>Logic Design</h1>
+      <p>Şimdiye kadar bize verilen bir formülü inceledik. Bu derste tersini yapacağız: sözle anlatılan bir problemden (ör. "en az iki kapı açıksa alarm çalsın") başlayıp çalışan bir devre tasarlayacağız. Bunun için minterm, maxterm ve kanonik formları öğreneceksin. Sonra bilgisayarın kalbindeki devreyi, toplayıcıyı, kendin kuracaksın.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>Minterms, maxterms</li>
+        <li>Canonical forms: SOP, POS</li>
+        <li>Σ ve Π gösterimi</li>
+        <li>Design steps</li>
+        <li>Door alarm example</li>
+        <li>Half adder</li>
+        <li>Full adder</li>
+        <li>3-bit adder</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#tasarim"><span class="n">1</span><span>Mantık tasarımı nedir?</span></a></li>
+          <li><a href="#minterm"><span class="n">2</span><span>Minterm</span></a></li>
+          <li><a href="#maxterm"><span class="n">3</span><span>Maxterm</span></a></li>
+          <li><a href="#kanonik"><span class="n">4</span><span>İki kanonik form: Σ ve Π</span></a></li>
+          <li><a href="#ornek-kanonik"><span class="n">5</span><span>İfadeyi kanonik forma çevirmek</span></a></li>
+          <li><a href="#adimlar"><span class="n">6</span><span>Tasarımın 4 adımı</span></a></li>
+          <li><a href="#alarm"><span class="n">7</span><span>Örnek: kapı alarmı</span></a></li>
+          <li><a href="#yarim"><span class="n">8</span><span>Yarım toplayıcı</span></a></li>
+          <li><a href="#tam"><span class="n">9</span><span>Tam toplayıcı</span></a></li>
+          <li><a href="#ripple"><span class="n">10</span><span>3 bitlik toplayıcı</span></a></li>
+          <li><a href="#ozet"><span class="n">11</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">12</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="tasarim">
+  <h2><span class="n">1</span>Mantık tasarımı nedir?</h2>
+  <p class="lead">Analiz: devre verilir, ne yaptığını bulursun (2. ders). Tasarım: ne yapması gerektiği söylenir, devreyi sen kurarsın (bu ders).</p>
+  <p>Gerçek hayatta problem hiçbir zaman formül olarak gelmez. "Bir kapı açıksa ışık yansın", "iki sayıyı topla" gibi sözlerle gelir. Mühendisin işi bu sözleri önce bir <b>doğruluk tablosuna</b>, sonra bir <b>formüle</b>, en son da bir <b>devreye</b> çevirmektir.</p>
+  <p>Doğruluk tablosundan formüle geçmenin garantili bir yolu var: <b>kanonik formlar</b>. Bunlar her tablo için mekanik olarak yazılabilen, hiç düşünmeden elde edilen formüllerdir. Uzun olurlar ama her zaman doğrudurlar. Sonra 2. dersteki teoremlerle kısaltırız.</p>
+  <p>Kanonik formların yapı taşları minterm ve maxterm. Hoca dersi bu iki kavramla açmış.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="minterm">
+  <h2><span class="n">2</span>Minterm</h2>
+  <p class="lead">Minterm, doğruluk tablosunun <b>tek bir satırında 1</b>, diğer bütün satırlarda 0 olan çarpım terimidir.</p>
+  <p>1. dersin sonunda EXOR'un formülünü tablodan çıkarırken bunu zaten yaptık: 01 satırı için <span class="m"><span class="ov">A</span>B</span> yazdık. Bu terim sadece A = 0, B = 1 iken 1 olur. İşte bu bir mintermdir.</p>
+  <h3>Minterm nasıl yazılır?</h3>
+  <ol class="steps">
+    <li>Satırdaki <b>bütün</b> değişkenleri çarpım olarak yaz (hiçbiri eksik olmayacak).</li>
+    <li>Değeri <b>0</b> olan değişkenin üstüne çizgi koy, <b>1</b> olanı düz bırak.</li>
+  </ol>
+  <p>Neden böyle? Bir çarpımın 1 olması için bütün çarpanların 1 olması gerekir. A = 0 olan satırda <span class="ov">A</span> = 1 olur. Böylece terim tam o satırda bütün çarpanları 1 yapar, başka hiçbir satırda yapamaz.</p>
+  <p>Mintermlere satır numarasıyla isim verilir: <b>m<sub>i</sub></b>. Satır numarası, girişlerin ikili sayı olarak değeridir. A en soldaki (en değerli) bittir. Değişken sırası değişirse numaralar da değişir, o yüzden sınavda F(A, B, C) sırasına uy. Örneğin ABC = 101 → 5 → <b>m₅</b> = <span class="m">A<span class="ov">B</span>C</span>.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>3 değişken için minterm ve maxterm tablosu</h4><span class="src">Hocanın tablosu, PDF s.1</span></div>
+    <div class="example-body">
+      <div class="table-wrap"><table class="tt" id="mm-table">
+        <thead><tr><th>Onluk</th><th>A</th><th>B</th><th>C</th><th class="out">Minterm m<sub>i</sub></th><th class="out">Maxterm M<sub>i</sub></th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p>Hocanın tablosunda orta sütunun başlığı "BCD Form". 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında bu sütun düz ikilidir.</p>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu: indeksten minterm, mintermden indeks</span>
+    <p><b>m₆ nedir?</b> 6'yı 3 bitlik ikiliye çevir: 110 → A = 1, B = 1, C = 0 → <span class="m">AB<span class="ov">C</span></span>.</p>
+    <p><b><span class="m"><span class="ov">A</span>BC</span> hangi minterm?</b> Çizgili 0, düz 1: 011 → 3 → <b>m₃</b>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="maxterm">
+  <h2><span class="n">3</span>Maxterm</h2>
+  <p class="lead">Maxterm, mintermin tam tersi: doğruluk tablosunun <b>tek bir satırında 0</b>, diğer bütün satırlarda 1 olan toplam terimidir.</p>
+  <h3>Maxterm nasıl yazılır?</h3>
+  <ol class="steps">
+    <li>Satırdaki bütün değişkenleri <b>toplam</b> (+) olarak yaz.</li>
+    <li>Değeri <b>1</b> olan değişkenin üstüne çizgi koy, <b>0</b> olanı düz bırak. (Mintermin tersi!)</li>
+  </ol>
+  <p>Neden böyle? Bir toplamın 0 olması için bütün terimlerin 0 olması gerekir. A = 1 olan satırda <span class="ov">A</span> = 0 olur. Böylece terim tam o satırda bütün parçaları 0 yapar.</p>
+  <p>Maxtermler büyük M ile gösterilir: <b>M<sub>i</sub></b>. Örnek: ABC = 101 → <b>M₅</b> = <span class="m"><span class="ov">A</span> + B + <span class="ov">C</span></span>.</p>
+  <div class="note tip">
+    <span class="note-title">İkisi arasındaki bağ: De Morgan</span>
+    <p>Aynı numaralı maxterm, mintermin tersidir: <span class="m">M<sub>i</sub> = <span class="ov">m<sub>i</sub></span></span>. Örnek: <span class="m"><span class="ov">m₅</span> = <span class="ov">A<span class="ov">B</span>C</span> = <span class="ov">A</span> + B + <span class="ov">C</span> = M₅</span>. Mantıklı: m₅ sadece 5. satırda 1, tersi sadece 5. satırda 0.</p>
+  </div>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th></th><th>Minterm (m<sub>i</sub>)</th><th>Maxterm (M<sub>i</sub>)</th></tr></thead>
+    <tbody>
+      <tr><td>Biçim</td><td>Çarpım (AND)</td><td>Toplam (OR)</td></tr>
+      <tr><td>Hangi satırda özel?</td><td>Sadece kendi satırında <b>1</b></td><td>Sadece kendi satırında <b>0</b></td></tr>
+      <tr><td>0 olan değişken</td><td>çizgili</td><td>düz</td></tr>
+      <tr><td>1 olan değişken</td><td>düz</td><td>çizgili</td></tr>
+      <tr><td>ABC = 101 için</td><td class="m">A<span class="ov">B</span>C</td><td class="m"><span class="ov">A</span> + B + <span class="ov">C</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="kanonik">
+  <h2><span class="n">4</span>İki kanonik form: Σ ve Π</h2>
+  <p class="lead">Hoca kırmızıyla yazmış: "There are 2 canonical forms". Her fonksiyonun iki kanonik yazılışı vardır.</p>
+
+  <h3>1) Sum of Products (SOP): mintermlerin toplamı</h3>
+  <p>Fonksiyonun <b>1 olduğu satırların</b> mintermlerini topla. Her minterm kendi satırında 1 olduğu için toplam tam olarak o satırlarda 1 olur.</p>
+  <p>Kısaltması büyük sigma: <span class="m">F = Σ(2, 3, 6)</span> demek <span class="m">F = m₂ + m₃ + m₆</span> demek. Bazen <span class="m">Σm(2, 3, 6)</span> diye de yazılır.</p>
+
+  <h3>2) Product of Sums (POS): maxtermlerin çarpımı</h3>
+  <p>Fonksiyonun <b>0 olduğu satırların</b> maxtermlerini çarp. Her maxterm kendi satırında 0 olduğu için, çarpım tam olarak o satırlarda 0 olur (bir çarpanın 0 olması çarpımı 0 yapar). Diğer satırlarda bütün maxtermler 1'dir, çarpım 1 olur.</p>
+  <p>Kısaltması büyük pi: <span class="m">F = Π(0, 1, 4, 5, 7)</span> demek <span class="m">F = M₀ · M₁ · M₄ · M₅ · M₇</span> demek.</p>
+
+  <div class="note tip">
+    <span class="note-title">En önemli kısayol: Σ'dan Π'ye geçiş</span>
+    <p>3 değişkende satır numaraları 0–7. Σ'da olmayan her numara Π'dedir, Π'de olmayan her numara Σ'dadır. Yani <b>tamamlayıcı küme</b>.</p>
+    <p class="m" style="white-space:normal">Σ(2, 3, 6) → eksik olanlar 0, 1, 4, 5, 7 → Π(0, 1, 4, 5, 7)</p>
+    <p>4 değişkende numaralar 0–15'tir. Aynı kural geçerli.</p>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Sık hata</span>
+    <p>Π listesindeki numaralar fonksiyonun <b>0 olduğu</b> satırlardır, 1 olduğu değil. Σ = 1'ler, Π = 0'lar.</p>
+  </div>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: "kanonik" ile "standart" farkı</span>
+    <p><b>Kanonik</b> formda her terim bütün değişkenleri içerir (<span class="m"><span class="ov">A</span>BC</span> gibi). Sadeleştirince terimler kısalır (<span class="m">B + AC</span> gibi). Buna artık kanonik değil <b>standart</b> (ya da sadeleştirilmiş) SOP denir. Sınavda "write in canonical form" derse bütün değişkenleri yazmak zorundasın.</p>
+    <p>Bir de şu: <span class="m"><span class="ov">F</span></span>'nin mintermleri, F'nin maxterm numaralarıdır. <span class="m">F = Σ(2,3,6)</span> ise <span class="m"><span class="ov">F</span> = Σ(0,1,4,5,7)</span>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="ornek-kanonik">
+  <h2><span class="n">5</span>Bir ifadeyi kanonik forma çevirmek</h2>
+  <p class="lead">İfadede bazı terimler eksik değişkenle gelir. Onları tamamlamanın hilesi: eksik değişken X ise terimi <span class="m">(X + <span class="ov">X</span>)</span> ile çarp. Bu ifade 1'e eşit olduğu için hiçbir şey değişmez.</p>
+  <div class="example">
+    <div class="example-head"><h4>F(A, B, C) = AB<span class="ov">C</span> + <span class="ov">A</span>B: her iki kanonik formda yaz</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>İlk terim <span class="m">AB<span class="ov">C</span></span>: üç değişken de var, bu zaten bir minterm. 110 → <b>m₆</b>.</li>
+        <li>İkinci terim <span class="m"><span class="ov">A</span>B</span>: C eksik. <span class="m">(C + <span class="ov">C</span>)</span> ile çarp: <span class="m"><span class="ov">A</span>B(C + <span class="ov">C</span>) = <span class="ov">A</span>BC + <span class="ov">A</span>B<span class="ov">C</span></span>. Hocanın notundaki ok bu dağıtmayı gösteriyor.</li>
+        <li><span class="m"><span class="ov">A</span>BC</span> → 011 → <b>m₃</b>. <span class="m"><span class="ov">A</span>B<span class="ov">C</span></span> → 010 → <b>m₂</b>. Hoca her terimin altına bitlerini (110, 011, 010) yazmış.</li>
+        <li>SOP: <span class="m">F = AB<span class="ov">C</span> + <span class="ov">A</span>BC + <span class="ov">A</span>B<span class="ov">C</span> = m₆ + m₃ + m₂ = Σ(2, 3, 6)</span>.</li>
+        <li>POS: 0–7 arasında Σ'da olmayanlar 0, 1, 4, 5, 7 → <span class="m">F = Π(0, 1, 4, 5, 7)</span>.</li>
+      </ol>
+      <p class="answer">F = Σ(2, 3, 6) = Π(0, 1, 4, 5, 7)</p>
+      <p>Hoca Π'yi kısaltmayla bırakmış. Açık hali de istenebilir, o yüzden yazalım (her numarayı ikiliye çevir, 1'leri çizgili yaz):</p>
+      <p class="m" style="white-space:normal">F = (A + B + C)(A + B + <span class="ov">C</span>)(<span class="ov">A</span> + B + C)(<span class="ov">A</span> + B + <span class="ov">C</span>)(<span class="ov">A</span> + <span class="ov">B</span> + <span class="ov">C</span>)</p>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Alternatif yol: doğruluk tablosu</span>
+    <p>Terimleri genişletmek yerine ifadenin doğruluk tablosunu çıkarıp 1 olan satırları Σ'ya, 0 olanları Π'ye yazabilirsin. İki yol aynı sonucu verir. Biri ile çözüp diğeri ile sağlama yapmak en güvenlisi.</p>
+  </div>
+  <div class="note tip">
+    <span class="note-title">POS tarafı için aynı hilenin eşi</span>
+    <p>İfade toplamlar çarpımı biçimindeyse ve bir toplam teriminde X eksikse, terime <span class="m">X<span class="ov">X</span></span> (= 0) ekle ve dağılmanın ikinci halini uygula. Örnek (3 değişken): <span class="m">A + B = A + B + C<span class="ov">C</span> = (A + B + C)(A + B + <span class="ov">C</span>)</span> → M₀M₁.</p>
+  </div>
+
+  <div class="widget" id="w-canon">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: ifadeyi kanonik formlara çevir</h4></div>
+    <div class="widget-body">
+      <p>Bir ifade yaz. Araç doğruluk tablosunu, Σ ve Π listelerini ve iki kanonik formu açık halde gösterir.</p>
+      <div class="controls">
+        <div class="field"><label for="canon-in">İfade</label><input id="canon-in" class="wide" type="text" value="ABC'+A'B" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="canon-vars">Değişkenler</label><input id="canon-vars" type="text" value="ABC" size="6" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" type="button" id="canon-go">Çevir</button>
+      </div>
+      <p class="hint">"Değişkenler" kutusu sırayı belirler (A en soldaki bit). İfadede geçmeyen bir değişkeni de ekleyebilirsin. Yazım: A' (DEĞİL), AB (VE), A+B (VEYA).</p>
+      <div class="wout" id="canon-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="adimlar">
+  <h2><span class="n">6</span>Tasarımın 4 adımı</h2>
+  <p class="lead">Hoca alarm örneğini dört adımda çözmüş. Her tasarım sorusu için bu tarifi kullan.</p>
+  <ol class="steps">
+    <li><b>Hazırlık:</b> Girişleri ve çıkışları belirle, 0 ve 1'in neyi temsil ettiğini yaz. Hoca "Alarm: On → True → 1, Off → False → 0" ve "Door: On (açık) → 1, Off → 0" diye yazmış. Bu adımı atlama, puan getirir.</li>
+    <li><b>1st Step: doğruluk tablosu.</b> Her giriş kombinasyonu için problemin söylediğini uygula, çıkışı yaz.</li>
+    <li><b>2nd Step: kanonik form.</b> 1 olan satırların mintermlerini topla: <span class="m">F = Σ(…)</span>, sonra açık halini yaz.</li>
+    <li><b>3rd Step: sadeleştirme.</b> 2. dersin teoremleriyle formülü kısalt. (4. dersteki Karnaugh haritaları bu adımı çok kolaylaştıracak.)</li>
+    <li><b>4th Step: devre şeması.</b> Sadeleşmiş formülü kapılarla çiz.</li>
+  </ol>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="alarm">
+  <h2><span class="n">7</span>Örnek: kapı alarmı</h2>
+  <div class="example">
+    <div class="example-head"><h4>Problem</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <p>Üç kapı var: A, B, C. Bir mantık devresi kapılara bakıp bir alarmı kontrol ediyor. <b>"If at least two of the doors are open <u>or</u> only door B is open the alarm should be on."</b> Yani en az iki kapı açıksa <b>veya</b> sadece B kapısı açıksa alarm çalmalı.</p>
+      <p>Hoca "or" kelimesini daire içine almış: iki koşuldan biri sağlanırsa yeter.</p>
+    </div>
+  </div>
+
+  <h3>1st Step: doğruluk tablosu</h3>
+  <p>Her satır için iki soruyu sor: "En az iki kapı açık mı?" ve "Sadece B mi açık?" Biri evetse F = 1.</p>
+  <div class="table-wrap"><table class="tt">
+    <thead><tr><th>A</th><th>B</th><th>C</th><th>Açık kapı sayısı</th><th>Neden?</th><th class="out">F</th><th>Minterm</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td style="font-family:var(--font)">hiçbiri açık değil</td><td class="out">0</td><td>m₀</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td style="font-family:var(--font)">sadece C açık</td><td class="out">0</td><td>m₁</td></tr>
+      <tr class="hit"><td>0</td><td>1</td><td>0</td><td>1</td><td style="font-family:var(--font)">sadece B açık</td><td class="out one">1</td><td>m₂</td></tr>
+      <tr class="hit"><td>0</td><td>1</td><td>1</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₃</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td style="font-family:var(--font)">sadece A açık</td><td class="out">0</td><td>m₄</td></tr>
+      <tr class="hit"><td>1</td><td>0</td><td>1</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₅</td></tr>
+      <tr class="hit"><td>1</td><td>1</td><td>0</td><td>2</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₆</td></tr>
+      <tr class="hit"><td>1</td><td>1</td><td>1</td><td>3</td><td style="font-family:var(--font)">en az iki</td><td class="out one">1</td><td>m₇</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>2nd Step: kanonik form</h3>
+  <p>1 olan satırlar 2, 3, 5, 6, 7 (hoca bunları kırmızıyla daire içine almış):</p>
+  <div class="formula"><span class="m" style="white-space:normal">F(A,B,C) = Σ(2, 3, 5, 6, 7) = <span class="ov">A</span>B<span class="ov">C</span> + <span class="ov">A</span>BC + A<span class="ov">B</span>C + AB<span class="ov">C</span> + ABC</span></div>
+
+  <h3>3rd Step: sadeleştirme (hocanın yolu)</h3>
+  <ol class="steps">
+    <li>Hoca altlarını çizerek eşleştirmiş: 1. ile 2. terimde <span class="m"><span class="ov">A</span>B</span>, 4. ile 5. terimde <span class="m">AB</span> ortak.</li>
+    <li><span class="m">= <span class="ov">A</span>B(<span class="ov">C</span> + C) + A<span class="ov">B</span>C + AB(<span class="ov">C</span> + C) = <span class="ov">A</span>B + A<span class="ov">B</span>C + AB</span></li>
+    <li><span class="m"><span class="ov">A</span>B + AB = B(<span class="ov">A</span> + A) = B</span>. Yani <span class="m">F = B + A<span class="ov">B</span>C</span>.</li>
+    <li>Dağılmanın ikinci halini (X + YZ = (X + Y)(X + Z)) iki kez uygula: önce <span class="m">B + (A<span class="ov">B</span>)·C = (B + A<span class="ov">B</span>)(B + C)</span>, sonra <span class="m">B + A<span class="ov">B</span> = (B + A)(B + <span class="ov">B</span>)</span>. Sonuç: <span class="m">(B + A)(B + <span class="ov">B</span>)(B + C)</span>.</li>
+    <li><span class="m">B + <span class="ov">B</span> = 1</span>: <span class="m">F = (A + B)(B + C)</span>. Hocanın <b>I. seçeneği</b>.</li>
+    <li>Parantezleri açarsak: <span class="m">AB + AC + BB + BC = B + AB + AC + BC</span> (BB = B). Hocanın <b>II. seçeneği</b>.</li>
+  </ol>
+
+  <div class="note warn">
+    <span class="note-title">II. seçenek doğru ama en sade hali değil</span>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l3-alarm.png" alt="Hocanın el yazısı sadeleştirme adımları, I. opt (A+B)(B+C) ve II. opt B+AB+AC+BC kırmızı kutularda" loading="lazy"><figcaption>Hocanın notu, PDF s.2: I. ve II. seçenek</figcaption></figure>
+    <p><span class="m">B + AB + AC + BC</span> ifadesinde AB ve BC terimleri B tarafından yutulur (<span class="m">B + AB = B</span>, <span class="m">B + BC = B</span>). Geriye kalan:</p>
+    <div class="formula"><span class="m">F = B + AC</span></div>
+    <p>Aynı sonuca 3. adımdan doğrudan da gidebilirdin: <span class="m">B + <span class="ov">B</span>(AC) = B + AC</span> (ters değişkenli yutma). Bu en kısa hal: 1 AND + 1 OR = <b>2 kapı</b>. Bu arada I. seçenek de aslında aynı şey: dağılma 2 ile <span class="m">(B + A)(B + C) = B + AC</span>. Yani I. seçenek en sade POS, B + AC en sade SOP. I. seçenek 2 OR + 1 AND = 3 kapı. Sınavda "simplify" denirse <span class="m">B + AC</span> yaz. Hocanın iki cevabı da doğru fonksiyonu verir, sadece daha uzun.</p>
+    <p>Sözle sağlama: "B açıksa alarm çalar (tek başına ya da başkasıyla). B kapalıysa sadece A ve C ikisi birden açıkken çalar." Bu tam olarak problemin söylediği.</p>
+  </div>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: Π yolundan I. seçenek kendiliğinden çıkıyor</span>
+    <p>F'nin 0 olduğu satırlar 0, 1, 4: <span class="m">F = Π(0, 1, 4) = (A + B + C)(A + B + <span class="ov">C</span>)(<span class="ov">A</span> + B + C)</span>. İlk çarpanı iki kez kullan (tekrar kuralı). Her ikili <span class="m">(X + C)(X + <span class="ov">C</span>) = X + C<span class="ov">C</span> = X + 0 = X</span> kalıbına uyar (dağılma 2): <span class="m">(A + B + C)(A + B + <span class="ov">C</span>) = A + B</span> ve <span class="m">(A + B + C)(<span class="ov">A</span> + B + C) = B + C</span>. Sonuç: <span class="m">(A + B)(B + C)</span>. POS ile başlamak POS biçiminde bir sonuç verir.</p>
+  </div>
+
+  <h3>4th Step: devre şeması</h3>
+  <p>Hoca I. seçeneği çizmiş: iki OR kapısı (A+B ve B+C) ve bunları birleştiren bir AND. B kablosu noktadan dallanıp iki OR'a da gidiyor.</p>
+
+  <div class="circuit" id="c-alarm">
+    <div class="circuit-head">
+      <h4>Kapıları aç-kapat, alarmı izle</h4>
+      <div class="pins" aria-label="Kapılar (1 = açık)"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 520 180" role="img" aria-label="A ve B bir OR kapısına, B ve C ikinci bir OR kapısına giriyor. İki OR çıkışı bir AND kapısında birleşiyor. AND çıkışı alarm lambasına gidiyor.">
+        <path class="w" data-n="A" d="M34 40H206"/>
+        <path class="w" data-n="B" d="M34 70H206"/>
+        <path class="w" data-n="B" d="M120 70V110H206"/>
+        <path class="w" data-n="C" d="M34 140H206"/>
+        <path class="w" data-n="or1" d="M275 55H305V75H340"/>
+        <path class="w" data-n="or2" d="M275 125H305V105H340"/>
+        <path class="w" data-n="F" d="M390 90H436"/>
+        <circle class="dot" cx="120" cy="70" r="4.5"/>
+        <path class="g" d="M200 25Q245 25 275 55Q245 85 200 85Q217 55 200 25Z"/>
+        <path class="g" d="M200 95Q245 95 275 125Q245 155 200 155Q217 125 200 95Z"/>
+        <path class="g" d="M340 65H365A25 25 0 0 1 365 115H340Z"/>
+        <circle class="lamp" data-n="F" cx="452" cy="90" r="16"/>
+        <path class="g-line" d="M441 79L463 101M463 79L441 101"/>
+        <text class="lbl" x="12" y="46">A</text><text class="lbl" x="12" y="76">B</text><text class="lbl" x="12" y="146">C</text>
+        <text class="tag" x="436" y="128">Alarm</text>
+        <text class="tag" x="282" y="44">A+B =</text><text class="val" x="320" y="44" data-v="or1"></text>
+        <text class="tag" x="282" y="146">B+C =</text><text class="val" x="320" y="146" data-v="or2"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot">
+      <div class="row">
+        <span>Açık kapı sayısı: <b data-v="count"></b></span>
+        <span>Alarm F = <b data-v="F"></b></span>
+        <span>En sade hal <span class="m">B + AC</span> = <b data-v="min"></b> <span data-v="minNote"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="yarim">
+  <h2><span class="n">8</span>Yarım toplayıcı (half adder)</h2>
+  <p class="lead">Bilgisayarın her toplama işlemi küçük toplayıcı devrelerle yapılır. En basiti iki biti toplayan yarım toplayıcı.</p>
+  <p>İki biti toplarsan sonuç 0, 1 ya da 2 olabilir. 2'yi yazmak için iki bit gerekir (10₂). Bu yüzden yarım toplayıcının iki çıkışı vardır:</p>
+  <ul>
+    <li><b>S</b> (<span class="en">Sum</span>, toplam): sonucun sağdaki biti, yani o sütuna yazılan rakam.</li>
+    <li><b>C<sub>out</sub></b> (<span class="en">Carry out</span>, elde): sola taşan bit.</li>
+  </ul>
+  <p>Hoca bunu yanına küçük bir işlemle göstermiş: 1 + 1 = 10. Soldaki 1 elde (carry), sağdaki 0 sonuç (result).</p>
+  <div class="note warn">
+    <span class="note-title">Dikkat: buradaki + işareti VEYA değil</span>
+    <p>Hocanın notunda "S = A+B output" yazıyor. Burada + aritmetik toplama demek, "S, A ile B'nin toplamının biti" anlamında. Boole cebirindeki VEYA değil. Hemen aşağıda göreceğin gibi S aslında <span class="m">A ⊕ B</span>.</p>
+  </div>
+  <div class="tables-row">
+    <div class="table-wrap"><table class="tt">
+      <thead><tr><th>A</th><th>B</th><th class="out">S</th><th class="out">C<sub>out</sub></th><th>Ondalık toplam</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td><td>1</td></tr>
+        <tr><td>1</td><td>0</td><td class="out one">1</td><td class="out">0</td><td>1</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="out one">1</td><td>2 = 10₂</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>Tablodan formülleri okuyalım:</p>
+  <ul>
+    <li><b>S sütunu</b> 0, 1, 1, 0: bu EXOR'un tablosu. <span class="m">S = <span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>.</li>
+    <li><b>C<sub>out</sub> sütunu</b> 0, 0, 0, 1: bu AND'in tablosu. <span class="m">C<sub>out</sub> = AB</span>.</li>
+  </ul>
+  <div class="theorem">
+    <span class="tlabel">Half adder</span>
+    <span class="m">S = A ⊕ B</span>
+    <span class="m">C<sub>out</sub> = AB</span>
+  </div>
+  <p>Devresi: bir XOR ve bir AND kapısı. Hoca bunu kesik çizgili bir kutu içine alıp "HA" diye adlandırmış ve tek bir blok olarak (iki giriş, iki çıkış) çizmiş. Büyük devrelerde iç yapıyı her seferinde çizmek yerine bu blokları kullanırız.</p>
+
+  <div class="circuit" id="c-ha">
+    <div class="circuit-head">
+      <h4>Yarım toplayıcı</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 400 200" role="img" aria-label="A ve B bir AND kapısına girip Cout'u, bir XOR kapısına girip S'yi üretiyor.">
+        <path class="w" data-n="A" d="M34 50H220"/>
+        <path class="w" data-n="A" d="M110 50V72A8 8 0 0 1 110 88V135H132A8 8 0 0 1 148 135H216"/>
+        <path class="w" data-n="B" d="M34 80H220"/>
+        <path class="w" data-n="B" d="M140 80V165H216"/>
+        <path class="w" data-n="Cout" d="M270 65H340"/>
+        <path class="w" data-n="S" d="M295 150H340"/>
+        <circle class="dot" cx="110" cy="50" r="4.5"/><circle class="dot" cx="140" cy="80" r="4.5"/>
+        <path class="g" d="M220 40H245A25 25 0 0 1 245 90H220Z"/>
+        <path class="g-line" d="M210 120Q227 150 210 180"/>
+        <path class="g" d="M220 120Q265 120 295 150Q265 180 220 180Q237 150 220 120Z"/>
+        <text class="lbl" x="12" y="56">A</text><text class="lbl" x="12" y="86">B</text>
+        <text class="lbl" x="348" y="71">C<tspan font-size="11" dy="4">out</tspan></text><text class="lbl" x="348" y="156">S</text>
+        <text class="val" x="300" y="57" data-v="Cout"></text><text class="val" x="312" y="142" data-v="S"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span>A + B = <b data-v="dec"></b> (ondalık) = <b data-v="bin"></b> (ikili: C<sub>out</sub> S)</span></div></div>
+  </div>
+  <p><b>Neden "yarım"?</b> Çünkü sadece iki bit topluyor. Çok bitli sayıları toplarken sağdaki sütundan gelen eldeyi de eklemek gerekir. Yarım toplayıcının buna girişi yok. O işi tam toplayıcı yapar.</p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="tam">
+  <h2><span class="n">9</span>Tam toplayıcı (full adder)</h2>
+  <p class="lead">Tam toplayıcı üç biti toplar: A, B ve sağdaki sütundan gelen elde <b>C<sub>in</sub></b> (<span class="en">carry in</span>).</p>
+  <p>1. derste alt alta toplama yaparken her sütunda tam olarak bunu yaptın: iki rakam + yukarıdan gelen elde. Üç bitin toplamı 0 ile 3 arasındadır, yine iki çıkışla (C<sub>out</sub> S) yazılır.</p>
+  <div class="table-wrap"><table class="tt">
+    <thead><tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th>1'lerin sayısı</th><th class="out">S</th><th class="out">C<sub>out</sub></th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td class="out one">1</td><td class="out">0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>2</td><td class="out">0</td><td class="out one">1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>3</td><td class="out one">1</td><td class="out one">1</td></tr>
+    </tbody>
+  </table></div>
+  <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b> (çok girişli XOR'un kuralı). <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>S'nin formülü</h4><span class="src">Hocanın çözümü, PDF s.3–4</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>1 olan satırlar 1, 2, 4, 7: <span class="m" style="white-space:normal">S = <span class="ov">A</span> <span class="ov">B</span>C<sub>in</sub> + <span class="ov">A</span>B<span class="ov">C<sub>in</sub></span> + A<span class="ov">B</span> <span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>. Hoca C<sub>in</sub>'i düz olanların altını iki çizgiyle, çizgili olanların altını tek çizgiyle işaretlemiş.</li>
+        <li>C<sub>in</sub> düz olanlar (1. ve 4.) ile çizgili olanları (2. ve 3.) ayrı grupla: <span class="m" style="white-space:normal">S = C<sub>in</sub>(<span class="ov">A</span> <span class="ov">B</span> + AB) + <span class="ov">C<sub>in</sub></span>(<span class="ov">A</span>B + A<span class="ov">B</span>)</span>.</li>
+        <li>Kalıpları tanı: <span class="m"><span class="ov">A</span> <span class="ov">B</span> + AB = A ⊙ B</span> ve <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>. <span class="m">S = C<sub>in</sub>(A ⊙ B) + <span class="ov">C<sub>in</sub></span>(A ⊕ B)</span>.</li>
+        <li>Hocanın x taktiği: <span class="m">x = A ⊕ B</span> de. Bir ifadenin tamamına tek harf vermek serbesttir: x her satırda 0 ya da 1 olan bir değerdir, yani bir değişken gibi davranır. Amaç kalıbı görünür kılmak. XNOR, XOR'un tersi olduğu için <span class="m">A ⊙ B = <span class="ov">x</span></span>.</li>
+        <li><span class="m">S = C<sub>in</sub><span class="ov">x</span> + <span class="ov">C<sub>in</sub></span>x</span>. Bu da bir XOR kalıbı: <span class="m">= C<sub>in</sub> ⊕ x</span>.</li>
+        <li>x yerine A ⊕ B koy: <span class="m">S = C<sub>in</sub> ⊕ (A ⊕ B)</span>. XOR da AND ve OR gibi değişme ve birleşme özelliğine sahiptir (tabloyla kontrol edebilirsin: hangi sırayla yazarsan yaz "1'lerin sayısı tekse 1" kuralı değişmez). Bu yüzden parantez ve sıra önemsiz.</li>
+      </ol>
+      <p class="answer">S = <span class="m">C<sub>in</sub> ⊕ A ⊕ B</span> (yani A ⊕ B ⊕ C<sub>in</sub>)</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>C<sub>out</sub>'un formülü</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>1 olan satırlar 3, 5, 6, 7: <span class="m" style="white-space:normal">C<sub>out</sub> = <span class="ov">A</span>BC<sub>in</sub> + A<span class="ov">B</span>C<sub>in</sub> + AB<span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>.</li>
+        <li>Hoca oklarla eşleştirmiş: 1. ve 4. terimde <span class="m">BC<sub>in</sub></span> ortak, 2. ve 3. terimde A ortak.</li>
+        <li><span class="m" style="white-space:normal">C<sub>out</sub> = BC<sub>in</sub>(<span class="ov">A</span> + A) + A(<span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span>)</span></li>
+        <li><span class="m"><span class="ov">A</span> + A = 1</span> ve parantez içi bir XOR: <span class="m"><span class="ov">B</span>C<sub>in</sub> + B<span class="ov">C<sub>in</sub></span> = B ⊕ C<sub>in</sub></span>.</li>
+      </ol>
+      <p class="answer">C<sub>out</sub> = <span class="m">BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</span></p>
+    </div>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: C<sub>out</sub>'un diğer eşdeğer yazılışları</span>
+    <p>Kitaplarda C<sub>out</sub> genelde <span class="m">AB + C<sub>in</sub>(A ⊕ B)</span> ya da çoğunluk fonksiyonu olarak <span class="m">AB + AC<sub>in</sub> + BC<sub>in</sub></span> diye yazılır. Üçü de aynı fonksiyondur (doğruluk tabloları birebir aynı). Hoca eşleştirmeyi farklı terimlerle yaptığı için farklı bir yazılışa ulaşmış. Sınavda hangisini yazsan doğrudur.</p>
+    <p><span class="m">AB + C<sub>in</sub>(A ⊕ B)</span> yazılışının güzel bir yanı var: A ⊕ B kapısı S için de kullanılıyor. Böylece tam toplayıcı <b>iki yarım toplayıcı ve bir OR kapısı</b> ile kurulabilir.</p>
+  </div>
+
+  <p>Hocanın tam toplayıcı devresi: S için 3 girişli bir XOR. C<sub>out</sub> için B ⊕ C<sub>in</sub>'i A ile VE'leyen bir AND, BC<sub>in</sub> için ayrı bir AND ve ikisini birleştiren bir OR. Hoca girişleri dikey hatlar (bus) halinde çizmiş, yatay kablolar dikey hatların üstünden köprüyle geçiyor.</p>
+  <p>Hocanın çiziminde aslında 6 dikey hat var: her girişin yanına küçük bir NOT kapısıyla tersini (<span class="ov">A</span>, <span class="ov">B</span>, <span class="ov">C<sub>in</sub></span>) de hat olarak eklemiş. Bu devrede ters hatlar hiç kullanılmıyor, bütün kapılar düz A, B, C<sub>in</sub> hatlarına bağlı. Bu, "her girişin hem düzü hem tersi hazır olsun" alışkanlığından gelir: kanonik SOP devrelerinde ters hatlar gerekir. Sitedeki çizimde kullanılmayan ters hatlar gösterilmedi.</p>
+
+  <div class="circuit" id="c-fa">
+    <div class="circuit-head">
+      <h4>Tam toplayıcı (hocanın devresi)</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 580 260" role="img" aria-label="A, B ve Cin dikey hatlar. 3 girişli XOR S'yi üretiyor. B XOR Cin, A ile AND'leniyor. B AND Cin ayrı bir AND. İki AND bir OR'da birleşip Cout'u üretiyor.">
+        <path class="w" data-n="A" d="M60 24V110"/>
+        <path class="w" data-n="B" d="M90 24V210"/>
+        <path class="w" data-n="Cin" d="M120 24V230"/>
+        <path class="w" data-n="A" d="M60 45H82A8 8 0 0 1 98 45H112A8 8 0 0 1 128 45H206"/>
+        <path class="w" data-n="B" d="M90 60H112A8 8 0 0 1 128 60H208"/>
+        <path class="w" data-n="Cin" d="M120 75H206"/>
+        <path class="w" data-n="A" d="M60 110H82A8 8 0 0 1 98 110H112A8 8 0 0 1 128 110H320"/>
+        <path class="w" data-n="B" d="M90 140H112A8 8 0 0 1 128 140H207"/>
+        <path class="w" data-n="Cin" d="M120 160H207"/>
+        <path class="w" data-n="B" d="M90 210H112A8 8 0 0 1 128 210H200"/>
+        <path class="w" data-n="Cin" d="M120 230H200"/>
+        <path class="w" data-n="S" d="M285 60H530"/>
+        <path class="w" data-n="x2" d="M285 150H300V140H320"/>
+        <path class="w" data-n="a3" d="M370 125H385V160H406"/>
+        <path class="w" data-n="a4" d="M250 220H385V190H406"/>
+        <path class="w" data-n="Cout" d="M475 175H530"/>
+        <circle class="dot" cx="60" cy="45" r="4"/><circle class="dot" cx="90" cy="60" r="4"/><circle class="dot" cx="120" cy="75" r="4"/>
+        <circle class="dot" cx="60" cy="110" r="4"/><circle class="dot" cx="90" cy="140" r="4"/><circle class="dot" cx="120" cy="160" r="4"/>
+        <circle class="dot" cx="90" cy="210" r="4"/><circle class="dot" cx="120" cy="230" r="4"/>
+        <path class="g-line" d="M200 30Q217 60 200 90"/>
+        <path class="g" d="M210 30Q255 30 285 60Q255 90 210 90Q227 60 210 30Z"/>
+        <path class="g-line" d="M200 125Q217 150 200 175"/>
+        <path class="g" d="M210 125Q255 125 285 150Q255 175 210 175Q227 150 210 125Z"/>
+        <path class="g" d="M320 100H345A25 25 0 0 1 345 150H320Z"/>
+        <path class="g" d="M200 195H225A25 25 0 0 1 225 245H200Z"/>
+        <path class="g" d="M400 145Q445 145 475 175Q445 205 400 205Q417 175 400 145Z"/>
+        <text class="lbl" x="54" y="18">A</text><text class="lbl" x="84" y="18">B</text><text class="lbl" x="110" y="18">C<tspan font-size="11" dy="4">in</tspan></text>
+        <text class="lbl" x="538" y="66">S</text><text class="lbl" x="538" y="181">C<tspan font-size="11" dy="4">out</tspan></text>
+        <text class="tag" x="288" y="176">B⊕C<tspan font-size="10" dy="3">in</tspan><tspan dy="-3"> =</tspan></text><text class="val" x="350" y="176" data-v="x2"></text>
+        <text class="tag" x="374" y="112">A(B⊕C<tspan font-size="10" dy="3">in</tspan><tspan dy="-3">)</tspan></text><text class="val" x="392" y="132" data-v="a3"></text>
+        <text class="tag" x="256" y="212">BC<tspan font-size="10" dy="3">in</tspan></text><text class="val" x="256" y="238" data-v="a4"></text>
+        <text class="val" x="500" y="52" data-v="S"></text><text class="val" x="500" y="167" data-v="Cout"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span>A + B + C<sub>in</sub> = <b data-v="dec"></b> (ondalık) = <b data-v="bin"></b> (ikili: C<sub>out</sub> S)</span></div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="ripple">
+  <h2><span class="n">10</span>3 bitlik toplayıcı</h2>
+  <p class="lead">"Let's design a 3-bit adder." Tam toplayıcıları yan yana dizip her birinin eldesini solundakine bağlarsan istediğin uzunlukta sayıları toplayabilirsin.</p>
+  <p>Kâğıtta alt alta toplama yaparken ne yapıyorsun? En sağdaki sütunu topla, eldeyi sola ver, bir sonraki sütunu eldeyle birlikte topla… Bu devre tam olarak bunu yapıyor:</p>
+  <ul>
+    <li>Her sütun (bit) için bir tam toplayıcı (FA) var. FA₀ en sağdaki (en değersiz) biti toplar.</li>
+    <li>FA₀'ın C<sub>in</sub>'i <b>toprağa (GND, yani 0)</b> bağlı, çünkü en sağ sütuna gelen bir elde yok. Hoca C<sub>in0</sub>'ı toprak sembolüne bağlamış.</li>
+    <li>Her FA'nın C<sub>out</sub>'u solundaki FA'nın C<sub>in</sub>'ine bağlı: C<sub>out0</sub> → C<sub>in1</sub>, C<sub>out1</sub> → C<sub>in2</sub>.</li>
+    <li>En soldaki FA'nın C<sub>out2</sub>'si <b>OF</b> (<span class="en">overflow</span>) olarak çıkar. Sonuç 3 bite sığmadıysa bu bit 1 olur.</li>
+    <li>Bu tanım <b>işaretsiz</b> sayılar için. Sayılar 2's complement işaretli ise (1. ders, 7. bölüm) taşma C<sub>out2</sub> ile değil, işaret bitine giren ve çıkan eldenin farklı olmasıyla anlaşılır. Örnek: 011 + 011 = 110. C<sub>out2</sub> = 0, ama +3 + 3 = +6 işaretli 3 bitlik aralığa (−4…+3) sığmaz: işaret bitine giren elde 1, çıkan 0.</li>
+  </ul>
+  <p>Eldenin sağdan sola bir dalga gibi yayılmasından dolayı bu yapıya <span class="term">ripple carry adder</span> (dalgalı elde toplayıcı) denir. Her FA eldeyi sağındakinden beklemek zorunda olduğu için n bitlik toplayıcıda gecikme n katına çıkar. Ripple carry basit ama yavaştır.</p>
+
+  <div class="circuit" id="c-ripple">
+    <div class="circuit-head">
+      <h4>3 bitlik toplayıcı: A ve B'nin bitlerine bas</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 560 230" role="img" aria-label="Üç tam toplayıcı yan yana. En sağdaki FA0'ın Cin girişi toprakta. Her FA'nın Cout'u solundakinin Cin'ine bağlı. En soldaki Cout taşma çıkışı OF.">
+        <path class="w" data-n="B2" d="M155 30V80"/><path class="w" data-n="A2" d="M185 30V80"/>
+        <path class="w" data-n="B1" d="M305 30V80"/><path class="w" data-n="A1" d="M335 30V80"/>
+        <path class="w" data-n="B0" d="M455 30V80"/><path class="w" data-n="A0" d="M485 30V80"/>
+        <path class="w" data-n="c0" d="M420 115H370"/>
+        <path class="w" data-n="c1" d="M270 115H220"/>
+        <path class="w" data-n="c2" d="M120 115H50V170"/>
+        <path class="w" d="M520 115H540V128M528 128H552M532 134H548M536 140H544"/>
+        <path class="w" data-n="s2" d="M170 150V190"/><path class="w" data-n="s1" d="M320 150V190"/><path class="w" data-n="s0" d="M470 150V190"/>
+        <rect class="g" x="120" y="80" width="100" height="70" rx="4"/>
+        <rect class="g" x="270" y="80" width="100" height="70" rx="4"/>
+        <rect class="g" x="420" y="80" width="100" height="70" rx="4"/>
+        <text class="lbl" x="152" y="121">FA₂</text><text class="lbl" x="302" y="121">FA₁</text><text class="lbl" x="452" y="121">FA₀</text>
+        <text class="tag" x="146" y="22">B₂</text><text class="tag" x="178" y="22">A₂</text>
+        <text class="tag" x="296" y="22">B₁</text><text class="tag" x="328" y="22">A₁</text>
+        <text class="tag" x="446" y="22">B₀</text><text class="tag" x="478" y="22">A₀</text>
+        <text class="tag" x="374" y="108">C₀ =</text><text class="val" x="402" y="108" data-v="c0"></text>
+        <text class="tag" x="224" y="108">C₁ =</text><text class="val" x="252" y="108" data-v="c1"></text>
+        <text class="tag" x="524" y="108">GND</text>
+        <text class="lbl" x="38" y="192">OF</text><text class="val" x="60" y="160" data-v="c2"></text>
+        <text class="lbl" x="162" y="212">S₂</text><text class="lbl" x="312" y="212">S₁</text><text class="lbl" x="462" y="212">S₀</text>
+        <text class="val" x="180" y="182" data-v="s2"></text><text class="val" x="330" y="182" data-v="s1"></text><text class="val" x="480" y="182" data-v="s0"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot">
+      <div class="row">
+        <span>A = <b data-v="aBin"></b> (<b data-v="aDec"></b>)</span>
+        <span>B = <b data-v="bBin"></b> (<b data-v="bDec"></b>)</span>
+        <span>Sonuç OF S₂S₁S₀ = <b data-v="sum"></b> (<b data-v="sumDec"></b>) <span data-v="ofNote"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 011 + 110 (3 + 6)</h4></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>FA₀: A₀ = 1, B₀ = 0, C<sub>in</sub> = 0 (GND). Toplam 1 → S₀ = 1, C₀ = 0.</li>
+        <li>FA₁: A₁ = 1, B₁ = 1, C<sub>in</sub> = C₀ = 0. Toplam 2 → S₁ = 0, C₁ = 1.</li>
+        <li>FA₂: A₂ = 0, B₂ = 1, C<sub>in</sub> = C₁ = 1. Toplam 2 → S₂ = 0, C₂ = 1.</li>
+        <li>OF = C₂ = 1. Sonuç 3 bite sığmadı.</li>
+      </ol>
+      <p class="answer">OF S₂S₁S₀ = <span class="b">1001</span> = 9. Kontrol: 3 + 6 = 9. 3 bitle en fazla 7 yazılabildiği için OF = 1.</p>
+    </div>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: aynı devre çıkarma da yapar</span>
+    <p>1. dersi hatırla: M − N = M + (N'nin 2's complement'i) = M + <span class="ov">N</span> + 1. B girişlerini NOT kapılarından (ya da kontrollü XOR'lardan) geçirip C<sub>in0</sub>'ı GND yerine 1'e bağlarsan aynı toplayıcı çıkarma yapar. Bilgisayarlarda tek bir devre hem toplar hem çıkarır. Toplayarak çıkarmanın neden bu kadar önemli olduğu buradan anlaşılıyor.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="ozet">
+  <h2><span class="n">11</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Minterm ve maxterm</h4>
+      <ul>
+        <li>m<sub>i</sub>: çarpım, sadece i. satırda 1</li>
+        <li>M<sub>i</sub>: toplam, sadece i. satırda 0</li>
+        <li>Minterm: 0 → çizgili, 1 → düz</li>
+        <li>Maxterm: 1 → çizgili, 0 → düz</li>
+        <li>M<sub>i</sub> = <span class="ov">m<sub>i</sub></span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kanonik formlar</h4>
+      <ul>
+        <li>SOP: F = Σ(1 olan satırlar)</li>
+        <li>POS: F = Π(0 olan satırlar)</li>
+        <li>Σ ve Π listeleri birbirinin tamamlayıcısı</li>
+        <li>Eksik değişken X: terimi (X + <span class="ov">X</span>) ile çarp (SOP), toplam terimine X<span class="ov">X</span> ekle (POS)</li>
+        <li>Kanonik: her terimde bütün değişkenler var</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Tasarım adımları</h4>
+      <ul>
+        <li>0: giriş/çıkış ve 0/1 anlamlarını tanımla</li>
+        <li>1: doğruluk tablosu</li>
+        <li>2: F = Σ(…) ve açık hali</li>
+        <li>3: sadeleştir</li>
+        <li>4: devreyi çiz</li>
+        <li>Alarm: F = B + AC</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Toplayıcılar</h4>
+      <ul>
+        <li>HA: S = A ⊕ B, C<sub>out</sub> = AB</li>
+        <li>FA: S = A ⊕ B ⊕ C<sub>in</sub></li>
+        <li>FA: C<sub>out</sub> = BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</li>
+        <li>= AB + C<sub>in</sub>(A ⊕ B) = AB + AC<sub>in</sub> + BC<sub>in</sub></li>
+        <li>S: 1'ler tekse 1. C<sub>out</sub>: en az iki 1 varsa 1</li>
+      </ul>
+    </div>
+    <div>
+      <h4>n bitlik toplayıcı</h4>
+      <ul>
+        <li>n tane FA yan yana</li>
+        <li>C<sub>in0</sub> = 0 (GND)</li>
+        <li>C<sub>out,i</sub> → C<sub>in,i+1</sub></li>
+        <li>Son C<sub>out</sub> = OF (taşma)</li>
+      </ul>
+    </div>
+  </div>
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>minterm / maxterm</dt><dd>en küçük terim / en büyük terim</dd>
+    <dt>canonical form</dt><dd>kanonik (standart, tam) biçim</dd>
+    <dt>sum of products (SOP)</dt><dd>çarpımlar toplamı</dd>
+    <dt>product of sums (POS)</dt><dd>toplamlar çarpımı</dd>
+    <dt>half adder (HA)</dt><dd>yarım toplayıcı</dd>
+    <dt>full adder (FA)</dt><dd>tam toplayıcı</dd>
+    <dt>carry in / carry out</dt><dd>gelen elde / giden elde</dd>
+    <dt>ripple carry adder</dt><dd>dalgalı elde toplayıcı</dd>
+    <dt>majority function</dt><dd>çoğunluk fonksiyonu</dd>
+    <dt>circuit diagram</dt><dd>devre şeması</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="alistirma">
+  <h2><span class="n">12</span>Alıştırmalar ve test</h2>
+  <p class="lead">Önce kâğıtta çöz, sonra çözüme bak.</p>
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li>3 değişken için m₅ ve M₂'yi yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>5 = 101 → <span class="m">m₅ = A<span class="ov">B</span>C</span>. 2 = 010 → maxtermde 1 çizgili: <span class="m">M₂ = A + <span class="ov">B</span> + C</span>.</p></details></li>
+    <li><span class="m">A<span class="ov">B</span> <span class="ov">C</span></span> hangi mintermdir?
+      <details class="solution"><summary>Çözümü göster</summary><p>Düz 1, çizgili 0: 100 → 4 → <b>m₄</b>.</p></details></li>
+    <li>F(A,B,C) = Σ(0, 2, 5) ise Π gösterimi nedir?
+      <details class="solution"><summary>Çözümü göster</summary><p>0–7 arasında eksik olanlar: <b>Π(1, 3, 4, 6, 7)</b>.</p></details></li>
+    <li><span class="m">F(A,B,C) = A + <span class="ov">B</span>C</span> fonksiyonunu Σ ile yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>A tek başına: A = 1 olan bütün satırlar (4, 5, 6, 7). <span class="m"><span class="ov">B</span>C</span>: B = 0, C = 1 olan satırlar (001 = 1, 101 = 5). Birleşim: <b>Σ(1, 4, 5, 6, 7)</b>. Cebirsel yoldan: <span class="m">A = A(B + <span class="ov">B</span>)(C + <span class="ov">C</span>)</span> açılarak aynı sonuç bulunur.</p></details></li>
+    <li>F = Σ(1, 2) fonksiyonunu kanonik SOP olarak açık yaz ve tanıdık bir kapıyla ifade et. (2 değişken: A, B)
+      <details class="solution"><summary>Çözümü göster</summary><p>1 = 01 → <span class="m"><span class="ov">A</span>B</span>, 2 = 10 → <span class="m">A<span class="ov">B</span></span>. <span class="m">F = <span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span> (XOR).</p></details></li>
+    <li>Tasarla: üç oylayıcı (A, B, C) var. Çoğunluk evet derse (en az ikisi 1) karar kabul edilsin (F = 1). F'yi bul ve sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>F = Σ(3, 5, 6, 7). <span class="m"><span class="ov">A</span>BC + A<span class="ov">B</span>C + AB<span class="ov">C</span> + ABC</span>. ABC'yi üç kez kullan: <span class="m">(<span class="ov">A</span>BC + ABC) + (A<span class="ov">B</span>C + ABC) + (AB<span class="ov">C</span> + ABC) = BC + AC + AB</span>. Bu tam toplayıcının C<sub>out</sub>'u ile aynı!</p></details></li>
+    <li>Yarım toplayıcıda A = 1, B = 1 iken S ve C<sub>out</sub> kaçtır?
+      <details class="solution"><summary>Çözümü göster</summary><p>1 + 1 = 10₂ → <b>S = 0, C<sub>out</sub> = 1</b>.</p></details></li>
+    <li>Tam toplayıcıda A = 1, B = 0, C<sub>in</sub> = 1 iken S ve C<sub>out</sub> kaçtır?
+      <details class="solution"><summary>Çözümü göster</summary><p>Toplam 2 = 10₂ → <b>S = 0, C<sub>out</sub> = 1</b>. Formülle: S = 1 ⊕ 0 ⊕ 1 = 0. C<sub>out</sub> = BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>) = 0 + 1·(0 ⊕ 1) = 1.</p></details></li>
+    <li>3 bitlik toplayıcıda 101 + 011 hesapla. Her FA'nın eldesini yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>FA₀: 1 + 1 + 0 = 2 → S₀ = 0, C₀ = 1. FA₁: 0 + 1 + 1 = 2 → S₁ = 0, C₁ = 1. FA₂: 1 + 0 + 1 = 2 → S₂ = 0, C₂ = 1. Sonuç <span class="b">1000</span> (OF = 1) = 8 = 5 + 3.</p></details></li>
+    <li>4 bitlik bir toplayıcı için kaç tam toplayıcı gerekir? En sağdakinin C<sub>in</sub>'i nereye bağlanır?
+      <details class="solution"><summary>Çözümü göster</summary><p><b>4 tam toplayıcı.</b> En sağdakinin C<sub>in</sub>'i GND'ye (0) bağlanır. İstersen en sağdaki için bir yarım toplayıcı da kullanabilirsin, çünkü oraya elde gelmiyor.</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <p>İfade yazılan sorularda aynı terimi veren her yazılış doğru sayılır. Liste sorularında numaraları virgülle ayır (ör. 0,1,4).</p>
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="minterm">İndeksten minterm</option>
+            <option value="maxterm">İndeksten maxterm</option>
+            <option value="index">Terimden indeks</option>
+            <option value="sigmapi">Σ'dan Π'ye</option>
+            <option value="sigma">İfadeden Σ</option>
+            <option value="fa">Tam toplayıcı çıkışı</option>
+            <option value="ripple">3 bitlik toplama</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="02-boole-cebiri.html">Önceki: Boolean Algebra</a>
+    <a href="04-karnaugh.html">Sıradaki: Karnaugh Maps</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/lesson03.js"></script>
+</body>
+</html>

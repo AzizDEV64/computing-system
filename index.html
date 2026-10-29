@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computing Systems Çalışma</title>
+  <meta name="description" content="YAM205 Computing Systems dersi için sıfırdan anlatım, çözümlü örnekler ve alıştırmalar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#dersler">Derslere geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Computing Systems çalışma sitesi</span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Computing<span class="line2">Systems</span></h1>
+        <p class="lede">Hocanın derste çözdüğü her soru burada <strong>sıfırdan, adım adım</strong> anlatılıyor. Önce mantığını öğren, sonra aynı tip soruyu kendin çöz.</p>
+      </div>
+
+      <div class="register" data-register>
+        <div class="register-head">
+          <h2>Bir bayt ile oyna</h2>
+          <p>Anahtarlara bas, 0 ile 1 arasında geçiş yap.</p>
+        </div>
+        <div class="switches" role="group" aria-label="8 bitlik sayı"></div>
+        <div class="register-actions">
+          <button type="button" data-reg="clear">Sıfırla</button>
+          <button type="button" data-reg="invert">Tüm bitleri ters çevir</button>
+          <button type="button" data-reg="random">Rastgele</button>
+        </div>
+        <dl class="readouts" aria-live="polite">
+          <div><dt>Ondalık (işaretsiz)</dt><dd data-out="dec"></dd></div>
+          <div><dt>İşaretli (2's tümleyen)</dt><dd data-out="signed"></dd></div>
+          <div><dt>Onaltılık (hex)</dt><dd data-out="hex"></dd></div>
+          <div><dt>Sekizlik (oktal)</dt><dd data-out="oct"></dd></div>
+          <div><dt>1's tümleyeni</dt><dd data-out="ones"></dd></div>
+          <div><dt>2's tümleyeni</dt><dd data-out="twos"></dd></div>
+          <div><dt>Gray kodu</dt><dd data-out="gray"></dd></div>
+          <div><dt>BCD</dt><dd data-out="bcd"></dd></div>
+          <div><dt>Toplam nasıl oluştu</dt><dd data-out="sum"></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <main class="page" id="dersler">
+    <h2 class="section-title">Ders sırası</h2>
+    <p class="section-sub">Konular hocanın anlattığı sırayla dizildi. Her ders bir öncekinin üstüne kurulu, o yüzden sırayı atlamadan ilerle.</p>
+
+    <ol class="route">
+      <li>
+        <span class="pad">1</span>
+        <a class="lesson ready" href="lessons/01-sayi-sistemleri.html">
+          <h3>Number Systems</h3>
+          <span class="meta">Sayı sistemleri, tümleyenler, kodlar ve Boole cebirine giriş. 14 Eylül dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">2</span>
+        <a class="lesson ready" href="lessons/02-boole-cebiri.html">
+          <h3>Boolean Algebra</h3>
+          <span class="meta">Teoremler, De Morgan, lojik kapılar ve devreden formül çıkarma. 23 Eylül dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">3</span>
+        <a class="lesson ready" href="lessons/03-mantik-tasarimi.html">
+          <h3>Logic Design</h3>
+          <span class="meta">Minterm, maxterm, kanonik formlar, devre tasarımı ve toplayıcılar. 28 Eylül dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">4</span>
+        <a class="lesson ready" href="lessons/04-karnaugh.html">
+          <h3>Karnaugh Maps</h3>
+          <span class="meta">2–5 değişkenli haritalar, gruplama kuralları ve harita çözücü. 5 Ekim dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">5</span>
+        <a class="lesson ready" href="lessons/05-dont-care.html">
+          <h3>K-Maps with Don't Care</h3>
+          <span class="meta">X değerleri, haritadan POS, kare devresi ve 7 segment dönüştürücü. 7 Ekim dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">6</span>
+        <a class="lesson ready" href="lessons/06-kombinasyonel-1.html">
+          <h3>Combinational Circuits 1</h3>
+          <span class="meta">Toplayıcı/çıkarıcı, op kodları, multiplexer ve demultiplexer. 7 Ekim dersi</span>
+
+        </a>
+      </li>
+      <li>
+        <span class="pad">7</span>
+        <a class="lesson ready" href="lessons/07-kombinasyonel-2.html">
+          <h3>Combinational Circuits 2</h3>
+          <span class="meta">Encoder, öncelikli encoder, decoder, karşılaştırıcı ve sınav öncesi kontrol listesi. 19 Ekim dersi</span>
+
+        </a>
+      </li>
+    </ol>
+
+    <div class="how">
+      <div>
+        <h3>Önce oku</h3>
+        <p>Her bölüm hiçbir şey bilmediğini varsayarak başlar. Terimlerin İngilizcesi de yazılı, çünkü sınav İngilizce olabilir.</p>
+      </div>
+      <div>
+        <h3>Sonra dene</h3>
+        <p>Bakır çerçeveli kutular hesap makinesi gibi çalışır. Kendi sayını yaz, çözümü adım adım gör.</p>
+      </div>
+      <div>
+        <h3>En son kendini sına</h3>
+        <p>Her dersin sonunda çözümlü alıştırmalar ve sınırsız soru üreten bir test var.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div>YAM205 Computing Systems. Kaynak: hocanın ders notları (PDF), konu anlatımı bu site için yazıldı.</div></footer>
+
+  <script src="assets/js/core.js"></script>
+</body>
+</html>

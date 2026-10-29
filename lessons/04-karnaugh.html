@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Karnaugh Maps | YAM205</title>
+  <meta name="description" content="Ders 4: Karnaugh haritaları. 2, 3, 4 ve 5 değişkenli haritalar, gruplama kuralları, hocanın bütün örnekleri ve etkileşimli harita çözücü.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="04">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 4 / 7 <strong>Karnaugh Maps</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 4, 5 Ekim 2026</p>
+      <h1>Karnaugh Maps</h1>
+      <p>2. ve 3. derste ifadeleri teoremlerle sadeleştirdik. Bu yöntem zor: hangi terimi hangisiyle eşleştireceğini görmek gerekiyor ve en sade hale ulaşıp ulaşmadığını bilemiyorsun. Karnaugh haritası (K-map) bu işi bir resme çeviriyor: 1'leri tabloya yerleştir, yan yana olanları daire içine al, formülü oku. Sınavda en çok puan getiren konulardan biri.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>2-input K-map</li>
+        <li>3-input K-map</li>
+        <li>4-input K-map</li>
+        <li>5-input K-map</li>
+        <li>Group sizes 2ⁿ</li>
+        <li>Grouping rules</li>
+        <li>Edges are neighbors</li>
+        <li>Truth table → K-map</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#fikir"><span class="n">1</span><span>Fikir: komşu hücreler</span></a></li>
+          <li><a href="#iki"><span class="n">2</span><span>2 değişkenli harita</span></a></li>
+          <li><a href="#boyut"><span class="n">3</span><span>Grup boyutları</span></a></li>
+          <li><a href="#uc"><span class="n">4</span><span>3 değişkenli harita</span></a></li>
+          <li><a href="#kurallar"><span class="n">5</span><span>Gruplama kuralları</span></a></li>
+          <li><a href="#okuma"><span class="n">6</span><span>Bir grubu okumak</span></a></li>
+          <li><a href="#dort"><span class="n">7</span><span>4 değişkenli harita</span></a></li>
+          <li><a href="#bes"><span class="n">8</span><span>5 değişkenli harita</span></a></li>
+          <li><a href="#tablodan"><span class="n">9</span><span>Tablodan haritaya</span></a></li>
+          <li><a href="#cozucu"><span class="n">10</span><span>Harita çözücü</span></a></li>
+          <li><a href="#ozet"><span class="n">11</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">12</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="fikir">
+  <h2><span class="n">1</span>Fikir: komşu hücreler</h2>
+  <p class="lead">Bütün yöntem tek bir teoreme dayanıyor: <span class="m">XY + X<span class="ov">Y</span> = X(Y + <span class="ov">Y</span>) = X</span>.</p>
+  <p>Yalnızca <b>tek bir değişkende</b> farklı olan iki minterm toplanınca o değişken kaybolur. Örneğin <span class="m">A<span class="ov">B</span>C + ABC = AC(<span class="ov">B</span> + B) = AC</span>. 2. derste bunu defalarca yaptık. Zor olan, hangi mintermlerin tek değişkende farklı olduğunu görmekti.</p>
+  <p>Karnaugh haritası doğruluk tablosunu öyle bir şekilde dizer ki <b>yan yana duran her iki hücre tam olarak bir değişkende farklı olur</b>. Bunu sağlayan şey 1. dersten tanıdığın <b>Gray kodu</b>: satır ve sütun başlıkları 00, 01, 11, 10 sırasıyla yazılır, 00, 01, 10, 11 değil. Böylece yan yana duran 1'leri daire içine almak, yukarıdaki teoremi uygulamakla aynı şey olur.</p>
+  <p>Haritada 1'leri gruplayarak okuduğumuz sonuç her zaman <b>SOP</b> (çarpımların toplamı) biçimindedir: her grup bir çarpım terimi, gruplar + ile toplanır.</p>
+  <div class="note tip">
+    <span class="note-title">Hatırla</span>
+    <p>Gray kodunda art arda gelen iki kod tek bitte farklıdır: 00 → 01 → 11 → 10 → (tekrar 00). Sondan başa dönerken de tek bit değişir. Bu yüzden haritanın sağ kenarı sol kenarıyla, üst kenarı alt kenarıyla da komşudur (5. kural).</p>
+  </div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="iki">
+  <h2><span class="n">2</span>2 değişkenli harita</h2>
+  <p class="lead">F(A, B) için 4 hücreli bir tablo. Satırlar A'nın, sütunlar B'nin değerleri. Her hücre bir minterm.</p>
+  <div class="kmap-figure">
+    <div class="kmap-static" data-n="2" data-labels="terms"></div>
+    <div class="kmap-static" data-n="2" data-labels="index"></div>
+  </div>
+  <p>Hocanın ilk çizimindeki gibi: sol üst hücre A = 0, B = 0, yani <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> = m₀. Sağ alt hücre A = 1, B = 1, yani AB = m₃. Doğruluk tablosunda F = 1 olan satırların hücrelerine 1, diğerlerine 0 yazılır.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 1: F = Σ(0, 2)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="2" data-ones="0,2" data-groups="B'"></div>
+      </div>
+      <ol class="steps">
+        <li>Doğruluk tablosunda F = 1 olan satırlar 00 ve 10. Bunlar m₀ ve m₂, haritanın sol sütunu.</li>
+        <li>İki 1 alt alta, yani komşu. Tek bir grup yap.</li>
+        <li>Grubun içinde A değişiyor (0 ve 1), B sabit 0. Değişen gider, sabit kalır: <span class="m"><span class="ov">B</span></span>.</li>
+      </ol>
+      <p class="answer">F(A, B) = <span class="m"><span class="ov">B</span></span></p>
+      <p>Hoca cebirle de sağlamış: <span class="m">m₀ + m₂ = <span class="ov">A</span> <span class="ov">B</span> + A<span class="ov">B</span> = <span class="ov">B</span>(<span class="ov">A</span> + A) = <span class="ov">B</span> · 1 = <span class="ov">B</span></span>. Harita aynı sonuca hiç işlem yapmadan ulaştı.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 2: F = Σ(0, 3)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="2" data-ones="0,3" data-groups="A'B'|AB"></div>
+      </div>
+      <p>İki 1 <b>çapraz</b> duruyor. Çapraz hücreler komşu sayılmaz (iki değişkenleri birden farklı). Bu yüzden her biri kendi başına bir grup olur ve hiçbir değişken düşmez.</p>
+      <p class="answer">F = <span class="m">AB + <span class="ov">A</span> <span class="ov">B</span> = A ⊙ B = <span class="ov">A ⊕ B</span></span></p>
+      <p>Haritada satranç tahtası gibi çapraz dizilmiş 1'ler görürsen XOR ya da XNOR'dan şüphelen.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 3: F = Σ(0, 2, 3)</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="2" data-ones="0,2,3" data-groups="B'|A"></div>
+      </div>
+      <ol class="steps">
+        <li><span class="m"><span class="ov">A</span> <span class="ov">B</span></span> hücresinin tek komşu 1'i var (hoca "1 neighbor" yazmış): altındaki <span class="m">A<span class="ov">B</span></span>. İlk grup sol sütun: <span class="m"><span class="ov">B</span></span>.</li>
+        <li><span class="m">AB</span> hücresinin de tek komşu 1'i var: solundaki <span class="m">A<span class="ov">B</span></span>. İkinci grup alt satır: <span class="m">A</span>.</li>
+        <li><span class="m">A<span class="ov">B</span></span> iki gruba birden girdi ("2 neighbors"). Bu serbest: bir 1 birden fazla grupta olabilir.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">B</span> + A = A + <span class="ov">B</span></span></p>
+      <p>Cebirle sağlama (hocanın yaptığı gibi): <span class="m"><span class="ov">A</span> <span class="ov">B</span> + A<span class="ov">B</span> + AB = <span class="ov">A</span> <span class="ov">B</span> + A(<span class="ov">B</span> + B) = <span class="ov">A</span> <span class="ov">B</span> + A = (A + <span class="ov">A</span>)(A + <span class="ov">B</span>) = A + <span class="ov">B</span></span>. Harita çok daha hızlı.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="boyut">
+  <h2><span class="n">3</span>Grup boyutları: her zaman 2'nin kuvveti</h2>
+  <p class="lead">Hoca kırmızıyla yazmış: "In a group: 1 element 2⁰, 2 elements 2¹, 4 elements 2², 8 elements 2³, 16 elements 2⁴…"</p>
+  <p>Bir grupta <b>1, 2, 4, 8 ya da 16</b> hücre olabilir. 3, 5, 6 hücreli grup olmaz. Sebebi: grup büyüdükçe her ikiye katlanışta bir değişken daha "hem 0 hem 1" olur ve düşer. 3 hücrede bir değişken bir yarıda 0, diğer yarıda 1 olamaz.</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Grup boyutu</th><th>Düşen değişken</th><th>3 değişkenli haritada terim</th><th>4 değişkenli haritada terim</th></tr></thead>
+    <tbody>
+      <tr><td>1 (2⁰)</td><td>0</td><td>3 harf (ör. <span class="m">A<span class="ov">B</span>C</span>)</td><td>4 harf</td></tr>
+      <tr><td>2 (2¹)</td><td>1</td><td>2 harf</td><td>3 harf</td></tr>
+      <tr><td>4 (2²)</td><td>2</td><td>1 harf</td><td>2 harf</td></tr>
+      <tr><td>8 (2³)</td><td>3</td><td>F = 1 (bütün harita)</td><td>1 harf</td></tr>
+      <tr><td>16 (2⁴)</td><td>4</td><td>yok</td><td>F = 1 (bütün harita)</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Kural:</b> n değişkenli haritada 2<sup>k</sup> hücrelik bir grup, <b>n − k</b> harfli bir terim verir. Büyük grup = kısa terim = daha az kapı.</p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="uc">
+  <h2><span class="n">4</span>3 değişkenli harita</h2>
+  <p class="lead">8 hücre: 2 satır (A), 4 sütun (BC). Sütunlar Gray koduyla dizilir: 00, 01, 11, 10.</p>
+  <div class="kmap-figure">
+    <div class="kmap-static" data-n="3" data-labels="index"></div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">En sık yapılan hata: m₃ ve m₂'nin yeri</span>
+    <p>Sütun sırası 00, 01, <b>11</b>, <b>10</b> olduğu için üst satırdaki mintermler soldan sağa m₀, m₁, <b>m₃</b>, <b>m₂</b> diye gider. Alt satır m₄, m₅, <b>m₇</b>, <b>m₆</b>. Doğruluk tablosundan haritaya aktarırken 3. ve 4. sütunu karıştırma.</p>
+  </div>
+  <p>Hoca bir de dikey bir çizim yapmış: satırlarda AB (00, 01, 11, 10), sütunlarda C. Bu da doğru bir harita, sadece 90° döndürülmüş hali. Önemli olan başlıkların Gray sırasında olması. Bu sitede yatay düzeni kullanacağız.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = Σ(0, 1, 4, 5, 7)</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="3" data-ones="0,1,4,5,7" data-groups="B'|AC"></div>
+      </div>
+      <ol class="steps">
+        <li>1'leri yerleştir: m₀, m₁ üst satırın ilk iki hücresi; m₄, m₅ alt satırın ilk iki hücresi; m₇ alt satırın üçüncü hücresi (BC = 11).</li>
+        <li>En büyük grubu ara: sol 2×2 kare (m₀, m₁, m₄, m₅) dört hücrelik ilk grup. Bu karede A değişiyor, C değişiyor, B hep 0 → <span class="m"><span class="ov">B</span></span>.</li>
+        <li>m₇ dışarıda kaldı. Komşusu m₅ (solunda). İkili ikinci grup: A = 1 sabit, B değişiyor, C = 1 sabit → <span class="m">AC</span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m">AC + <span class="ov">B</span></span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="kurallar">
+  <h2><span class="n">5</span>Gruplama kuralları</h2>
+  <p class="lead">Hocanın beş kuralı. Sınavda bu kuralların hepsine uyan bir gruplama beklenir.</p>
+  <ol class="steps">
+    <li><b>No single diagonal neighbors:</b> Çapraz hücreler komşu değildir. Gruplar dikdörtgen olmalı: yatay, dikey ya da kare. L ya da T şekli olmaz.</li>
+    <li><b>There should be 2ⁿ 1s inside a group:</b> Bir grupta 1, 2, 4, 8 ya da 16 tane 1 olur. Grupta hiç 0 olamaz.</li>
+    <li><b>The group size should be maximized:</b> Her grubu olabildiğince büyük yap. 4'lü olabilecek bir grubu iki tane 2'li yaparsan sonuç doğru olur ama sade olmaz.</li>
+    <li><b>All 1s should be included in at least one group:</b> Hiçbir 1 dışarıda kalmaz. Bir 1 birden fazla grupta olabilir. Büyütmek için grupları üst üste bindirmek serbest.</li>
+    <li><b>Edges of the K-map are neighbors:</b> En sağ sütun en sol sütunla, en üst satır en alt satırla komşudur. Haritayı bir silindir gibi düşün. 4 değişkenli haritada dört köşe de birbirine komşudur.</li>
+  </ol>
+  <div class="note extra">
+    <span class="note-title">Ek kural: gereksiz grup koyma</span>
+    <p>Büyütülemeyen (daha büyük bir gruba sığmayan) her gruba <b>asal içeren</b> (<span class="en">prime implicant</span>) denir. Bir 1'i örtebilen tek bir asal içeren varsa o gruba <b>temel asal içeren</b> (<span class="en">essential prime implicant</span>) denir ve cevapta mutlaka bulunur.</p>
+    <p>Sıra: (1) temel grupları al, (2) kalan 1'leri en az sayıda ve en büyük grupla ört, (3) bütün 1'leri zaten başka gruplar örtüyorsa o grubu sil. Dikkat: "önce en büyük grup" her zaman doğru değildir. Aşağıdaki örnek bunu gösteriyor.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Tuzak: en büyük grup gereksiz olabilir. F = Σ(1, 5, 6, 7, 11, 12, 13, 15)</h4></div>
+    <div class="example-body">
+      <div class="kmap-figure"><div class="kmap-static" data-n="4" data-ones="1,5,6,7,11,12,13,15" data-groups="A'C'D|A'BC|ABC'|ACD"></div></div>
+      <ol class="steps">
+        <li>Ortadaki 2×2 kare (m₅, m₇, m₁₃, m₁₅ → <span class="m">BD</span>) haritanın en büyük grubu ve göz önce ona gider.</li>
+        <li>Ama m₁, m₆, m₁₂, m₁₁'e bak: her biri sadece bir ikili grupla örtülebiliyor. Bu dört ikili (<span class="m"><span class="ov">A</span><span class="ov">C</span>D</span>, <span class="m"><span class="ov">A</span>BC</span>, <span class="m">AB<span class="ov">C</span></span>, <span class="m">ACD</span>) temel grup.</li>
+        <li>Bu dört ikili m₅, m₇, m₁₃, m₁₅'i de zaten örtüyor. BD grubunu eklersen hiçbir yeni 1 örtmez, gereksizdir.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span><span class="ov">C</span>D + <span class="ov">A</span>BC + AB<span class="ov">C</span> + ACD</span> (BD olmadan)</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Kenarlar komşudur: F = Σ(1, 3, 4, 6, 7)</h4><span class="src">Hocanın örneği, PDF s.2–3</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="3" data-ones="1,3,4,6,7" data-groups="A'C|AC'|AB"></div>
+      </div>
+      <ol class="steps">
+        <li>Üst satırda m₁ ve m₃ yan yana (BC = 01, 11). A = 0, C = 1 sabit → <span class="m"><span class="ov">A</span>C</span>.</li>
+        <li>Alt satırda m₄ (BC = 00) ve m₆ (BC = 10). Aralarında iki hücre var ama <b>kenarlar komşu</b>: en sol ve en sağ sütun yan yana sayılır. A = 1, C = 0 sabit → <span class="m">A<span class="ov">C</span></span>. Hoca bu grubu haritanın iki kenarından taşan açık bir çizgiyle çizmiş. Burada da aynı şekilde gösteriliyor.</li>
+        <li>m₇ kaldı. Komşusu m₆ ile birleştir: A = 1, B = 1 sabit → <span class="m">AB</span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m">AB + <span class="ov">A</span>C + A<span class="ov">C</span> = AB + A ⊕ C</span></p>
+      <p>m₇'yi m₆ yerine yukarıdaki m₃ ile de gruplayabilirdin: <span class="m">BC</span>. O zaman <span class="m">F = BC + <span class="ov">A</span>C + A<span class="ov">C</span></span> olur. İkisi de eşit uzunlukta ve doğru. Bir haritanın birden fazla en sade cevabı olabilir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="okuma">
+  <h2><span class="n">6</span>Bir grubu formüle çevirmek</h2>
+  <p class="lead">Her grup için aynı soruyu sor: "Bu grubun içinde hangi değişken hiç değişmiyor?"</p>
+  <ol class="steps">
+    <li>Grubun kapsadığı satır ve sütun başlıklarına bak.</li>
+    <li>Her değişken için: grubun her yerinde <b>1</b> ise düz yaz, her yerinde <b>0</b> ise çizgili yaz, <b>bazen 0 bazen 1</b> ise hiç yazma.</li>
+    <li>Kalan harfleri çarp. Bu, grubun terimi.</li>
+    <li>Bütün grupların terimlerini + ile topla.</li>
+  </ol>
+  <div class="note tip">
+    <span class="note-title">Hızlı kontrol</span>
+    <p>Terimdeki harf sayısı = toplam değişken − log₂(grup boyutu). 4 değişkenli haritada 4'lü grup 2 harf vermeli. Fazla harf yazdıysan bir değişkeni yanlışlıkla sabit sanmışsındır.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="dort">
+  <h2><span class="n">7</span>4 değişkenli harita</h2>
+  <p class="lead">16 hücre: satırlarda AB, sütunlarda CD, ikisi de Gray sırasında.</p>
+  <div class="kmap-figure">
+    <div class="kmap-static" data-n="4" data-labels="index"></div>
+  </div>
+  <p>Satır sırası 00, 01, <b>11</b>, <b>10</b> olduğu için üçüncü satır m₁₂–m₁₅, dördüncü satır m₈–m₁₁'dir. Hem satırlarda hem sütunlarda 3. ve 4. sıra yer değiştirmiş durumda. Köşeler (m₀, m₂, m₈, m₁₀) birbirine komşu.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 1</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="4" data-ones="0,3,4,5,9,10,11,12,13,14,15" data-groups="A'C'D'|B'CD|AC|AD|BC'"></div>
+      </div>
+      <ol class="steps">
+        <li><b><span class="ov">A</span><span class="ov">C</span><span class="ov">D</span></b> (m₀, m₄): sol sütunun üst iki hücresi. m₀'ın başka komşu 1'i yok, o yüzden bu ikili zorunlu.</li>
+        <li><b><span class="ov">B</span>CD</b> (m₃, m₁₁): CD = 11 sütununun en üst ve en alt hücresi. Üst ve alt kenar komşu.</li>
+        <li><b>AC</b> (m₁₅, m₁₄, m₁₁, m₁₀): alt iki satırın sağ iki sütunu, 2×2 kare.</li>
+        <li><b>AD</b> (m₁₃, m₁₅, m₉, m₁₁): alt iki satırın orta iki sütunu.</li>
+        <li><b>B<span class="ov">C</span></b> (m₄, m₅, m₁₂, m₁₃): orta iki satırın sol iki sütunu.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span><span class="ov">C</span><span class="ov">D</span> + <span class="ov">B</span>CD + AC + AD + B<span class="ov">C</span></span></p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 2: F(A, B, C, D) = ?</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="4" data-ones="0,1,2,3,4,5,8,9,10,12,13,14" data-groups="C'|A'B'|AD'"></div>
+      </div>
+      <ol class="steps">
+        <li><b><span class="ov">C</span></b>: sol iki sütun (CD = 00 ve 01) tamamen 1. 8 hücrelik grup, 4 değişkenli haritada 1 harf verir.</li>
+        <li><b><span class="ov">A</span><span class="ov">B</span></b>: en üst satır (AB = 00) tamamen 1. 4'lü grup.</li>
+        <li><b>A<span class="ov">D</span></b>: alt iki satırda CD = 00 ve CD = 10 sütunları. Sol ve sağ kenar komşu olduğu için bu dört hücre bir 2×2 kare oluşturur. Hoca bunu kenarlardan taşan açık bir çizgiyle çizmiş.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span><span class="ov">B</span> + A<span class="ov">D</span> + <span class="ov">C</span></span></p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 3</h4><span class="src">Hocanın örneği, PDF s.3–4</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="4" data-ones="0,1,2,4,5,7,8,9,10,11,15" data-groups="A'C'|B'D'|AB'|BCD"></div>
+      </div>
+      <ol class="steps">
+        <li><b><span class="ov">A</span><span class="ov">C</span></b> (m₀, m₁, m₄, m₅): üst iki satırın sol iki sütunu.</li>
+        <li><b><span class="ov">B</span><span class="ov">D</span></b> (m₀, m₂, m₈, m₁₀): <b>dört köşe</b>. Hem sağ-sol hem üst-alt kenar komşu olduğu için köşeler 4'lü bir grup oluşturur. Sınavda en çok kaçırılan grup budur.</li>
+        <li><b>A<span class="ov">B</span></b> (m₈, m₉, m₁₁, m₁₀): en alt satır (AB = 10) tamamen 1.</li>
+        <li><b>BCD</b> (m₇, m₁₅): CD = 11 sütununda AB = 01 ve 11 satırları.</li>
+      </ol>
+      <p class="answer">F = <span class="m">A<span class="ov">B</span> + <span class="ov">B</span><span class="ov">D</span> + <span class="ov">A</span><span class="ov">C</span> + BCD</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="bes">
+  <h2><span class="n">8</span>5 değişkenli harita</h2>
+  <p class="lead">32 hücre. En kolay yol: iki tane 4 değişkenli harita çiz, biri A = 0, diğeri A = 1 için.</p>
+  <p>Her iki haritada satırlar BC, sütunlar DE. Kural: <b>iki haritada aynı yerde duran hücreler birbirine komşudur</b> (sadece A'da farklıdırlar). Haritaları üst üste konmuş iki kat gibi düşün. Bir grup aynı şekilde iki haritada da varsa, A düşer.</p>
+  <div class="note warn">
+    <span class="note-title">Hocanın tek parça 5 değişkenli haritasında başlık hatası</span>
+        <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l4-5degisken.png" alt="Hocanın 8 sütunlu 5 değişkenli harita çizimi, CDE başlıkları 000 001 011 010 110 111 011 010" loading="lazy"><figcaption>Hocanın notu, PDF s.4: son iki sütun başlığı 011 ve 010</figcaption></figure>
+    <p>Hoca önce 8 sütunlu tek bir harita çizmiş. Sütun başlıklarını (CDE) 000, 001, 011, 010, 110, 111, <b>011, 010</b> diye yazmış. Son ikisi yanlış. Doğrusu <b>101, 100</b>. 3 bitlik yansıtmalı Gray kodu şöyledir: 000, 001, 011, 010, 110, 111, 101, 100. Aynı kod bir sırada iki kez geçemez. Hocanın asıl örneği iki ayrı 4'lük haritayla çözüldüğü için bu hatadan etkilenmiyor.</p>
+    <p>Tek parça 8 sütunlu haritayı da okuyabilmelisin: satırlar AB, sütunlar CDE. Yan yana sütunlar ve iki dış kenar komşudur. Ayrıca orta çizgiye göre <b>ayna simetriği</b> olan sütunlar da komşudur (000↔100, 001↔101, 011↔111, 010↔110), çünkü bunlar yalnızca C'de farklıdır. Bu, iki ayrı 4'lük harita yöntemiyle aynı şeydir.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 5 değişkenli harita</h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-body">
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="5" data-ones="0,1,2,3,6,7,10,11,13,14,15,16,18,29" data-groups="A'D|A'B'C'|B'C'E'|BCD'E"></div>
+      </div>
+      <p>Haritadaki 1'ler: F = Σ(0, 1, 2, 3, 6, 7, 10, 11, 13, 14, 15, 16, 18, 29). A = 1 haritasındaki bir hücrenin numarası, A = 0 haritasında aynı yerdeki hücrenin numarası + 16'dır (ör. m₁₃ ↔ m₂₉).</p>
+      <ol class="steps">
+        <li><b><span class="ov">A</span>D</b>: A = 0 haritasında sağ iki sütun (DE = 11 ve 10) tamamen 1. 8 hücre, sadece bir haritada → A sabit 0, D sabit 1.</li>
+        <li><b><span class="ov">A</span><span class="ov">B</span><span class="ov">C</span></b>: A = 0 haritasında en üst satır (BC = 00) tamamen 1.</li>
+        <li><b><span class="ov">B</span><span class="ov">C</span><span class="ov">E</span></b>: Her iki haritada en üst satırın DE = 00 ve DE = 10 hücreleri 1. Kenarlar komşu (00 ile 10) ve iki harita üst üste komşu. 4 hücre, A ve D düşer, B = 0, C = 0, E = 0 sabit.</li>
+        <li><b>BC<span class="ov">D</span>E</b>: BC = 11 satırı, DE = 01 sütunu, her iki haritada da 1. İki hücre, A düşer.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span>D + <span class="ov">A</span><span class="ov">B</span><span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span><span class="ov">E</span> + BC<span class="ov">D</span>E</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="tablodan">
+  <h2><span class="n">9</span>Doğruluk tablosundan haritaya</h2>
+  <p class="lead">"What is the simplest form of F?" Sınavın tipik sorusu: doğruluk tablosu verilir, en sade ifade istenir.</p>
+  <ol class="steps">
+    <li>Tablonun her satırının minterm numarasını yaz (ABCD ikili sayısı).</li>
+    <li>F = 1 olan numaraları haritada doğru hücreye koy. Harita köşesindeki küçük numaraları referans al. 3. ve 4. satır ile sütunlara dikkat.</li>
+    <li>Grupla, oku, topla.</li>
+  </ol>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: tablodan en sade F</h4><span class="src">Hocanın örneği, PDF s.5</span></div>
+    <div class="example-body">
+      <p>Tablodaki F sütunu (0000'dan 1111'e): 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1. Yani F = Σ(1, 2, 5, 6, 7, 9, 10, 12, 13, 14, 15).</p>
+      <div class="kmap-figure">
+        <div class="kmap-static" data-n="4" data-ones="1,2,5,6,7,9,10,12,13,14,15" data-groups="C'D|CD'|BD|AB"></div>
+      </div>
+      <ol class="steps">
+        <li><b><span class="ov">C</span>D</b>: CD = 01 sütunu tamamen 1 (4 hücre).</li>
+        <li><b>C<span class="ov">D</span></b>: CD = 10 sütunu tamamen 1.</li>
+        <li><b>BD</b>: orta iki satır (AB = 01, 11) ile orta iki sütun (CD = 01, 11): m₅, m₇, m₁₃, m₁₅.</li>
+        <li><b>AB</b>: AB = 11 satırı tamamen 1.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">C</span>D + C<span class="ov">D</span> + BD + AB = C ⊕ D + BD + AB</span></p>
+      <p>Hoca sonda <span class="m"><span class="ov">C</span>D + C<span class="ov">D</span></span> kalıbını XOR olarak tanımış. Haritada CD = 01 ve CD = 10 sütunları (C ile D'nin farklı olduğu sütunlar) tamamen 1 ise o kısım <span class="m">C ⊕ D</span>'dir. CD = 00 ve 11 sütunları tamamen 1 ise <span class="m">C ⊙ D</span>.</p>
+    </div>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: 0'ları gruplayarak POS</span>
+    <p>1'ler yerine 0'ları aynı kurallarla gruplarsan <span class="m"><span class="ov">F</span></span>'nin en sade SOP'unu bulursun. De Morgan ile çevirince F'nin en sade POS (toplamlar çarpımı) hali çıkar. Grup okurken maxterm kuralı geçerli: 0 olan değişken düz, 1 olan çizgili, aralarında +. Soru "simplest POS" derse bu yolu kullan.</p>
+    <p>Örnek: 4. bölümdeki F = Σ(0, 1, 4, 5, 7) haritasında 0'lar m₂, m₃, m₆. {m₂, m₃} grubunda A = 0, B = 1 → <span class="m">(A + <span class="ov">B</span>)</span>. {m₂, m₆} grubunda B = 1, C = 0 → <span class="m">(<span class="ov">B</span> + C)</span>. <span class="m">F = (A + <span class="ov">B</span>)(<span class="ov">B</span> + C)</span>. Açarsan <span class="m"><span class="ov">B</span> + AC</span> çıkar, SOP sonucuyla aynı.</p>
+  </div>
+
+  <h3>İfadeden haritaya</h3>
+  <p>İfade kanonik değilse (terimlerde eksik değişken varsa) her terimi bir <b>blok</b> olarak haritaya koyabilirsin: eksik değişken, o değişkenin hem 0 hem 1 olduğu bütün hücreleri doldurur.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = <span class="ov">A</span>B + A<span class="ov">C</span> + ABC</h4></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li><span class="m"><span class="ov">A</span>B</span>: A = 0 satırında B = 1 olan sütunlar (BC = 11 ve 10) → m₃, m₂.</li>
+        <li><span class="m">A<span class="ov">C</span></span>: A = 1 satırında C = 0 olan sütunlar (BC = 00 ve 10) → m₄, m₆.</li>
+        <li><span class="m">ABC</span>: tek hücre → m₇.</li>
+      </ol>
+      <div class="kmap-figure"><div class="kmap-static" data-n="3" data-ones="2,3,4,6,7" data-groups="B|AC'"></div></div>
+      <p class="answer">Haritadan: F = <span class="m">B + A<span class="ov">C</span></span> (sağ iki sütun B, alt satırın iki ucu A<span class="ov">C</span>)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="cozucu">
+  <h2><span class="n">10</span>Harita çözücü</h2>
+  <p class="lead">Hücrelere tıklayarak 0 ile 1 arasında geçiş yap. Araç en sade ifadeyi bulur ve grupları harita üzerinde çizer. Kendi çözümünü kontrol etmek için kullan.</p>
+  <div class="widget" id="w-solver">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Karnaugh haritası çözücü</h4></div>
+    <div class="widget-body">
+      <div class="controls">
+        <div class="field"><span class="lbl">Değişken sayısı</span>
+          <div class="seg" role="group" aria-label="Değişken sayısı" id="sv-n">
+            <button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="true">4</button><button type="button" data-v="5" aria-pressed="false">5</button>
+          </div></div>
+        <div class="field"><label for="sv-sigma">Σ listesiyle doldur</label><input id="sv-sigma" type="text" placeholder="ör. 0,2,5,7" autocomplete="off" spellcheck="false" size="16"></div>
+        <button class="btn" type="button" id="sv-fill">Doldur</button>
+        <button class="btn ghost" type="button" id="sv-clear">Temizle</button>
+        <button class="btn ghost" type="button" id="sv-random">Rastgele</button>
+      </div>
+      <div id="sv-map"></div>
+      <div class="wout" id="sv-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="ozet">
+  <h2><span class="n">11</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Harita düzeni</h4>
+      <ul>
+        <li>Başlıklar Gray sırasında: 00, 01, 11, 10</li>
+        <li>3 değişken: satır A, sütun BC</li>
+        <li>4 değişken: satır AB, sütun CD</li>
+        <li>5 değişken: A = 0 ve A = 1 için iki 4'lük harita</li>
+        <li>3. ve 4. satır/sütun: m₃ ↔ m₂, m₁₂–15 ↔ m₈–11</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hocanın 5 kuralı</h4>
+      <ul>
+        <li>Çapraz komşu yok</li>
+        <li>Grupta 2ⁿ tane 1 (1, 2, 4, 8, 16), hiç 0 yok</li>
+        <li>Gruplar olabildiğince büyük</li>
+        <li>Her 1 en az bir grupta (üst üste binmek serbest)</li>
+        <li>Kenarlar komşu, 4'lük haritada 4 köşe de komşu</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Grup okuma</h4>
+      <ul>
+        <li>Grubun her yerinde 1 olan değişken: düz</li>
+        <li>Her yerinde 0 olan: çizgili</li>
+        <li>Değişen: yazılmaz</li>
+        <li>2<sup>k</sup>'lık grup → n − k harf</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hocanın sonuçları</h4>
+      <ul>
+        <li>Σ(0,2) → <span class="ov">B</span>; Σ(0,2,3) → A + <span class="ov">B</span></li>
+        <li>Σ(0,1,4,5,7) → AC + <span class="ov">B</span></li>
+        <li>Σ(1,3,4,6,7) → AB + <span class="ov">A</span>C + A<span class="ov">C</span></li>
+        <li>Tablo örneği → C ⊕ D + BD + AB</li>
+        <li>Σ(0,3) → A ⊙ B</li>
+        <li>4 değişken 1 → <span class="ov">A</span><span class="ov">C</span><span class="ov">D</span> + <span class="ov">B</span>CD + AC + AD + B<span class="ov">C</span></li>
+        <li>4 değişken 2 → <span class="ov">A</span><span class="ov">B</span> + A<span class="ov">D</span> + <span class="ov">C</span></li>
+        <li>4 değişken 3 → A<span class="ov">B</span> + <span class="ov">B</span><span class="ov">D</span> + <span class="ov">A</span><span class="ov">C</span> + BCD</li>
+        <li>5 değişken → <span class="ov">A</span>D + <span class="ov">A</span><span class="ov">B</span><span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span><span class="ov">E</span> + BC<span class="ov">D</span>E</li>
+      </ul>
+    </div>
+  </div>
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>Karnaugh map (K-map)</dt><dd>Karnaugh haritası</dd>
+    <dt>neighbor / adjacent</dt><dd>komşu</dd>
+    <dt>group</dt><dd>grup (öbek)</dd>
+    <dt>diagonal</dt><dd>çapraz</dd>
+    <dt>edges / corners</dt><dd>kenarlar / köşeler</dd>
+    <dt>prime implicant</dt><dd>asal içeren / asal implikant (büyütülemeyen grup)</dd>
+    <dt>essential prime implicant</dt><dd>temel asal içeren (bir 1'i tek başına örten asal içeren)</dd>
+    <dt>simplest form</dt><dd>en sade biçim</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="alistirma">
+  <h2><span class="n">12</span>Alıştırmalar ve test</h2>
+  <p class="lead">Önce kâğıda haritayı çiz ve grupla, sonra çözüme bak. Sonucunu 10. bölümdeki çözücüyle de kontrol edebilirsin.</p>
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li>F(A, B) = Σ(1, 3)'ü sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>m₁ ve m₃ sağ sütun (B = 1). A değişiyor → <b>F = B</b>.</p></details></li>
+    <li>F(A, B, C) = Σ(2, 3, 6, 7)'yi sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Sağ iki sütun (BC = 11 ve 10) her iki satırda 1. 4'lü grup. A değişiyor, C değişiyor, B = 1 → <b>F = B</b>.</p></details></li>
+    <li>F(A, B, C) = Σ(0, 2, 4, 6)'yı sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>BC = 00 ve BC = 10 sütunları, iki satırda da 1. Kenarlar komşu → 4'lü grup. C hep 0 → <b>F = <span class="ov">C</span></b>.</p></details></li>
+    <li>F(A, B, C) = Σ(1, 2, 4, 7)'yi sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Haritada hiçbir iki 1 komşu değil (satranç tahtası deseni). Her biri tek başına → 4 minterm toplamı. Bu desen 3 girişli XOR: <b>F = A ⊕ B ⊕ C</b>.</p></details></li>
+    <li>F(A, B, C, D) = Σ(0, 2, 8, 10)'u sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Dört köşe! Köşeler komşu → 4'lü grup. B = 0, D = 0 sabit → <b>F = <span class="ov">B</span><span class="ov">D</span></b>.</p></details></li>
+    <li>F(A, B, C, D) = Σ(5, 7, 13, 15)'i sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Orta iki satır (AB = 01, 11) ile orta iki sütun (CD = 01, 11): ortadaki 2×2 kare. B = 1, D = 1 → <b>F = BD</b>.</p></details></li>
+    <li>F(A, B, C, D) = Σ(0, 1, 2, 3, 8, 9, 10, 11)'i sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>En üst satır (AB = 00) ve en alt satır (AB = 10). Üst ve alt kenar komşu → 8'li grup. B = 0 → <b>F = <span class="ov">B</span></b>.</p></details></li>
+    <li>F(A, B, C, D) = Σ(0, 1, 3, 7, 15)'i sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>m₀–m₁: <span class="m"><span class="ov">A</span><span class="ov">B</span><span class="ov">C</span></span>. m₃: m₁ ile <span class="m"><span class="ov">A</span><span class="ov">B</span>D</span> ya da m₇ ile <span class="m"><span class="ov">A</span>CD</span>. m₁₅: m₇ ile <span class="m">BCD</span>. En sade: <b><span class="m"><span class="ov">A</span><span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>CD + BCD</span></b>. (<span class="m"><span class="ov">A</span><span class="ov">B</span>D</span> ile de aynı uzunlukta doğru bir cevap çıkar.)</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <p>Haritayı çöz sorularında aynı fonksiyonu veren ve en sade cevaptan uzun olmayan her yazılış doğru sayılır.</p>
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="solve3">Haritayı çöz (3 değişken)</option>
+            <option value="solve4">Haritayı çöz (4 değişken)</option>
+            <option value="read">Grubu oku</option>
+            <option value="cell">Hücrenin minterm numarası</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-map"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="03-mantik-tasarimi.html">Önceki: Logic Design</a>
+    <a href="05-dont-care.html">Sıradaki: K-Maps with Don't Care</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/kmap.js"></script>
+  <script src="../assets/js/lesson04.js"></script>
+</body>
+</html>

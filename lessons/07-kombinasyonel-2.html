@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combinational Circuits 2 | YAM205</title>
+  <meta name="description" content="Ders 7: Encoder, öncelikli encoder, decoder, decoder ile fonksiyon gerçekleme, 1 ve 4 bitlik karşılaştırıcı. Etkileşimli devreler ve sınav öncesi kontrol listesi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="07">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 7 / 7 <strong>Combinational Circuits 2</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 7, 19 Ekim 2026</p>
+      <h1>Combinational Circuits 2</h1>
+      <p>Son ders. Klavyeden basılan tuşu ikili koda çeviren encoder'ı, ikili kodu tek bir hatta çeviren decoder'ı ve iki sayıyı karşılaştıran comparator'ı tasarlayacağız. Sonunda bütün dersi kapsayan bir sınav öncesi kontrol listesi var.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>Encoder</li>
+        <li>4×2 priority encoder</li>
+        <li>Decoder (2×4, 3×8)</li>
+        <li>FA with a 3×8 decoder</li>
+        <li>1-bit comparator</li>
+        <li>4-bit comparator</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#harita"><span class="n">1</span><span>Nerede kaldık?</span></a></li>
+          <li><a href="#encoder"><span class="n">2</span><span>Encoder</span></a></li>
+          <li><a href="#priority"><span class="n">3</span><span>Öncelikli encoder</span></a></li>
+          <li><a href="#decoder"><span class="n">4</span><span>Decoder</span></a></li>
+          <li><a href="#fa-dec"><span class="n">5</span><span>Decoder ile tam toplayıcı</span></a></li>
+          <li><a href="#comp1"><span class="n">6</span><span>1 bitlik karşılaştırıcı</span></a></li>
+          <li><a href="#comp4"><span class="n">7</span><span>4 bitlik karşılaştırıcı</span></a></li>
+          <li><a href="#ozet"><span class="n">8</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">9</span><span>Alıştırmalar ve test</span></a></li>
+          <li><a href="#sinav"><span class="n">10</span><span>Sınav öncesi kontrol listesi</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="harita">
+  <h2><span class="n">1</span>Nerede kaldık?</h2>
+  <p class="lead">Hoca dersi bir listeyle açmış. Çizginin üstündekileri gördük, altındakiler bu dersin konusu.</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Yapı taşı</th><th>Ne yapar?</th><th>Nerede gördük?</th></tr></thead>
+    <tbody>
+      <tr><td>Half Adder</td><td>2 bit toplar</td><td><a href="03-mantik-tasarimi.html#yarim">3. ders</a></td></tr>
+      <tr><td>Full Adder</td><td>3 bit (elde dahil) toplar</td><td><a href="03-mantik-tasarimi.html#tam">3. ders</a></td></tr>
+      <tr><td>Multiplexer</td><td>Çok girişten birini seçer</td><td><a href="06-kombinasyonel-1.html#mux">6. ders</a></td></tr>
+      <tr><td>Demultiplexer</td><td>Tek girişi çok çıkıştan birine yollar</td><td><a href="06-kombinasyonel-1.html#demux">6. ders</a></td></tr>
+      <tr><td><b>Encoder</b></td><td>Hangi hattın aktif olduğunu ikili koda çevirir</td><td>Bu ders</td></tr>
+      <tr><td><b>Decoder</b></td><td>İkili kodu tek bir aktif hatta çevirir</td><td>Bu ders</td></tr>
+      <tr><td><b>Comparator</b></td><td>İki sayıyı karşılaştırır</td><td>Bu ders</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="encoder">
+  <h2><span class="n">2</span>Encoder (kodlayıcı)</h2>
+  <p class="lead">Birçok giriş hattından <b>hangisinin aktif olduğunu</b> bulup bu bilgiyi kısa bir ikili kod olarak veren devre.</p>
+  <p>Hocanın örneği: 20 tuşlu bir tuş takımı. Her tuş ayrı bir kablo. Bir tuşa basınca o kablo 1 olur. Ama hafızaya 20 kablo bağlamak yerine "hangi tuşa basıldı" bilgisini bir sayı olarak saklamak isteriz. 3 tuşuna basılınca hafızaya <span class="b">00000011</span> (8 bit) yazılır. Bu çeviriyi encoder yapar. Hoca bloğa "Encoder, Decimal-to-Binary" yazmış. Çıkışın üstüne de "8-bit" yazmış: hafızanın bir kelimesi 8 bit, encoder'ın ürettiği 5 bitlik kodun başına sıfırlar eklenip 8 bit olarak saklanıyor.</p>
+
+  <div class="widget" id="w-keypad">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: hocanın tuş takımı</h4></div>
+    <div class="widget-body">
+      <p>Bir tuşa bas. Encoder o tuşun 5 bitlik kodunu üretiyor. Hafızaya 8 bit olarak (başı sıfırlarla) yazılıyor.</p>
+      <div class="keypad" id="keypad" role="group" aria-label="20 tuşlu tuş takımı"></div>
+      <div class="wout" id="keypad-out" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <h3>Basit encoder'ın formülleri</h3>
+  <p>Aynı anda yalnızca bir girişin 1 olduğunu varsayan basit 4×2 encoder: çıkışın yüksek biti A, girişin numarası 2 ya da 3 ise 1; düşük biti B, numara 1 ya da 3 ise 1. Yani <span class="m">A = I₂ + I₃</span>, <span class="m">B = I₁ + I₃</span>. Sadece OR kapıları. 8×3 encoder için aynı mantıkla: <span class="m">A₂ = I₄ + I₅ + I₆ + I₇</span>, <span class="m">A₁ = I₂ + I₃ + I₆ + I₇</span>, <span class="m">A₀ = I₁ + I₃ + I₅ + I₇</span> (numarasının o biti 1 olan girişler).</p>
+  <p>İki giriş birden 1 olursa bu formüller saçma sonuç verir (I₁ ve I₂ birlikte 1 → 11 çıkar, ama 3 numaralı giriş aktif değil). Bu sorunu bir sonraki bölümdeki öncelikli encoder çözüyor.</p>
+
+  <h3>Kaç çıkış gerekir?</h3>
+  <p>Hoca iki blok çizmiş: <b>20 giriş → 5 çıkış</b> ve <b>2⁸ giriş → 8 çıkış</b>. Kural: <b>"If there are N outputs, there must be 2ᴺ inputs"</b>. Yani N bitlik bir kod en fazla 2ᴺ farklı girişi ayırt edebilir.</p>
+  <ul>
+    <li>20 tuş için: 2⁴ = 16 yetmez, 2⁵ = 32 yeter → <b>5 çıkış</b>. (32 kodun 12'si kullanılmaz.)</li>
+    <li>256 = 2⁸ giriş için tam <b>8 çıkış</b>.</li>
+    <li>Genel olarak: giriş sayısı M ise çıkış sayısı N, 2ᴺ ≥ M olan en küçük sayı.</li>
+  </ul>
+  <p>Hocanın kod tablosu: 0–9 tuşları kendi değerlerine (hoca "BCD" demiş), A–F tuşları 10–15'e, sonra <b>! = 16 → 10000</b>, <b>. = 17 → 10001</b>, <b>: = 18 → 10010</b>, <b>; = 19 → 10011</b>.</p>
+  <div class="note warn">
+    <span class="note-title">Terim notu</span>
+    <p>Hoca tuş kodları için "BCD" yazmış. 0–9 için BCD ile düz ikili aynı olduğundan bu doğru. Ama A–F ve sembol tuşları BCD'de yazılamaz (BCD sadece 0–9'dur). Onların kodu düz ikili. Doğru terim: encoder her tuşa bir <b>ikili kod</b> atıyor.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="priority">
+  <h2><span class="n">3</span>Öncelikli encoder (priority encoder)</h2>
+  <p class="lead">Basit bir encoder aynı anda tek girişin aktif olduğunu varsayar. Ya iki tuşa birden basılırsa? Öncelikli encoder kuralı koyar: <b>numarası en büyük olan aktif giriş kazanır</b>.</p>
+  <div class="example">
+    <div class="example-head"><h4>4×2 Decimal-to-binary Priority Encoder</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <p>4 giriş (I₀–I₃), 2 çıkış (A, B). Çıkış, aktif girişlerin en büyük numarasının ikili kodu. <b>A yüksek bit, B düşük bit</b>. Öncelik sırası: I₃ en yüksek, I₀ en düşük.</p>
+      <p>Hocanın örnekleri:</p>
+      <ul>
+        <li>I₃I₂I₁I₀ = 1011: aktifler I₃, I₁, I₀. En büyüğü I₃ → 3 → <span class="b">AB = 11</span>.</li>
+        <li>0010: sadece I₁ → 1 → <span class="b">AB = 01</span>.</li>
+        <li>0101: aktifler I₂, I₀. En büyüğü I₂ → 2 → <span class="b">AB = 10</span>.</li>
+      </ul>
+      <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l7-oncelik.png" alt="Hocanın el yazısı öncelik sırası ve üç örnek, sağda B A başlığı" loading="lazy"><figcaption>Hocanın notu, PDF s.2: öncelik örnekleri</figcaption></figure>
+      <p class="hint">Hocanın bu örnekteki sütun başlığı "B A" diye yazılmış ama değerler A'dan başlayarak okunuyor (doğruluk tablosundaki "A B" sırası). Değerler doğru, sadece başlık ters.</p>
+
+      <h4>Doğruluk tablosu</h4>
+      <div class="table-wrap"><table class="tt" id="pe-table">
+        <thead><tr><th>I₃</th><th>I₂</th><th>I₁</th><th>I₀</th><th>Kazanan</th><th class="out">A</th><th>B</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <h4>Haritalar</h4>
+      <div class="kmap-figure">
+        <div class="kmap7" data-ones="4,5,6,7,8,9,10,11,12,13,14,15" data-groups="B|A" data-title="A"></div>
+        <div class="kmap7" data-ones="2,3,8,9,10,11,12,13,14,15" data-groups="A|B'C" data-title="B"></div>
+      </div>
+      <ol class="steps">
+        <li><b>A</b>: I₃I₂ = 01, 11 ve 10 satırlarının tamamı. İki grup: I₂ (orta iki satır) ve I₃ (alt iki satır) → <span class="m">A = I₂ + I₃</span>.</li>
+        <li><b>B</b>: I₃ (alt iki satır) ve I₁I₀ = 11, 10 sütunlarının <b>en üst ve en alt</b> satırdaki hücreleri (m₂, m₃, m₁₀, m₁₁). Üst ve alt kenar komşu olduğu için bu dört hücre tek grup: I₂ = 0 ve I₁ = 1 sabit, I₃ ile I₀ değişiyor → <span class="m">I₁<span class="ov">I₂</span></span>. Hoca da bu grubu haritanın üst ve alt kenarından taşan açık çizgilerle çizmiş. Sadece üst satırdaki iki hücre alınsaydı terim <span class="m"><span class="ov">I₃</span><span class="ov">I₂</span>I₁</span> olurdu (doğru ama daha uzun). Sonuç: <span class="m">B = I₁<span class="ov">I₂</span> + I₃</span>.</li>
+      </ol>
+      <p class="answer">A = <span class="m">I₂ + I₃</span> &nbsp;&nbsp; B = <span class="m">I₁<span class="ov">I₂</span> + I₃</span></p>
+      <p>B'nin mantığı: "I₃ aktifse (kazanan 3, B = 1) ya da I₁ aktif ama ondan büyük I₂ aktif değilse (kazanan 1, B = 1)". I₂ aktifken I₁'in bir önemi kalmaz, çünkü I₂ kazanır.</p>
+      <p><b>I₀ hiçbir formülde yok.</b> Hoca devrede I₀'ı toprağa bağlamış. Sebebi: I₀ kazandığında çıkış zaten 00. Hiç giriş aktif olmadığında da çıkış 00.</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-pe">
+    <div class="circuit-head"><h4>4×2 öncelikli encoder: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg data-gen="pe" role="img" aria-label="I0 toprağa bağlı. I1, I2'nin tersiyle AND'lenip I3 ile OR'lanıyor ve B'yi veriyor. I2 ile I3 OR'lanıp A'yı veriyor."></svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+  <p>Hoca devreyi sonunda tek bir "4×2 Encoder" kutusu olarak çizmiş ve çıkışlarını F₁ (yüksek bit, A) ve F₀ (düşük bit, B) diye adlandırmış. Basit encoder'la karşılaştır: fark, B formülündeki <span class="ov">I₂</span>. I₂ aktifken I₁'in sesi kısılıyor, öncelik buradan geliyor.</p>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: "geçerli" (valid) çıkışı</span>
+    <p>Bu tasarımda "sadece I₀ aktif" ile "hiçbir giriş aktif değil" durumları aynı çıkışı (00) verir, ayırt edilemez. Gerçek öncelikli encoder'larda bir de <b>V</b> (valid) çıkışı olur: <span class="m">V = I₀ + I₁ + I₂ + I₃</span>. V = 0 ise hiçbir giriş aktif değildir ve A, B dikkate alınmaz.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="decoder">
+  <h2><span class="n">4</span>Decoder (kod çözücü)</h2>
+  <p class="lead">Hocanın tanımı: <b>"Opposite of Encoder. It converts N inputs into 2ᴺ outputs."</b> Gelen ikili kodun numarasına karşılık gelen <b>tek bir çıkışı</b> 1 yapar, diğerlerini 0 bırakır.</p>
+  <p>Örneğin 3×8 decoder'a 101 (5) gelirse sadece 5 numaralı çıkış 1 olur. Bir otelde oda numarasını tuşlayıp o odanın ışığını yakmak gibi. Böyle, tek bir hattın 1 diğerlerinin 0 olduğu koda <b>one-hot</b> denir.</p>
+  <p class="hint">Adlandırma: "n×m" n giriş, m çıkış demek. 4×2 encoder 4 giriş 2 çıkış, 2×4 decoder 2 giriş 4 çıkış.</p>
+  <div class="example">
+    <div class="example-head"><h4>2×4 Decoder</h4><span class="src">Hocanın çözümü, PDF s.3</span></div>
+    <div class="example-body">
+      <p>2 giriş (I₁ yüksek bit, I₀ düşük bit), 4 çıkış. Hocanın örnekleri: 11 → F₃ = 1; 10 → F₂ = 1; 00 → F₀ = 1.</p>
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>I₁</th><th>I₀</th><th class="out">F₃</th><th>F₂</th><th>F₁</th><th>F₀</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td>0</td><td class="one">1</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td><td>0</td><td class="one">1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td class="out">0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td class="out one">1</td><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table></div>
+      <p>Her çıkış tek bir satırda 1, yani her çıkış <b>bir minterm</b>:</p>
+      <div class="formula"><span class="m" style="white-space:normal">F₀ = <span class="ov">I₀ + I₁</span> = <span class="ov">I₁</span><span class="ov">I₀</span> &nbsp; F₁ = <span class="ov">I₁</span>I₀ &nbsp; F₂ = I₁<span class="ov">I₀</span> &nbsp; F₃ = I₁I₀</span></div>
+      <p>Hoca F₀'ı <span class="m"><span class="ov">I₀ + I₁</span></span> olarak yazmış ve devrede bir <b>NOR</b> kapısıyla yapmış. De Morgan ile <span class="m"><span class="ov">I₀ + I₁</span> = <span class="ov">I₀</span><span class="ov">I₁</span></span>, yani m₀. İki NOT ve bir AND yerine tek bir NOR kapısı yeterli. Diğer üç çıkış birer AND (gerektiğinde NOT ile).</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-dec">
+    <div class="circuit-head"><h4>2×4 decoder: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg data-gen="dec" role="img" aria-label="I0 ve I1 bir NOR kapısına girip F0'ı veriyor. I0 ile I1'in tersi F1'i, I1 ile I0'ın tersi F2'yi, I1 ile I0 F3'ü veriyor."></svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: decoder ile DEMUX aynı devre</span>
+    <p>1×4 DEMUX'un formülleri (<span class="m"><span class="ov">S₁</span><span class="ov">S₀</span>I</span>, …) ile 2×4 decoder'ın formüllerini karşılaştır. DEMUX'ta veri girişi I'yı sabit 1 yaparsan geriye decoder kalır. Bu yüzden entegre devre kataloglarında genelde "decoder/demultiplexer" diye tek bir yonga bulunur. Gerçek decoder yongalarında bir de <b>enable</b> (E, "etkinleştir") girişi olur: E = 0 iken bütün çıkışlar 0, E = 1 iken decoder normal çalışır. Bu E girişi, DEMUX'taki veri girişi I'nın işini görür.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="fa-dec">
+  <h2><span class="n">5</span>Decoder ile tam toplayıcı</h2>
+  <p class="lead">Decoder'ın her çıkışı bir minterm olduğuna göre, <b>her fonksiyon</b> bir decoder ve bir OR kapısıyla yapılabilir: fonksiyonun Σ listesindeki çıkışları OR'la.</p>
+  <div class="example">
+    <div class="example-head"><h4>Design of a FA with a 3×8 Decoder</h4><span class="src">Hocanın örneği, PDF s.3–4</span></div>
+    <div class="example-body">
+      <p>Hoca tam toplayıcının tablosunu tekrar yazmış (toplama R demiş, S yerine). 3. dersten: R, 1'lerin sayısı tekse 1. C<sub>out</sub>, en az iki 1 varsa 1.</p>
+      <div class="formula"><span class="m">R = Σ(1, 2, 4, 7) &nbsp;&nbsp; C<sub>out</sub> = Σ(3, 5, 6, 7)</span></div>
+      <ol class="steps">
+        <li>A, B, C<sub>in</sub>'i 3×8 decoder'ın girişlerine bağla. Minterm numaraları ABC<sub>in</sub> sırasıyla okunduğu için <b>A en yüksek bit</b> (I₂), C<sub>in</sub> en düşük bit (I₀) olmalı. Hoca girişleri I₀, I₁, I₂ diye adlandırmış ama hangisinin hangi değişken olduğunu yazmamış. Sınavda bunu mutlaka belirt.</li>
+        <li>Decoder'ın 1, 2, 4, 7 numaralı çıkışlarını 4 girişli bir OR'a bağla → <b>R</b>.</li>
+        <li>3, 5, 6, 7 numaralı çıkışları ikinci bir 4 girişli OR'a bağla → <b>C<sub>out</sub></b>. 7 numaralı çıkış iki OR'a birden gider.</li>
+        <li>0 numaralı çıkış kullanılmaz.</li>
+      </ol>
+      <p class="answer">Sadeleştirme gerekmeden, doğrudan Σ listesinden devre.</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-fadec">
+    <div class="circuit-head"><h4>Decoder ile tam toplayıcı: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg data-gen="fadec" role="img" aria-label="A, B, Cin bir 3x8 decoder'a giriyor. 1, 2, 4, 7 numaralı çıkışlar R'yi veren OR kapısına, 3, 5, 6, 7 numaralı çıkışlar Cout'u veren OR kapısına bağlı."></svg>
+    </div>
+    <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="comp1">
+  <h2><span class="n">6</span>1 bitlik karşılaştırıcı (comparator)</h2>
+  <p class="lead">İki biti karşılaştırır ve üç çıkıştan birini 1 yapar: A &gt; B, A &lt; B ya da A = B.</p>
+  <div class="example">
+    <div class="example-head"><h4>Comparator</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-body">
+      <p>Çıkışlar: F₂ = F<sub>A&gt;B</sub>, F₁ = F<sub>A&lt;B</sub>, F₀ = F<sub>A=B</sub>.</p>
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>A</th><th>B</th><th class="out">F₂ (A&gt;B)</th><th>F₁ (A&lt;B)</th><th>F₀ (A=B)</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td>0</td><td class="one">1</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td><td class="one">1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td class="out one">1</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td class="out">0</td><td>0</td><td class="one">1</td></tr>
+        </tbody>
+      </table></div>
+      <ol class="steps">
+        <li><b>F₂</b> sadece 10 satırında 1 → <span class="m">A<span class="ov">B</span></span> (A = 1, B = 0 ise A büyük).</li>
+        <li><b>F₁</b> sadece 01 satırında 1 → <span class="m"><span class="ov">A</span>B</span>.</li>
+        <li><b>F₀</b> 00 ve 11 satırlarında 1 → <span class="m"><span class="ov">A</span><span class="ov">B</span> + AB = A ⊙ B</span> (XNOR, eşitlik kapısı).</li>
+      </ol>
+      <p class="answer">F₀ = <span class="m">A ⊙ B</span> &nbsp; F₁ = <span class="m"><span class="ov">A</span>B</span> &nbsp; F₂ = <span class="m">A<span class="ov">B</span></span></p>
+      <p>Hocanın devresi: bir XNOR (F<sub>A=B</sub>), A'nın tersini B ile AND'leyen kapı (hoca çıkışa "F<sub>B&gt;A</sub>" demiş, A &lt; B ile aynı şey) ve B'nin tersini A ile AND'leyen kapı (F<sub>A&gt;B</sub>).</p>
+    </div>
+  </div>
+  <div class="circuit" id="c-comp1">
+    <div class="circuit-head"><h4>1 bitlik karşılaştırıcı: girişlere bas</h4><div class="pins" aria-label="Girişler"></div></div>
+    <div class="circuit-svg">
+      <svg data-gen="comp1" role="img" aria-label="A ve B bir XNOR kapısına girip A eşittir B çıkışını veriyor. A'nın tersi ile B, A küçüktür B çıkışını; A ile B'nin tersi, A büyüktür B çıkışını veriyor."></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="comp4">
+  <h2><span class="n">7</span>4 bitlik karşılaştırıcı</h2>
+  <p class="lead">Hoca dört tane 1 bitlik karşılaştırıcı kutusu çizmiş ama devreyi tamamlamamış. Bu bölümde nasıl tamamlanacağını görelim. Sınavda sorulma ihtimali yüksek.</p>
+  <div class="note warn">
+    <span class="note-title">Hocanın notu bu noktada yarım</span>
+        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l7-karsilastirici.png" alt="Hocanın el yazısıyla çizdiği dört tane 1-bit comp kutusu" loading="lazy"><figcaption>Hocanın notu, PDF s.5: çıkışları bağlanmamış dört 1 bitlik karşılaştırıcı</figcaption></figure>
+    <p>PDF'te A₃B₃, A₂B₂, A₁B₁, A₀B₀ girişli dört "1-bit Comp" kutusu var, çıkışları birbirine bağlanmamış. Aşağıdaki tamamlama, kitaplardaki standart 4 bitlik karşılaştırıcıdır.</p>
+  </div>
+  <h3>Fikir: sözlükteki gibi karşılaştır</h3>
+  <p>Sözlükte kelimeleri baştan başlayıp ilk farklı harfe bakarak sıralarız (ARABA &lt; ARI, çünkü üçüncü harfte A &lt; I). Sayılarda da aynısı. İki sayıyı kafanda nasıl karşılaştırırsın? 4719 ile 4752: önce en soldaki basamaklar (4 = 4), eşit. Sonra 7 = 7, eşit. Sonra 1 &lt; 5, karar verildi, sağdakilere bakmaya gerek yok. İkili sayılarda da aynı yöntem: <b>en yüksek bitten başla, ilk farklı bit sonucu belirler</b>.</p>
+  <ol class="steps">
+    <li>Her bit için eşitlik: <span class="m">x<sub>i</sub> = A<sub>i</sub> ⊙ B<sub>i</sub></span>. Bu, 1 bitlik karşılaştırıcının F<sub>A=B</sub> çıkışı.</li>
+    <li><b>A = B</b>: bütün bitler eşitse. <span class="m">F<sub>A=B</sub> = x₃x₂x₁x₀</span>.</li>
+    <li><b>A &gt; B</b>: ya A₃ &gt; B₃, ya üst bitler eşit ve A₂ &gt; B₂, ya … :
+      <div class="formula"><span class="m" style="white-space:normal">F<sub>A&gt;B</sub> = A₃<span class="ov">B₃</span> + x₃A₂<span class="ov">B₂</span> + x₃x₂A₁<span class="ov">B₁</span> + x₃x₂x₁A₀<span class="ov">B₀</span></span></div></li>
+    <li><b>A &lt; B</b>: aynı yapı, <span class="m">A<span class="ov">B</span></span> yerine <span class="m"><span class="ov">A</span>B</span>:
+      <div class="formula"><span class="m" style="white-space:normal">F<sub>A&lt;B</sub> = <span class="ov">A₃</span>B₃ + x₃<span class="ov">A₂</span>B₂ + x₃x₂<span class="ov">A₁</span>B₁ + x₃x₂x₁<span class="ov">A₀</span>B₀</span></div></li>
+  </ol>
+  <p>Her 1 bitlik karşılaştırıcının üç çıkışı (A<sub>i</sub><span class="ov">B<sub>i</sub></span>, <span class="ov">A<sub>i</sub></span>B<sub>i</sub>, x<sub>i</sub>) bu formüllerde aynen kullanılıyor. Kutulara eklenen birkaç AND ve iki OR kapısı devreyi tamamlıyor.</p>
+  <div class="note tip">
+    <span class="note-title">Kısayol</span>
+    <p>A &gt; B ve A = B bilindiğinde üçüncüsü hesaplanabilir: <span class="m">F<sub>A&lt;B</sub> = <span class="ov">F<sub>A&gt;B</sub> + F<sub>A=B</sub></span></span> (ne büyük ne eşitse küçüktür).</p>
+  </div>
+  <div class="widget" id="w-comp4">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: 4 bitlik karşılaştırıcı</h4></div>
+    <div class="widget-body">
+      <p>A ve B'nin bitlerine bas. Tablo, karşılaştırmanın hangi bitte karara bağlandığını gösteriyor.</p>
+      <div class="controls">
+        <div class="field"><span class="lbl">A (A₃A₂A₁A₀)</span><div class="digit-pick" id="c4-a"></div></div>
+        <div class="field"><span class="lbl">B (B₃B₂B₁B₀)</span><div class="digit-pick" id="c4-b"></div></div>
+      </div>
+      <div class="wout" id="c4-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="ozet">
+  <h2><span class="n">8</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Encoder</h4>
+      <ul>
+        <li>Aktif girişin numarasını ikili koda çevirir</li>
+        <li>N çıkış → en fazla 2ᴺ giriş</li>
+        <li>20 tuş → 5 çıkış; 2⁸ giriş → 8 çıkış</li>
+      </ul>
+    </div>
+    <div>
+      <h4>4×2 öncelikli encoder</h4>
+      <ul>
+        <li>En büyük numaralı aktif giriş kazanır</li>
+        <li>A = I₂ + I₃</li>
+        <li>B = I₁<span class="ov">I₂</span> + I₃</li>
+        <li>I₀ kullanılmaz (GND)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Decoder</h4>
+      <ul>
+        <li>N giriş → 2ᴺ çıkış, sadece biri 1</li>
+        <li>Her çıkış bir minterm</li>
+        <li>2×4: F₀ = <span class="ov">I₀ + I₁</span> (NOR), F₁ = <span class="ov">I₁</span>I₀, F₂ = I₁<span class="ov">I₀</span>, F₃ = I₁I₀</li>
+        <li>Fonksiyon = Σ listesindeki çıkışların OR'u</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Karşılaştırıcı</h4>
+      <ul>
+        <li>1 bit: A&gt;B = A<span class="ov">B</span>, A&lt;B = <span class="ov">A</span>B, A=B = A ⊙ B</li>
+        <li>4 bit: x<sub>i</sub> = A<sub>i</sub> ⊙ B<sub>i</sub>, A=B = x₃x₂x₁x₀</li>
+        <li>A&gt;B: en üstten ilk farklı bitte A = 1</li>
+      </ul>
+    </div>
+  </div>
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>encoder</dt><dd>kodlayıcı</dd>
+    <dt>priority encoder</dt><dd>öncelikli kodlayıcı</dd>
+    <dt>decoder</dt><dd>kod çözücü</dd>
+    <dt>comparator</dt><dd>karşılaştırıcı</dd>
+    <dt>keypad</dt><dd>tuş takımı</dd>
+    <dt>valid (V)</dt><dd>geçerli çıkışı</dd>
+    <dt>one-hot</dt><dd>sadece bir hattın 1 olduğu kod</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="alistirma">
+  <h2><span class="n">9</span>Alıştırmalar ve test</h2>
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li>50 tuşlu bir tuş takımı için encoder'ın kaç çıkışı olmalı?
+      <details class="solution"><summary>Çözümü göster</summary><p>2⁵ = 32 &lt; 50 ≤ 64 = 2⁶ → <b>6 çıkış</b>.</p></details></li>
+    <li>4×2 öncelikli encoder'da I₃I₂I₁I₀ = 0111 ise AB kaçtır?
+      <details class="solution"><summary>Çözümü göster</summary><p>Aktif girişler I₂, I₁, I₀. En büyüğü I₂ → 2 → <b>AB = 10</b>. Formülle: A = I₂ + I₃ = 1, B = I₁<span class="ov">I₂</span> + I₃ = 1·0 + 0 = 0.</p></details></li>
+    <li>3×8 decoder'a 110 gelirse hangi çıkış 1 olur?
+      <details class="solution"><summary>Çözümü göster</summary><p>110 = 6 → <b>6 numaralı çıkış</b>. Diğer yedisi 0.</p></details></li>
+    <li>F(A, B, C) = Σ(0, 3, 5) fonksiyonunu 3×8 decoder ile nasıl gerçeklersin?
+      <details class="solution"><summary>Çözümü göster</summary><p>A, B, C'yi decoder'a bağla (A en yüksek bit). <b>0, 3 ve 5 numaralı çıkışları 3 girişli bir OR'a</b> bağla. Çıkış F.</p></details></li>
+    <li>4 bitlik karşılaştırıcıda A = 1010, B = 1001. Hangi çıkış 1 olur ve neden?
+      <details class="solution"><summary>Çözümü göster</summary><p>A₃ = B₃ = 1 (x₃ = 1), A₂ = B₂ = 0 (x₂ = 1), A₁ = 1, B₁ = 0 → karar burada: <b>A &gt; B</b>. Formülde x₃x₂A₁<span class="ov">B₁</span> terimi 1 olur. Kontrol: 10 &gt; 9.</p></details></li>
+    <li>2×4 decoder'ın F₀ çıkışı neden tek bir NOR kapısıyla yapılabilir?
+      <details class="solution"><summary>Çözümü göster</summary><p>F₀ = <span class="m"><span class="ov">I₁</span><span class="ov">I₀</span></span>. De Morgan ile bu <span class="m"><span class="ov">I₁ + I₀</span></span>, yani NOR. İki NOT ve bir AND yerine tek bir kapı.</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="pe">Öncelikli encoder</option>
+            <option value="dec">Decoder</option>
+            <option value="comp">4 bitlik karşılaştırıcı</option>
+            <option value="bits">Kaç çıkış / kaç giriş?</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="sinav">
+  <h2><span class="n">10</span>Sınav öncesi kontrol listesi</h2>
+  <p class="lead">Bütün dersin en sık sorulan soru tipleri. Her birini kâğıt kalemle çözebildiğinden emin ol. Takıldığın konunun bağlantısına tıklayıp tekrar et.</p>
+  <div class="cheat">
+    <div>
+      <h4><a href="01-sayi-sistemleri.html">1. Number Systems</a></h4>
+      <ul>
+        <li>Taban dönüşümü (kesirli dahil)</li>
+        <li>1's ve 2's complement</li>
+        <li>Toplayarak çıkarma (iki yöntem)</li>
+        <li>BCD, ağırlıklı kod, Gray kodu</li>
+        <li>İfadeden doğruluk tablosu</li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="02-boole-cebiri.html">2. Boolean Algebra</a></h4>
+      <ul>
+        <li>Teoremlerle sadeleştirme</li>
+        <li>De Morgan ile çizgi kırma</li>
+        <li>Devreden F çıkarma ve sadeleştirme</li>
+        <li>Dikkat: hocanın 1. devre cevabı hatalı, doğrusu <span class="ov">A</span> + <span class="ov">B</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="03-mantik-tasarimi.html">3. Logic Design</a></h4>
+      <ul>
+        <li>Minterm, maxterm, Σ ve Π</li>
+        <li>Sözle verilen problemden devre (4 adım)</li>
+        <li>Yarım ve tam toplayıcı formülleri</li>
+        <li>n bitlik toplayıcı</li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="04-karnaugh.html">4. Karnaugh Maps</a></h4>
+      <ul>
+        <li>2–5 değişkenli harita, Gray sırası</li>
+        <li>Kenar ve köşe grupları</li>
+        <li>Tablodan en sade ifade</li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="05-dont-care.html">5. Don't Care</a></h4>
+      <ul>
+        <li>X'lerle büyük gruplar</li>
+        <li>Haritadan POS (0 → düz, 1 → çizgili)</li>
+        <li>7 segment dönüştürücü (hocanın segment adları!)</li>
+      </ul>
+    </div>
+    <div>
+      <h4><a href="06-kombinasyonel-1.html">6. Combinational 1</a></h4>
+      <ul>
+        <li>Toplayıcı/çıkarıcı (XOR + end-around carry)</li>
+        <li>MUX formülleri, seçme hattı sayısı</li>
+        <li>DEMUX formülleri (S₁ yüksek bit)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>7. Combinational 2</h4>
+      <ul>
+        <li>Encoder çıkış sayısı</li>
+        <li>Öncelikli encoder tablo ve formül</li>
+        <li>Decoder + OR ile fonksiyon</li>
+        <li>1 ve 4 bitlik karşılaştırıcı</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Sınavda puan kaybetmemek için</span>
+    <ul>
+      <li>Her adımda hangi kuralı kullandığını yaz.</li>
+      <li>Bit sayısını ve hangi bitin en yüksek bit olduğunu (İngilizce MSB: most significant bit) açıkça belirt.</li>
+      <li>Sonucu en az iki satırı yerine koyarak kontrol et.</li>
+      <li>Karnaugh haritasında grupları net çiz, kenardan taşan grupları iki uçta da göster.</li>
+      <li>Soruda bir şema ya da adlandırma verildiyse (segment adları, değişken sırası) ona uy.</li>
+    </ul>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="06-kombinasyonel-1.html">Önceki: Combinational Circuits 1</a>
+    <a href="../index.html">Ders listesine dön</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/kmap.js"></script>
+  <script src="../assets/js/lesson07.js"></script>
+</body>
+</html>

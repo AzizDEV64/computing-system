@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boolean Algebra | YAM205</title>
+  <meta name="description" content="Ders 2: Boole cebiri teoremleri, De Morgan, lojik kapılar ve devreden ifade çıkarma. Sıfırdan anlatım ve etkileşimli devreler.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="02">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 2 / 7 <strong>Boolean Algebra</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 2, 23 Eylül 2026</p>
+      <h1>Boolean Algebra</h1>
+      <p>1. derste Boole cebirinin temel kurallarını (aksiyomları) gördük. Bu derste uzun ifadeleri kısaltmaya yarayan teoremleri, lojik kapıların çizimini ve bir devre şemasından formül çıkarmayı öğreneceksin. Sınavda "bu devrenin F'si nedir, sadeleştir" sorusu neredeyse kesin çıkar. Bu ders tam olarak bunun için.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>Axioms</li>
+        <li>Commutative, associative</li>
+        <li>Distributive</li>
+        <li>A + A = A, A · A = A</li>
+        <li>De Morgan's rule</li>
+        <li>Gates</li>
+        <li>Connected / not connected</li>
+        <li>Circuit → F, simplify</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#giris"><span class="n">1</span><span>Kısa tekrar: aksiyomlar</span></a></li>
+          <li><a href="#neden"><span class="n">2</span><span>Teorem nedir, neden lazım?</span></a></li>
+          <li><a href="#degisme"><span class="n">3</span><span>Değişme ve birleşme</span></a></li>
+          <li><a href="#dagilma"><span class="n">4</span><span>Dağılma</span></a></li>
+          <li><a href="#tekrar"><span class="n">5</span><span>A + A = A, A · A = A</span></a></li>
+          <li><a href="#demorgan"><span class="n">6</span><span>De Morgan kuralı</span></a></li>
+          <li><a href="#yutma"><span class="n">7</span><span>Yutma teoremleri</span></a></li>
+          <li><a href="#strateji"><span class="n">8</span><span>Sadeleştirme taktikleri</span></a></li>
+          <li><a href="#kapilar"><span class="n">9</span><span>Lojik kapılar</span></a></li>
+          <li><a href="#kablo"><span class="n">10</span><span>Kablolar bağlı mı?</span></a></li>
+          <li><a href="#ornek1"><span class="n">11</span><span>Devreden F: Örnek 1</span></a></li>
+          <li><a href="#ornek2"><span class="n">12</span><span>Devreden F: Örnek 2</span></a></li>
+          <li><a href="#ozet"><span class="n">13</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">14</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="giris">
+  <h2><span class="n">1</span>Kısa tekrar: aksiyomlar</h2>
+  <p class="lead">Hoca bu dersin başında 1. dersteki yedi kuralı tekrar yazmış, ama farklı bir sırayla. Numaralara takılma, kuralların kendisini bil.</p>
+  <p>Hatırlatma: Boole cebirinde sadece 0 ve 1 var. <b>+</b> VEYA (OR), <b>·</b> VE (AND), üst çizgi ya da <b>'</b> DEĞİL (NOT) demek.</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Kural</th><th>Anlamı</th><th>Bu dersteki no.</th><th>1. dersteki no.</th></tr></thead>
+    <tbody>
+      <tr><td class="m">A + 1 = 1</td><td>1 ile VEYA her şeyi 1 yapar</td><td>1</td><td>3</td></tr>
+      <tr><td class="m">A · 1 = A</td><td>1 ile VE bir şey değiştirmez</td><td>2</td><td>4</td></tr>
+      <tr><td class="m">A + 0 = A</td><td>0 ile VEYA bir şey değiştirmez</td><td>3</td><td>1</td></tr>
+      <tr><td class="m">A · 0 = 0</td><td>0 ile VE her şeyi 0 yapar</td><td>4</td><td>2</td></tr>
+      <tr><td class="m"><span class="ov"><span class="ov">A</span></span> = A</td><td>İki kez ters çevirmek eski hale getirir</td><td>5</td><td>7</td></tr>
+      <tr><td class="m">A + <span class="ov">A</span> = 1</td><td>Bir şey ya doğrudur ya değildir</td><td>6</td><td>5</td></tr>
+      <tr><td class="m">A · <span class="ov">A</span> = 0</td><td>Aynı anda hem doğru hem yanlış olamaz</td><td>7</td><td>6</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu</span>
+    <p>Hoca iki derste farklı numara kullandığı için çözümlerde kuralı numarayla değil <b>yazarak</b> belirt. Örneğin "(A + <span class="ov">A</span> = 1)" yaz. Bu sitede de kuralları adlarıyla anacağız.</p>
+  </div>
+  <p>Bu yedi kuralda bir desen var: kurallar <b>çiftler halinde</b> geliyor. Her VEYA kuralının bir VE kardeşi var: A + 0 = A ile A · 1 = A, A + 1 = 1 ile A · 0 = 0, A + <span class="ov">A</span> = 1 ile A · <span class="ov">A</span> = 0. Bu desenin bir adı var, hemen sonraki bölümde göreceğiz.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="neden">
+  <h2><span class="n">2</span>Teorem nedir, neden lazım?</h2>
+  <p class="lead">Aksiyomlar kanıtsız kabul ettiğimiz temel kurallar. Teoremler ise bu temel kurallardan türetilen, işimizi hızlandıran kurallar.</p>
+  <p>1. dersten hatırla: her işlem bir kapı, her kapı para, yer, enerji ve gecikme demek. Teoremler, uzun bir ifadeyi aynı işi yapan daha kısa bir ifadeye çevirmenin araçlarıdır. Bir teoremi doğrulamanın iki yolu var:</p>
+  <ul>
+    <li><b>Doğruluk tablosu:</b> İki tarafın tablosunu çıkar, her satırda aynıysa teorem doğrudur. Değişken sayısı az olduğu için bu her zaman mümkün. Kesin ispattır.</li>
+    <li><b>Cebirsel ispat:</b> Bilinen kurallarla bir tarafı adım adım diğer tarafa dönüştür.</li>
+  </ul>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: dualite (duality) ilkesi</span>
+    <p>Boole cebirinde doğru olan her eşitlikte <b>+ ile ·'yı, 0 ile 1'i yer değiştirirsen</b> yine doğru bir eşitlik elde edersin. Değişkenlere ve üst çizgilere dokunulmaz. Örnek: <span class="m">A + 0 = A</span> doğruysa dualı <span class="m">A · 1 = A</span> da doğrudur.</p>
+    <p>Bu yüzden her teorem iki satır halinde yazılır. Birini bilirsen diğerini kendin bulursun. Ezber yükünü yarıya indirir.</p>
+    <p>Dikkat: dual alırken gizli parantezleri koru. <span class="m">A + BC</span>'nin duali <span class="m">A(B + C)</span>'dir, <span class="m">AB + C</span> değil.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="degisme">
+  <h2><span class="n">3</span>Değişme ve birleşme</h2>
+  <p class="lead">İlk iki teorem normal cebirden zaten tanıdık. Sıra ve gruplama sonucu değiştirmez.</p>
+
+  <h3>Teorem 1: Değişme (commutative)</h3>
+  <div class="theorem">
+    <span class="tlabel">AND, OR operations are commutative</span>
+    <span class="m">A + B = B + A</span>
+    <span class="m">A · B = B · A</span>
+  </div>
+  <p>"Yağmur yağıyor VEYA soğuk" ile "soğuk VEYA yağmur yağıyor" aynı anlama gelir. Kapı gözüyle: bir AND kapısının iki girişinin yerini değiştirirsen çıkış değişmez. Bu teorem sayesinde terimlerin sırasını istediğimiz gibi değiştirip benzer olanları yan yana getirebiliriz.</p>
+
+  <h3>Teorem 2: Birleşme (associative)</h3>
+  <div class="theorem">
+    <span class="tlabel">AND, OR operations are associative</span>
+    <span class="m">A + (B + C) = (A + B) + C</span>
+    <span class="m">A · (B · C) = (A · B) · C</span>
+  </div>
+  <p>Üç şeyi VEYA'larken hangi ikisinden başladığın önemli değil. Bu yüzden parantezi atıp <span class="m">A + B + C</span> ya da <span class="m">ABC</span> yazabiliriz.</p>
+  <p>Devre açısından önemli bir sonucu var: iki tane 2 girişli AND kapısını art arda bağlamak ile tek bir <b>3 girişli</b> AND kapısı kullanmak aynı şeydir. Hocanın notundaki 4 girişli AND ve OR sembolleri (9. bölüm) bu teoreme dayanıyor.</p>
+  <div class="note warn">
+    <span class="note-title">Karıştırma</span>
+    <p>Birleşme kuralı sadece <b>aynı işlem</b> art arda gelince geçerli. NAND ve NOR için ise hiç geçerli değil: NAND(NAND(A, B), C) ile 3 girişli NAND(A, B, C) farklıdır (A = B = C = 1 ile dene: ilki 1, ikincisi 0). <span class="m">A + (B · C)</span> ile <span class="m">(A + B) · C</span> farklıdır. A = 1, C = 0 ile dene: ilki 1, ikincisi 0. Farklı işlemler için bir sonraki teorem lazım.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="dagilma">
+  <h2><span class="n">4</span>Dağılma (distributive)</h2>
+  <p class="lead">Sadeleştirmenin ana aleti. Birinci hali normal cebirden tanıdık, ikinci hali Boole cebirine özgü ve sınavlarda çok işe yarıyor.</p>
+  <div class="theorem">
+    <span class="tlabel">AND, OR operations are distributive</span>
+    <span class="m">A(B + C) = AB + AC</span>
+    <span class="m">A + BC = (A + B)(A + C)</span>
+  </div>
+
+  <h3>Birinci hal: VE, VEYA üzerine dağılır</h3>
+  <p>Normal cebirdeki çarpmanın dağılması ile aynı: <span class="m">2 × (3 + 4) = 2×3 + 2×4</span>. Hocanın notundaki oklar A'nın parantezin içindeki her terime "dağıtıldığını" gösteriyor.</p>
+  <p>Ters yönde kullanımı daha da önemli: <b>ortak çarpan parantezine almak</b>. <span class="m">AB + AC = A(B + C)</span>. 1. dersteki <span class="m">AB + <span class="ov">A</span>B = B(A + <span class="ov">A</span>)</span> adımı bu teoremdi.</p>
+
+  <h3>İkinci hal: VEYA, VE üzerine dağılır</h3>
+  <p>Bu normal cebirde <b>yok</b>: 2 + 3×4 = 14, ama (2+3)×(2+4) = 30. Boole cebirinde ise doğru. Neden doğru olduğunu iki yoldan görelim.</p>
+  <div class="tables-row">
+    <div class="table-wrap"><table class="tt">
+      <caption>Doğruluk tablosuyla ispat</caption>
+      <thead><tr><th>A</th><th>B</th><th>C</th><th class="out">A + BC</th><th class="out">(A+B)(A+C)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td class="out one">1</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="example">
+    <div class="example-head"><h4>Cebirsel ispat: (A + B)(A + C) = A + BC</h4></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Normal çarpma gibi aç (birinci dağılma hali): <span class="m">AA + AC + AB + BC</span>.</li>
+        <li><span class="m">AA = A</span> (aynı şeyi kendisiyle VE'lemek yine kendisidir; 5. bölümde ayrıntılı): <span class="m">A + AC + AB + BC</span>.</li>
+        <li>İlk üç terimde A ortak, parantezine al. A'yı A·1 olarak düşün: <span class="m">A(1 + C + B) + BC</span>.</li>
+        <li><span class="m">1 + C + B = 1</span> (1 ile VEYA her şeyi 1 yapar): <span class="m">A · 1 + BC</span>.</li>
+        <li><span class="m">A · 1 = A</span>.</li>
+      </ol>
+      <p class="answer">= <span class="m">A + BC</span></p>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">İkinci hali nerede kullanacaksın?</span>
+    <p>Hoca 12. bölümdeki çözümde tam bunu yapıyor: <span class="m">B + <span class="ov">B</span><span class="ov">C</span> = (B + <span class="ov">B</span>)(B + <span class="ov">C</span>) = 1 · (B + <span class="ov">C</span>) = B + <span class="ov">C</span></span>. "Bir değişken + o değişkenin tersini içeren bir çarpım" gördüğünde aklına bu gelsin.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="tekrar">
+  <h2><span class="n">5</span>Tekrar kuralı: A + A = A, A · A = A</h2>
+  <p class="lead">Hocanın 4. ve 5. teoremi. İngilizcede <span class="en">idempotent law</span> denir.</p>
+  <div class="theorem">
+    <span class="tlabel">Theorem 4 and 5</span>
+    <span class="m">A + A = A</span>
+    <span class="m">A · A = A</span>
+  </div>
+  <p>"Yağmur yağıyor VEYA yağmur yağıyor" cümlesi "yağmur yağıyor" demektir. Aynı şeyi iki kez söylemek bilgi eklemez. Kontrol: A = 0 iken 0 + 0 = 0, A = 1 iken 1 + 1 = 1 (Boole'da 1 + 1 = 1, unutma!).</p>
+  <p>Normal cebirde A + A = 2A ve A · A = A² olurdu. Boole cebirinde katsayı ve üs yoktur. Bu yüzden sadeleştirirken <span class="m">ABAB</span> gibi tekrarları hemen <span class="m">AB</span>'ye, <span class="m">AB + AB</span>'yi <span class="m">AB</span>'ye indir.</p>
+  <div class="note tip">
+    <span class="note-title">Gizli silah: terimi çoğaltmak</span>
+    <p>Bu kural tersine de çalışır: bir terimi ihtiyacın varsa iki kez yazabilirsin. Örnek: <span class="m">ABC + <span class="ov">A</span>BC + A<span class="ov">B</span>C</span> ifadesinde ABC'yi iki kez kullanmak isteriz: <span class="m">(ABC + <span class="ov">A</span>BC) + (ABC + A<span class="ov">B</span>C) = BC + AC</span>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="demorgan">
+  <h2><span class="n">6</span>De Morgan kuralı</h2>
+  <p class="lead">Hocanın 6. teoremi. 1. derste tanıştık, burada hoca aynı örneği bu sefer adım adım çözmüş.</p>
+  <div class="theorem">
+    <span class="tlabel">De Morgan's rule</span>
+    <span class="m"><span class="ov">A + B</span> = <span class="ov">A</span> · <span class="ov">B</span></span>
+    <span class="m"><span class="ov">A · B</span> = <span class="ov">A</span> + <span class="ov">B</span></span>
+  </div>
+  <p><b>"Çizgiyi kır, işareti değiştir."</b> Uzun çizgiyi parçalara böl, her parçanın üstüne kendi çizgisini koy ve aradaki işareti çevir. İki kuralın birbirinin dualı olduğuna dikkat et (+ ile · yer değiştirmiş).</p>
+  <p>Kural istediğin kadar terime genişler. Hoca bunu 3. sayfada kenara not etmiş: <span class="m"><span class="ov"><span class="ov">A</span>B<span class="ov">C</span></span> = <span class="ov"><span class="ov">A</span></span> + <span class="ov">B</span> + <span class="ov"><span class="ov">C</span></span> = A + <span class="ov">B</span> + C</span>.</p>
+
+  <h3>İç içe çizgilerde nasıl çalışılır?</h3>
+  <ol class="steps">
+    <li>En <b>dıştaki (en uzun)</b> çizgiden başla.</li>
+    <li>Çizginin altındaki ifadenin <b>ana işaretini</b> bul. Ana işaret, parantez dışında kalan işarettir.</li>
+    <li>Çizgiyi o işaretten kır ve işareti değiştir.</li>
+    <li>İki çizgi üst üste geldiyse ikisini birden sil (<span class="m"><span class="ov"><span class="ov">X</span></span> = X</span>).</li>
+    <li>Hâlâ uzun çizgi varsa tekrarla.</li>
+  </ol>
+
+  <div class="example">
+    <div class="example-head"><h4>F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <p>Bu soruyu 1. dersin sonunda çözmüştük. Hocanın bu dersteki çözümü aynı yolu izliyor:</p>
+      <ol class="steps">
+        <li>Sol parça (bir NOR): <span class="m"><span class="ov">A + <span class="ov">BC</span></span> = <span class="ov">A</span> · <span class="ov"><span class="ov">BC</span></span> = <span class="ov">A</span> · BC</span>.</li>
+        <li>Sağ parça (bir NAND): <span class="m"><span class="ov">A<span class="ov">C</span></span> = <span class="ov">A</span> + <span class="ov"><span class="ov">C</span></span> = <span class="ov">A</span> + C</span>.</li>
+        <li>Birleştir: <span class="m">F = <span class="ov">A</span>BC + <span class="ov">A</span> + C</span>. Hoca burada oklarla iki <span class="ov">A</span>'lı terimi eşleştirmiş.</li>
+        <li><span class="ov">A</span> ortak: <span class="m"><span class="ov">A</span>(BC + 1) + C</span>. Hoca BC'yi bir "x" gibi düşünüp <span class="m">x + 1 = 1</span> yazmış.</li>
+        <li><span class="m"><span class="ov">A</span> · 1 + C = <span class="ov">A</span> + C</span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span> + C</span></p>
+      <p>Hocanın "x + 1" notu önemli bir taktik: bir grup ne kadar karmaşık olursa olsun (BC, <span class="ov">A</span>C, …) tek bir harf gibi düşünüp kuralları uygulayabilirsin. 11. bölümde bu taktiği tekrar göreceğiz.</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Sık hata</span>
+    <p><span class="m"><span class="ov">AB</span></span> ile <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> aynı şey değil. Birincisi <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span>'ye eşit. Uzun çizgiyi kırınca işaret <b>mutlaka</b> değişir.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="yutma">
+  <h2><span class="n">7</span>Yutma teoremleri</h2>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi, ama çok önemli</span>
+    <p>Bu teoremler hocanın listesinde yok. Ama hocanın teoremlerinden türetilirler ve hem bu dersin örneklerini hem de sınav sorularını çok kısaltırlar. 11. bölümdeki doğru çözüm bunlardan birine ihtiyaç duyuyor.</p>
+  </div>
+  <div class="theorem">
+    <span class="tlabel">Yutma (absorption)</span>
+    <span class="m">A + AB = A</span>
+    <span class="m">A(A + B) = A</span>
+  </div>
+  <p><b>Neden?</b> A + AB'de A'yı parantezine al: <span class="m">A(1 + B) = A · 1 = A</span>. Sözlü: "A doğruysa zaten doğru. A yanlışsa AB de yanlış." AB terimi A'nın içinde kaybolur, A tarafından "yutulur".</p>
+  <div class="theorem">
+    <span class="tlabel">Ters değişkenli yutma</span>
+    <span class="m">A + <span class="ov">A</span>B = A + B</span>
+    <span class="m">A(<span class="ov">A</span> + B) = AB</span>
+  </div>
+  <p><b>Neden?</b> Dağılmanın ikinci haliyle: <span class="m">A + <span class="ov">A</span>B = (A + <span class="ov">A</span>)(A + B) = 1 · (A + B) = A + B</span>. Sözlü: "A doğruysa sonuç doğru. A yanlışsa <span class="ov">A</span> = 1 olur ve geriye sadece B kalır."</p>
+  <p>Bu ikinci kural en çok kullanılanı. Hocanın 12. bölümdeki <span class="m">B + <span class="ov">B</span><span class="ov">C</span> = B + <span class="ov">C</span></span> adımı bu kuralın bir örneği.</p>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: uzlaşı (consensus) teoremi</span>
+    <p><span class="m">AB + <span class="ov">A</span>C + BC = AB + <span class="ov">A</span>C</span>. Bir değişken bir terimde düz, diğerinde ters geçiyorsa (burada A), bu iki terimin "kalanlarının" çarpımı (BC) gereksizdir ve silinebilir. Karnaugh haritalarında (4. ders) bunun görsel karşılığını göreceksin.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="strateji">
+  <h2><span class="n">8</span>Sadeleştirme taktikleri</h2>
+  <p class="lead">Sadeleştirmenin tek bir doğru yolu yok, ama hangi sırayla bakacağını bilirsen çok hızlanırsın.</p>
+  <ol class="steps">
+    <li><b>Uzun çizgileri kaldır.</b> De Morgan ile bütün çizgileri tek değişkenlerin üstüne indir. Çift çizgileri sil.</li>
+    <li><b>Parantezleri aç.</b> Gerekirse dağılma ile her şeyi çarpımlar toplamına (<span class="m">… + … + …</span>) çevir.</li>
+    <li><b>Hemen sıfırlananları sil.</b> İçinde <span class="m">A<span class="ov">A</span></span> geçen her terim 0'dır. Tekrarları teke indir (<span class="m">AA = A</span>, <span class="m">X + X = X</span>).</li>
+    <li><b>Ortak çarpan ara.</b> Terimleri ortak değişkenlerine göre grupla ve parantezine al. Parantezin içinde <span class="m">X + <span class="ov">X</span></span> ya da <span class="m">X + 1</span> çıkarsa 1 yap.</li>
+    <li><b>Yutmaları kontrol et.</b> Bir terim başka bir terimin içinde tamamen geçiyorsa (A ve AB gibi) büyüğünü sil. <span class="m">A + <span class="ov">A</span>B</span> görürsen <span class="m">A + B</span> yap.</li>
+    <li><b>Kalıpları tanı.</b> <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span> = A ⊕ B</span>, <span class="m"><span class="ov">A</span> <span class="ov">B</span> + AB = A ⊙ B</span>.</li>
+    <li><b>Sağlama yap.</b> Orijinal ifadeyle sonucun doğruluk tablosu aynı mı? Sınavda en az bir iki satırı yerine koyarak kontrol et.</li>
+  </ol>
+  <div class="widget" id="w-tt">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: sadeleştirmeni kontrol et</h4></div>
+    <div class="widget-body">
+      <p>Soldaki kutuya orijinal ifadeyi, sağdakine kendi sadeleştirdiğin ifadeyi yaz. Araç iki ifadenin bütün satırlarda aynı olup olmadığını söyler.</p>
+      <div class="controls">
+        <div class="field"><label for="tt-a">Orijinal ifade</label><input id="tt-a" class="wide" type="text" value="(A+B)(A+C)" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="tt-b">Senin sonucun</label><input id="tt-b" class="wide" type="text" value="A+BC" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" type="button" id="tt-go">Karşılaştır</button>
+      </div>
+      <p class="hint">Yazım: DEĞİL için <kbd>'</kbd> (A' ya da (AB)'), VE için yan yana yaz, VEYA <kbd>+</kbd>, XOR <kbd>^</kbd>, XNOR <kbd>⊙</kbd> (klavyede yoksa (A^B)' yaz). Parantezsiz yazarsan sıra: NOT → AND → XOR → OR. Üstü çizgili grup: paranteze al, sonuna ' koy.</p>
+      <div class="wout" id="tt-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="kapilar">
+  <h2><span class="n">9</span>Lojik kapılar (gates)</h2>
+  <p class="lead">Şimdiye kadar yazdığımız her işlemin bir devre sembolü var. Bu sembollere <span class="term">lojik kapı</span> denir. Girişleri solda, çıkışı sağda çizilir.</p>
+
+  <h3>Temel kapılar ve çok girişli halleri</h3>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H30M0 40H30M80 30H120"/><path d="M30 5H55A25 25 0 0 1 55 55H30Z"/></g></svg>
+      <figcaption><b>AND</b>: F = AB. Bütün girişler 1 ise 1.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 12H30M0 24H30M0 36H30M0 48H30M80 30H120"/><path d="M30 2V58"/><path d="M30 5H55A25 25 0 0 1 55 55H30Z"/></g></svg>
+      <figcaption><b>4 girişli AND</b>: F = ABCD. Hocanın notundaki gibi arka çizgi uzatılır.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H33M0 40H33M88 30H120"/><path d="M28 5Q62 5 88 30Q62 55 28 55Q41 30 28 5Z"/></g></svg>
+      <figcaption><b>OR</b>: F = A + B. En az bir giriş 1 ise 1.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 12H31M0 24H34M0 36H34M0 48H31M88 30H120"/><path d="M28 5Q62 5 88 30Q62 55 28 55Q41 30 28 5Z"/></g></svg>
+      <figcaption><b>4 girişli OR</b>: F = A + B + C + D.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 30H35M85 30H120"/><path d="M35 12L73 30L35 48Z"/><circle cx="79" cy="30" r="5.5"/></g></svg>
+      <figcaption><b>NOT</b>: F = <span class="ov">A</span>. Ucundaki küçük daire (balon) "ters çevir" demek.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M93 30H120"/><path d="M20 5Q33 30 20 55"/><path d="M32 5Q66 5 93 30Q66 55 32 55Q45 30 32 5Z"/></g></svg>
+      <figcaption><b>EXOR</b>: F = A ⊕ B. Arkada ikinci bir eğri var.</figcaption>
+    </figure>
+  </div>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: çok girişli XOR</span>
+    <p>Hoca 4 girişli EXOR da çizmiş. Çok girişli XOR'un kuralı: <b>girişlerdeki 1'lerin sayısı tek ise çıkış 1</b>, çift ise 0. Örneğin A = 1, B = 1, C = 1 için A ⊕ B ⊕ C = 1 (üç tane 1, tek). Bu özelliği hata tespitindeki kullanırız: bir veri gönderilirken 1'lerin sayısının tek mi çift mi olduğunu gösteren fazladan bir bit (<b>parite biti</b>) eklenir. Alıcı aynı XOR'u hesaplayıp bir bitin bozulup bozulmadığını anlar.</p>
+  </div>
+
+  <h3>NAND, NOR, EXNOR: kapı + NOT</h3>
+  <p>Hoca bu üç kapıyı önce iki parça halinde çizmiş (kapı, arkasından NOT), sonra NOT'u ucuna küçük bir balon olarak yapıştırmış. Mantık bu: <b>balon = NOT</b>.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M73 30H120"/><path d="M25 5H48A25 25 0 0 1 48 55H25Z"/><circle cx="78.5" cy="30" r="5.5"/></g></svg>
+      <figcaption><b>NAND</b> = AND + NOT: F = <span class="ov">AB</span></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H27M0 40H27M88 30H120"/><path d="M22 5Q55 5 78 30Q55 55 22 55Q35 30 22 5Z"/><circle cx="83.5" cy="30" r="5.5"/></g></svg>
+      <figcaption><b>NOR</b> = OR + NOT: F = <span class="ov">A + B</span></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H22M0 40H22M93 30H120"/><path d="M15 5Q28 30 15 55"/><path d="M27 5Q59 5 82 30Q59 55 27 55Q40 30 27 5Z"/><circle cx="87.5" cy="30" r="5.5"/></g></svg>
+      <figcaption><b>EXNOR</b> = EXOR + NOT: F = A ⊙ B</figcaption>
+    </figure>
+  </div>
+
+  <h3>Balon girişte de olabilir: De Morgan'ın çizimi</h3>
+  <p>Balon kapının <b>girişine</b> konursa sadece o girişi ters çevirir. Hocanın notunun sonunda önemli bir şey var: De Morgan sayesinde NAND ve NOR iki farklı şekilde çizilebilir.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M90 30H120"/><circle cx="30" cy="20" r="5"/><circle cx="30" cy="40" r="5"/><path d="M33 5Q66 5 90 30Q66 55 33 55Q46 30 33 5Z"/></g></svg>
+      <figcaption><b>Girişleri balonlu OR = NAND</b>: <span class="ov">A</span> + <span class="ov">B</span> = <span class="ov">AB</span></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M85 30H120"/><circle cx="30" cy="20" r="5"/><circle cx="30" cy="40" r="5"/><path d="M35 5H60A25 25 0 0 1 60 55H35Z"/></g></svg>
+      <figcaption><b>Girişleri balonlu AND = NOR</b>: <span class="ov">A</span> <span class="ov">B</span> = <span class="ov">A + B</span></figcaption>
+    </figure>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu</span>
+    <p>Girişlerinde balon olan bir OR görürsen "bu bir NAND" diye düşün. Girişlerinde balon olan bir AND görürsen "bu bir NOR" diye düşün. 12. bölümdeki devrenin son kapısı tam olarak böyle bir kapı.</p>
+  </div>
+  <h3>NAND ve NOR: evrensel kapılar</h3>
+  <p>Sadece NAND (ya da sadece NOR) kapılarıyla <b>her</b> devreyi kurabilirsin. Bu yüzden bunlara <span class="term">evrensel kapı</span> (<span class="en">universal gate</span>) denir. Üretimde tek tip kapı kullanmak ucuzdur, bu yüzden sınavlarda sık sorulur.</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Yapılacak</th><th>Sadece NAND ile</th><th>Sadece NOR ile</th></tr></thead>
+    <tbody>
+      <tr><td>NOT A</td><td class="m">NAND(A, A) = <span class="ov">AA</span> = <span class="ov">A</span></td><td class="m">NOR(A, A) = <span class="ov">A + A</span> = <span class="ov">A</span></td></tr>
+      <tr><td>A AND B</td><td>NAND'in çıkışını bir NAND-NOT'tan geçir: <span class="m"><span class="ov"><span class="ov">AB</span></span> = AB</span></td><td>Girişleri NOR-NOT ile ters çevir, NOR'la: <span class="m"><span class="ov"><span class="ov">A</span> + <span class="ov">B</span></span> = AB</span> (De Morgan)</td></tr>
+      <tr><td>A OR B</td><td>Girişleri NAND-NOT ile ters çevir, NAND'le: <span class="m"><span class="ov"><span class="ov">A</span> <span class="ov">B</span></span> = A + B</span> (De Morgan)</td><td>NOR'un çıkışını bir NOR-NOT'tan geçir: <span class="m"><span class="ov"><span class="ov">A + B</span></span> = A + B</span></td></tr>
+    </tbody>
+  </table></div>
+  <p>NOT, AND ve OR yapılabildiğine göre her Boole ifadesi yapılabilir. Örnek: <span class="m">F = AB + CD</span> iki seviyeli NAND ile kurulur: AB ve CD için birer NAND, çıkışları bir NAND'e. Kontrol De Morgan ile: <span class="m"><span class="ov"><span class="ov">AB</span> · <span class="ov">CD</span></span> = AB + CD</span>.</p>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="kablo">
+  <h2><span class="n">10</span>Kablolar bağlı mı, değil mi?</h2>
+  <p class="lead">Devre şemalarında kablolar sık sık birbirini keser. Kesişen iki kablonun elektriksel olarak birleşip birleşmediğini anlamak zorundasın, yoksa yanlış formül çıkarırsın.</p>
+  <p>Hoca iki farklı çizim alışkanlığını göstermiş:</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 30H100M60 5V55"/></g><circle cx="60" cy="30" r="5" fill="currentColor"/></svg>
+      <figcaption><b>Noktalı kesişim: bağlı.</b> Nokta, kabloların birleştiği yer.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 30H100M60 5V55"/></g></svg>
+      <figcaption><b>Noktasız düz kesişim: bağlı değil</b> (nokta kullanılan çizimlerde).</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 30H52A8 8 0 0 1 68 30H100M60 5V55"/></g></svg>
+      <figcaption><b>Köprü (atlama): bağlı değil.</b> Bir kablo diğerinin üstünden atlıyor.</figcaption>
+    </figure>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Hocanın notundaki ince nokta</span>
+    <p>Hocanın ilk çiftinde düz "+" kesişim "connected" (bağlı) yazıyor, çünkü o çizimde bağlı olmayan kablolar köprüyle gösterilmiş. İkinci çiftte ise bağlı olan nokta ile gösterilmiş, düz kesişim "not connected". Yani düz kesişimin anlamı, şemanın hangi kuralla çizildiğine bağlı:</p>
+    <ul>
+      <li>Şemada <b>köprüler</b> varsa: köprü = bağlı değil, düz kesişim = bağlı.</li>
+      <li>Şemada <b>noktalar</b> varsa: nokta = bağlı, düz kesişim = bağlı değil.</li>
+    </ul>
+    <p>Güvenli olan şu: <b>nokta görürsen bağlı, köprü görürsen bağlı değil.</b> Hocanın devre örneklerinde ikisi birlikte kullanılmış: kablonun dallandığı yerde nokta, başka bir kablonun üstünden geçtiği yerde köprü var.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="ornek1">
+  <h2><span class="n">11</span>Devreden formül çıkarmak: Örnek 1</h2>
+  <p class="lead">Devre analizinin tarifi çok basit: <b>soldan sağa ilerle, her kapının çıkışına formülünü yaz.</b></p>
+  <ol class="steps">
+    <li>Girişleri (A, B, C…) kabloları boyunca takip et. Noktalarda kablo dallanır, köprülerde dallanmaz.</li>
+    <li>Girişleri belli olan ilk kapıdan başla, çıkışının formülünü kablonun üstüne yaz. Hoca bunu küçük oklarla yapıyor (<span class="ov">A</span>, <span class="ov">A</span>+B gibi).</li>
+    <li>Bir kapının girişinde balon varsa o giriş ters çevrilir.</li>
+    <li>Bu şekilde son kapıya kadar git. Son kapının çıkışı F'dir.</li>
+    <li>F'yi sadeleştir.</li>
+  </ol>
+
+  <div class="circuit" id="c1">
+    <div class="circuit-head">
+      <h4>Hocanın 1. devresi: girişlere basarak dene</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 580 180" role="img" aria-label="A bir NOT kapısına giriyor. NOT çıkışı ile B bir OR kapısına giriyor. OR çıkışı balonlu bir girişle, A da diğer girişten bir XNOR kapısına giriyor. XNOR çıkışı F.">
+        <path class="w" data-n="A" d="M34 60H110"/>
+        <path class="w" data-n="A" d="M80 60V92A8 8 0 0 1 80 108V140H377"/>
+        <path class="w" data-n="B" d="M34 100H222"/>
+        <path class="w" data-n="nA" d="M155 60H222"/>
+        <path class="w" data-n="or1" d="M290 80H322V100H366"/>
+        <path class="w" data-n="F" d="M467 120H530"/>
+        <circle class="dot" cx="80" cy="60" r="4.5"/>
+        <path class="g" d="M110 45L145 60L110 75Z"/><circle class="g" cx="150" cy="60" r="5"/>
+        <path class="g" d="M215 50Q260 50 290 80Q260 110 215 110Q232 80 215 50Z"/>
+        <circle class="g" cx="371.5" cy="100" r="5"/>
+        <path class="g-line" d="M372 90Q389 120 372 150"/>
+        <path class="g" d="M382 90Q427 90 457 120Q427 150 382 150Q399 120 382 90Z"/>
+        <circle class="g" cx="462" cy="120" r="5"/>
+        <text class="lbl" x="12" y="66">A</text><text class="lbl" x="12" y="106">B</text><text class="lbl" x="538" y="126">F</text>
+        <text class="tag" x="168" y="50"><tspan style="text-decoration:overline">A</tspan> =</text><text class="val" x="191" y="50" data-v="nA"></text>
+        <text class="tag" x="292" y="66"><tspan style="text-decoration:overline">A</tspan>+B =</text><text class="val" x="332" y="66" data-v="or1"></text>
+        <text class="tag" x="300" y="133">A =</text><text class="val" x="322" y="133" data-v="A"></text>
+        <text class="val" x="500" y="110" data-v="F"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot">
+      <div class="row">
+        <span>Devrenin çıkışı: F = <b data-v="F"></b></span>
+        <span>Doğru sonuç <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span> = <b data-v="ok"></b></span>
+        <span>Hocanın sonucu <span class="m">A<span class="ov">B</span></span> = <b data-v="hoca"></b> <span data-v="hocaNote"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Bu devrenin F'si nedir? Sadeleştir.</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-body">
+      <h4>Adım 1: formülü kur</h4>
+      <ol class="steps">
+        <li>A bir NOT kapısına giriyor: çıkışı <span class="m"><span class="ov">A</span></span>.</li>
+        <li><span class="ov">A</span> ve B bir OR kapısına giriyor: çıkışı <span class="m"><span class="ov">A</span> + B</span>.</li>
+        <li>Bu çıkış son kapıya <b>balonlu</b> bir girişten giriyor, yani ters çevriliyor: <span class="m"><span class="ov"><span class="ov">A</span> + B</span></span>.</li>
+        <li>A'dan dallanan kablo noktadan ayrılıp aşağı iniyor ve son kapının diğer girişine gidiyor. Hocanın çiziminde B kablosu bu kolun üstünden köprüyle atlıyor, yani bağlı değil. (Sitedeki çizimde köprü dalın üstünde, anlamı aynı.)</li>
+        <li>Son kapı XOR şeklinde ve ucunda balon var: XNOR (⊙).</li>
+      </ol>
+      <div class="formula"><span class="m">F = <span class="ov"><span class="ov">A</span> + B</span> ⊙ A</span></div>
+
+      <h4>Adım 2: sadeleştir</h4>
+      <ol class="steps">
+        <li>De Morgan: <span class="m"><span class="ov"><span class="ov">A</span> + B</span> = <span class="ov"><span class="ov">A</span></span> · <span class="ov">B</span> = A<span class="ov">B</span></span>. Yani <span class="m">F = (A<span class="ov">B</span>) ⊙ A</span>.</li>
+        <li>Hocanın taktiği: karmaşık parçaya bir harf ver. <span class="m">x = A<span class="ov">B</span></span> dersek <span class="m">F = x ⊙ A</span>.</li>
+        <li>XNOR'un açılımı (1. dersten; aşağıdaki kutuda da var): <span class="m">x ⊙ A = <span class="ov">x</span> <span class="ov">A</span> + xA</span>.</li>
+        <li><b>Dikkat, kritik adım:</b> <span class="m"><span class="ov">x</span> = <span class="ov">A<span class="ov">B</span></span> = <span class="ov">A</span> + B</span> (De Morgan). x'i yerine koyarken üstündeki çizgiyi unutma!</li>
+        <li><span class="m">F = (<span class="ov">A</span> + B)<span class="ov">A</span> + A<span class="ov">B</span>A</span>.</li>
+        <li>Birinci terim: <span class="m">(<span class="ov">A</span> + B)<span class="ov">A</span> = <span class="ov">A</span></span> (yutma: <span class="m">X(X + Y) = X</span>). İkinci terim: <span class="m">A<span class="ov">B</span>A = A<span class="ov">B</span></span> (AA = A).</li>
+        <li><span class="m">F = <span class="ov">A</span> + A<span class="ov">B</span></span>. Ters değişkenli yutma (<span class="m">X + <span class="ov">X</span>Y = X + Y</span>, burada X = <span class="ov">A</span>): <span class="m">F = <span class="ov">A</span> + <span class="ov">B</span></span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span> + <span class="ov">B</span> = <span class="ov">AB</span></span>. Bütün devre tek bir NAND kapısına eşit!</p>
+
+      <div class="note warn">
+        <span class="note-title">Hocanın çözümünde hata var: sonuç AB̄ değil</span>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l2-devre1.png" alt="Hocanın el yazısı devre ve çözümü: F = (A'+B)' XNOR A, x = AB', sonuç kutu içinde F = AB'" loading="lazy"><figcaption>Hocanın notu, PDF s.3: "F = x̄Ā + xA" satırından sonraki satırda x'in üstündeki çizgi kayboluyor</figcaption></figure>
+        <p>PDF'te sonuç kutu içinde <span class="m">F = A<span class="ov">B</span></span> diye verilmiş. Hata, x̄Ā terimine x'i yerleştirdiği satırda (yukarıdaki 4. maddede uyardığımız yer): hoca <span class="m"><span class="ov">x</span><span class="ov">A</span></span> terimine x'i koyarken x'in üstündeki çizgiyi düşürmüş ve <span class="m">A<span class="ov">B</span><span class="ov">A</span></span> yazmış. Doğrusu <span class="m"><span class="ov">A<span class="ov">B</span></span> · <span class="ov">A</span></span>. O terim 0 değil, <span class="m"><span class="ov">A</span></span> çıkıyor.</p>
+        <div class="table-wrap"><table class="tt">
+          <thead><tr><th>A</th><th>B</th><th><span class="ov"><span class="ov">A</span>+B</span></th><th class="out">F (devre)</th><th class="out"><span class="ov">A</span>+<span class="ov">B</span></th><th class="out">A<span class="ov">B</span> (hoca)</th></tr></thead>
+          <tbody>
+            <tr class="wrong"><td>0</td><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out">0</td></tr>
+            <tr class="wrong"><td>0</td><td>1</td><td>0</td><td class="out one">1</td><td class="out one">1</td><td class="out">0</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td class="out one">1</td><td class="out one">1</td><td class="out one">1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td class="out">0</td><td class="out">0</td><td class="out">0</td></tr>
+          </tbody>
+        </table></div>
+        <p>Sağlama, ilk satır (A = 0, B = 0): <span class="ov">A</span> + B = 1 + 0 = 1, ters çevrilince 0. Son kapı XNOR(0, A = 0): girişler aynı olduğu için <b>1</b>. Hocanın sonucu A<span class="ov">B</span> ise 0 · 1 = 0 veriyor. Yukarıdaki devrede A = 0, B = 0 iken F'nin 1 yandığını kendin görebilirsin.</p>
+        <p>Sınavda bu soru gelirse doğru cevap <span class="m"><span class="ov">A</span> + <span class="ov">B</span></span>. Emin olmak için çözümünü bir iki satır yerine koyarak kontrol et.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>XOR ve XNOR açılımları</h3>
+  <p>Hoca bu örneğin yanına iki formül yazmış. Devre sorularında sürekli lazım olacak, ezberle:</p>
+  <div class="theorem">
+    <span class="tlabel">XOR ve XNOR'u AND/OR/NOT ile yazmak</span>
+    <span class="m">A ⊕ B = A<span class="ov">B</span> + <span class="ov">A</span>B</span>
+    <span class="m">A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB</span>
+  </div>
+  <p>Hatırlama yolu: XOR "farklıysa 1" demek. Farklı olmanın iki yolu var: A = 1, B = 0 (<span class="m">A<span class="ov">B</span></span>) ya da A = 0, B = 1 (<span class="m"><span class="ov">A</span>B</span>). XNOR "aynıysa 1": ikisi de 0 (<span class="m"><span class="ov">A</span> <span class="ov">B</span></span>) ya da ikisi de 1 (<span class="m">AB</span>).</p>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="ornek2">
+  <h2><span class="n">12</span>Devreden formül çıkarmak: Örnek 2</h2>
+  <p class="lead">Hocanın en uzun örneği. Bu dersteki neredeyse her teorem burada kullanılıyor. "What is F? Simplify F if possible."</p>
+
+  <div class="circuit" id="c2">
+    <div class="circuit-head">
+      <h4>Hocanın 2. devresi: girişlere basarak dene</h4>
+      <div class="pins" aria-label="Girişler"></div>
+    </div>
+    <div class="circuit-svg">
+      <svg viewBox="0 0 600 230" role="img" aria-label="A balonlu girişten, B ile birlikte bir AND kapısına giriyor. AND çıkışı ile C bir XOR kapısına giriyor. B ayrıca bir NOT kapısından geçiyor. XOR çıkışı ile B tümleyeni, girişleri balonlu bir OR kapısına giriyor. Çıkış F.">
+        <path class="w" data-n="A" d="M34 52H190"/>
+        <path class="w" data-n="B" d="M34 78H200"/>
+        <path class="w" data-n="B" d="M100 78V142A8 8 0 0 1 100 158V195H150"/>
+        <path class="w" data-n="C" d="M34 150H285V115H306"/>
+        <path class="w" data-n="and1" d="M250 65H275V85H306"/>
+        <path class="w" data-n="xr" d="M385 100H405V135H426"/>
+        <path class="w" data-n="nB" d="M195 195H415V165H426"/>
+        <path class="w" data-n="F" d="M505 150H560"/>
+        <circle class="dot" cx="100" cy="78" r="4.5"/>
+        <circle class="g" cx="195" cy="52" r="5"/>
+        <path class="g" d="M200 40H225A25 25 0 0 1 225 90H200Z"/>
+        <path class="g-line" d="M300 70Q317 100 300 130"/>
+        <path class="g" d="M310 70Q355 70 385 100Q355 130 310 130Q327 100 310 70Z"/>
+        <path class="g" d="M150 180L185 195L150 210Z"/><circle class="g" cx="190" cy="195" r="5"/>
+        <circle class="g" cx="431.4" cy="135" r="5"/><circle class="g" cx="431.4" cy="165" r="5"/>
+        <path class="g" d="M430 120Q475 120 505 150Q475 180 430 180Q447 150 430 120Z"/>
+        <text class="lbl" x="12" y="58">A</text><text class="lbl" x="12" y="84">B</text><text class="lbl" x="12" y="156">C</text><text class="lbl" x="566" y="156">F</text>
+        <text class="tag" x="252" y="52"><tspan style="text-decoration:overline">A</tspan>B =</text><text class="val" x="282" y="52" data-v="and1"></text>
+        <text class="tag" x="388" y="88">(<tspan style="text-decoration:overline">A</tspan>B)⊕C =</text><text class="val" x="456" y="88" data-v="xr"></text>
+        <text class="tag" x="214" y="186"><tspan style="text-decoration:overline">B</tspan> =</text><text class="val" x="236" y="186" data-v="nB"></text>
+        <text class="val" x="530" y="140" data-v="F"></text>
+      </svg>
+    </div>
+    <div class="circuit-foot">
+      <div class="row">
+        <span>Devrenin çıkışı: F = <b data-v="F"></b></span>
+        <span>Sadeleşmiş hali <span class="m">B + <span class="ov">C</span></span> = <b data-v="simp"></b> <span data-v="simpNote"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>F nedir? Mümkünse sadeleştir.</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-body">
+      <h4>Adım 1: formülü kur</h4>
+      <ol class="steps">
+        <li>A balonlu bir girişten AND kapısına giriyor, diğer giriş B: çıkış <span class="m"><span class="ov">A</span>B</span>.</li>
+        <li><span class="ov">A</span>B ve C bir XOR kapısına giriyor: çıkış <span class="m">(<span class="ov">A</span>B) ⊕ C</span>.</li>
+        <li>B noktadan dallanıp aşağı iniyor ve NOT kapısına giriyor: <span class="m"><span class="ov">B</span></span>. Hocanın çiziminde C kablosu bu kolun üstünden köprüyle atlıyor, yani bağlı değil.</li>
+        <li>Son kapı <b>girişleri balonlu bir OR</b>. 9. bölümden hatırla: bu bir NAND. Çıkış: <span class="m"><span class="ov">[(<span class="ov">A</span>B) ⊕ C] · <span class="ov">B</span></span></span>. Ya da balonları doğrudan uygula: X = (<span class="ov">A</span>B) ⊕ C dersek girişler <span class="ov">X</span> ve <span class="ov"><span class="ov">B</span></span> = B olur, OR'lanınca <span class="m">F = <span class="ov">X</span> + B</span>. Hocanın bir sonraki satırı tam olarak bu.</li>
+      </ol>
+      <div class="formula"><span class="m">F = <span class="ov">[(<span class="ov">A</span>B) ⊕ C] <span class="ov">B</span></span></span></div>
+
+      <h4>Adım 2: dış çizgiyi kır (hocanın yolu)</h4>
+      <ol class="steps">
+        <li>De Morgan: <span class="m">F = <span class="ov">(<span class="ov">A</span>B) ⊕ C</span> + <span class="ov"><span class="ov">B</span></span> = <span class="ov">(<span class="ov">A</span>B) ⊕ C</span> + B</span>.</li>
+        <li>XOR'u aç. <span class="m">x = <span class="ov">A</span>B</span> de: <span class="m">x ⊕ C = x<span class="ov">C</span> + <span class="ov">x</span>C = <span class="ov">A</span>B<span class="ov">C</span> + <span class="ov"><span class="ov">A</span>B</span>C</span>.</li>
+        <li><span class="m">F = <span class="ov"><span class="ov">A</span>B<span class="ov">C</span> + <span class="ov"><span class="ov">A</span>B</span>C</span> + B</span>.</li>
+        <li>De Morgan (+ işaretinden kır): <span class="m">F = (<span class="ov"><span class="ov">A</span>B<span class="ov">C</span></span> · <span class="ov"><span class="ov"><span class="ov">A</span>B</span>C</span>) + B</span>.</li>
+        <li>Her parçayı ayrı aç. Hoca bunları kenara not etmiş: <span class="m"><span class="ov"><span class="ov">A</span>B<span class="ov">C</span></span> = A + <span class="ov">B</span> + C</span> ve <span class="m"><span class="ov"><span class="ov"><span class="ov">A</span>B</span> · C</span> = <span class="ov">A</span>B + <span class="ov">C</span></span>.</li>
+        <li><span class="m">F = (A + <span class="ov">B</span> + C)(<span class="ov">A</span>B + <span class="ov">C</span>) + B</span>.</li>
+      </ol>
+
+      <h4>Adım 3: çarp ve temizle</h4>
+      <ol class="steps">
+        <li>Her terimi her terimle çarp (6 çarpım):
+          <span class="m" style="white-space:normal">A<span class="ov">A</span>B + A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">A</span>B + <span class="ov">B</span><span class="ov">C</span> + C<span class="ov">A</span>B + C<span class="ov">C</span> + B</span></li>
+        <li>İçinde bir değişkenle tersinin çarpımı olan terimler 0: <span class="m">A<span class="ov">A</span>B = 0</span>, <span class="m"><span class="ov">B</span><span class="ov">A</span>B = 0</span>, <span class="m">C<span class="ov">C</span> = 0</span>. Hoca bunların üstünü çizip 0 yazmış.</li>
+        <li>Kalan: <span class="m">F = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>BC + B</span>.</li>
+        <li>Grupla: ilk ikisinde <span class="ov">C</span>, son ikisinde B ortak. <span class="m">F = <span class="ov">C</span>(A + <span class="ov">B</span>) + B(<span class="ov">A</span>C + 1)</span>.</li>
+        <li><span class="m"><span class="ov">A</span>C + 1 = 1</span>: <span class="m">F = <span class="ov">C</span>(A + <span class="ov">B</span>) + B = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + B</span>.</li>
+        <li><span class="m"><span class="ov">B</span><span class="ov">C</span> + B</span> kısmına dağılmanın ikinci halini uygula: <span class="m">B + <span class="ov">B</span><span class="ov">C</span> = (B + <span class="ov">B</span>)(B + <span class="ov">C</span>) = 1 · (B + <span class="ov">C</span>) = B + <span class="ov">C</span></span>.</li>
+        <li><span class="m">F = A<span class="ov">C</span> + B + <span class="ov">C</span></span>. <span class="ov">C</span> ortak: <span class="m"><span class="ov">C</span>(A + 1) + B = <span class="ov">C</span> + B</span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m">B + <span class="ov">C</span></span>. Hocanın sonucu ile aynı, doğru.</p>
+      <p>Sonucun anlamı: F, A'ya hiç bağlı değil! Dört kapılık devre tek bir OR kapısı (ve C için bir NOT) ile yapılabilir.</p>
+
+      <h4>Daha kısa yol</h4>
+      <p>Yutma teoremlerini bilirsen 2. adımdan sonra daha hızlı biter. Bir şeyin XOR'unun tersi XNOR'dur, yani <span class="m"><span class="ov">x ⊕ C</span> = x ⊙ C = <span class="ov">x</span> <span class="ov">C</span> + xC</span>:</p>
+      <ol class="steps">
+        <li><span class="m">F = <span class="ov"><span class="ov">A</span>B</span> <span class="ov">C</span> + <span class="ov">A</span>BC + B = (A + <span class="ov">B</span>)<span class="ov">C</span> + <span class="ov">A</span>BC + B</span></li>
+        <li><span class="m"><span class="ov">A</span>BC + B = B</span> (yutma, B içinde kaybolur): <span class="m">F = A<span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span> + B</span>.</li>
+        <li><span class="m">B + <span class="ov">B</span><span class="ov">C</span> = B + <span class="ov">C</span></span> (ters değişkenli yutma), sonra <span class="m"><span class="ov">C</span> + A<span class="ov">C</span> = <span class="ov">C</span></span> (yutma).</li>
+      </ol>
+      <p class="answer">F = <span class="m">B + <span class="ov">C</span></span></p>
+    </div>
+  </div>
+
+  <h3>Kullanılmayan giriş: GND</h3>
+  <p>Hoca sadeleşmiş devreyi çizerken A girişini <b>GND</b>'ye (toprak, yani sabit 0) bağlamış. Sebebi: F artık A'ya bağlı değil, ama A kablosu fiziksel olarak orada duruyor. Gerçek entegre devrelerde bir girişi boşta bırakmak sorun çıkarabilir, o yüzden kullanılmayan girişler sabit bir değere bağlanır.</p>
+  <div class="gates">
+    <figure>
+      <svg viewBox="0 0 240 110" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M20 20H50V34M38 34H62M42 40H58M46 46H54"/>
+          <path d="M20 60H123M20 90H70M110 90H123M178 75H220"/>
+          <path d="M70 78L100 90L70 102Z"/><circle cx="105" cy="90" r="5"/>
+          <path d="M118 45Q155 45 178 75Q155 105 118 105Q131 75 118 45Z"/>
+        </g>
+        <g fill="currentColor" font-family="Archivo, sans-serif" font-size="15" font-weight="700"><text x="4" y="25">A</text><text x="4" y="65">B</text><text x="4" y="95">C</text><text x="225" y="80">F</text><text x="64" y="22" font-size="12" font-weight="400">GND</text></g>
+      </svg>
+      <figcaption><b>Sadeleşmiş devre</b>: F = B + <span class="ov">C</span>, A toprağa bağlı.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section id="ozet">
+  <h2><span class="n">13</span>Özet kâğıdı</h2>
+  <div class="cheat">
+    <div>
+      <h4>Aksiyomlar</h4>
+      <ul>
+        <li>A + 0 = A, A · 1 = A</li>
+        <li>A + 1 = 1, A · 0 = 0</li>
+        <li>A + <span class="ov">A</span> = 1, A · <span class="ov">A</span> = 0</li>
+        <li><span class="ov"><span class="ov">A</span></span> = A</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hocanın teoremleri</h4>
+      <ul>
+        <li>Değişme: A + B = B + A, AB = BA</li>
+        <li>Birleşme: A + (B + C) = (A + B) + C</li>
+        <li>Dağılma: A(B + C) = AB + AC</li>
+        <li>Dağılma 2: A + BC = (A + B)(A + C)</li>
+        <li>Tekrar: A + A = A, AA = A</li>
+        <li>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span> <span class="ov">B</span>, <span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ek teoremler</h4>
+      <ul>
+        <li>Yutma: A + AB = A, A(A + B) = A</li>
+        <li>A + <span class="ov">A</span>B = A + B</li>
+        <li>A(<span class="ov">A</span> + B) = AB</li>
+        <li>Uzlaşı: AB + <span class="ov">A</span>C + BC = AB + <span class="ov">A</span>C</li>
+        <li>Dualite: + ↔ ·, 0 ↔ 1</li>
+      </ul>
+    </div>
+    <div>
+      <h4>XOR / XNOR</h4>
+      <ul>
+        <li>A ⊕ B = A<span class="ov">B</span> + <span class="ov">A</span>B (farklıysa 1)</li>
+        <li>A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB (aynıysa 1)</li>
+        <li><span class="ov">A ⊕ B</span> = A ⊙ B</li>
+        <li>Çok girişli XOR: 1'lerin sayısı tekse 1</li>
+        <li>A ⊕ 0 = A, A ⊕ 1 = <span class="ov">A</span>, A ⊕ A = 0, A ⊕ <span class="ov">A</span> = 1</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kapılar ve şemalar</h4>
+      <ul>
+        <li>Balon = NOT (uçta ya da girişte)</li>
+        <li>Girişleri balonlu OR = NAND</li>
+        <li>Girişleri balonlu AND = NOR</li>
+        <li>Nokta = bağlı, köprü = bağlı değil</li>
+        <li>Kullanılmayan giriş GND'ye</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Devre sorusu tarifi</h4>
+      <ul>
+        <li>Soldan sağa git, her kapı çıkışına formül yaz</li>
+        <li>Girişteki balonları unutma</li>
+        <li>De Morgan ile çizgileri indir, parantezleri aç</li>
+        <li>X<span class="ov">X</span> = 0 terimleri sil, grupla, yutmaları uygula</li>
+        <li>Birkaç satırı yerine koyarak sağlama yap</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>theorem</dt><dd>teorem</dd>
+    <dt>commutative</dt><dd>değişme özelliği</dd>
+    <dt>associative</dt><dd>birleşme özelliği</dd>
+    <dt>distributive</dt><dd>dağılma özelliği</dd>
+    <dt>idempotent</dt><dd>tekrar kuralı (A + A = A)</dd>
+    <dt>absorption</dt><dd>yutma</dd>
+    <dt>consensus</dt><dd>uzlaşı</dd>
+    <dt>duality</dt><dd>dualite, eşleklik</dd>
+    <dt>gate</dt><dd>kapı</dd>
+    <dt>bubble</dt><dd>balon (tersleme dairesi)</dd>
+    <dt>connected / not connected</dt><dd>bağlı / bağlı değil</dd>
+    <dt>GND (ground)</dt><dd>toprak, sabit 0</dd>
+    <dt>simplify</dt><dd>sadeleştirmek</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 14 -->
+<section id="alistirma">
+  <h2><span class="n">14</span>Alıştırmalar ve test</h2>
+  <p class="lead">Önce kâğıtta çöz, sonra çözüme bak. Sadeleştirme sorularında sonucunu 8. bölümdeki araçla da kontrol edebilirsin.</p>
+
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li><span class="m">A(B + C) = AB + AC</span> hangi teoremdir?
+      <details class="solution"><summary>Çözümü göster</summary><p>Dağılma (distributive), birinci hali.</p></details></li>
+    <li><span class="m">(A + B)(A + <span class="ov">B</span>)</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Dağılmanın ikinci hali: <span class="m">A + B<span class="ov">B</span> = A + 0 = <b>A</b></span>.</p></details></li>
+    <li><span class="m">AB + A(B + C)</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Aç: <span class="m">AB + AB + AC</span>. Tekrar kuralı: <span class="m">AB + AC</span>. A ortak: <span class="m"><b>A(B + C)</b></span>.</p></details></li>
+    <li><span class="m"><span class="ov">A</span> <span class="ov">B</span> + <span class="ov">A</span>B + AB</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>İlk ikisi: <span class="m"><span class="ov">A</span>(<span class="ov">B</span> + B) = <span class="ov">A</span></span>. Kalan: <span class="m"><span class="ov">A</span> + AB</span>. Ters değişkenli yutma (X = <span class="ov">A</span>): <span class="m"><b><span class="ov">A</span> + B</b></span>.</p></details></li>
+    <li><span class="m"><span class="ov">A<span class="ov">B</span></span> + B</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="m"><span class="ov">A</span> + B + B</span>. Tekrar kuralı: <span class="m"><b><span class="ov">A</span> + B</b></span>.</p></details></li>
+    <li><span class="m"><span class="ov"><span class="ov">A</span> + <span class="ov">B</span></span> · (A + C)</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="m">AB(A + C) = AAB + ABC = AB + ABC</span>. Yutma: <span class="m"><b>AB</b></span>.</p></details></li>
+    <li><span class="m"><span class="ov">AB + C</span></span> ifadesini uzun çizgi kalmayacak şekilde yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>Önce + işaretinden kır: <span class="m"><span class="ov">AB</span> · <span class="ov">C</span></span>. Sonra <span class="m"><span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span></span>: <span class="m">(<span class="ov">A</span> + <span class="ov">B</span>)<span class="ov">C</span> = <b><span class="ov">A</span><span class="ov">C</span> + <span class="ov">B</span><span class="ov">C</span></b></span>.</p></details></li>
+    <li>A ve B bir NAND kapısına giriyor. NAND'in çıkışı ve C bir NOR kapısına giriyor. F nedir? Sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>NAND çıkışı <span class="m"><span class="ov">AB</span></span>. NOR: <span class="m">F = <span class="ov"><span class="ov">AB</span> + C</span></span>. De Morgan: <span class="m"><span class="ov"><span class="ov">AB</span></span> · <span class="ov">C</span> = <b>AB<span class="ov">C</span></b></span>.</p></details></li>
+    <li><span class="m">(A + B)(A + C) = A + BC</span> eşitliğini cebirsel olarak ispatla.
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m" style="white-space:normal">AA + AC + AB + BC = A + AC + AB + BC = A(1 + C + B) + BC = A + BC</span>. Ayrıntısı 4. bölümde.</p></details></li>
+    <li><span class="m">F = (A + B) ⊕ A</span> ifadesini sadeleştir. (İpucu: x = A + B de.)
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m">x ⊕ A = x<span class="ov">A</span> + <span class="ov">x</span>A</span>. <span class="m">x<span class="ov">A</span> = (A + B)<span class="ov">A</span> = A<span class="ov">A</span> + B<span class="ov">A</span> = <span class="ov">A</span>B</span>. <span class="m"><span class="ov">x</span>A = <span class="ov">A</span> <span class="ov">B</span>A = 0</span>. Sonuç: <span class="m"><b><span class="ov">A</span>B</b></span>.</p></details></li>
+    <li>3 girişli XOR için A = 1, B = 1, C = 1 iken çıkış kaçtır?
+      <details class="solution"><summary>Çözümü göster</summary><p>Üç tane 1 var, tek sayı → <b>1</b>. Adım adım: 1 ⊕ 1 = 0, 0 ⊕ 1 = 1.</p></details></li>
+    <li>Girişlerinde balon olan bir AND kapısına A ve B giriyor. Çıkışı tek bir kapı adıyla söyle.
+      <details class="solution"><summary>Çözümü göster</summary><p><span class="m"><span class="ov">A</span> · <span class="ov">B</span> = <span class="ov">A + B</span></span> (De Morgan) → <b>NOR</b>.</p></details></li>
+    <li>Aşağıdaki devrenin F'sini bul ve sadeleştir. (Noktalar bağlantı, köprü bağlantı değil.)
+      <div class="circuit-svg" style="padding:.4rem 0;max-width:30rem"><svg viewBox="0 0 400 185" role="img" aria-label="A ve balonlu girişten B bir AND kapısına giriyor. A'dan dallanan kablo B'nin üstünden köprüyle geçip C ile ikinci bir AND kapısına giriyor. İki AND bir OR'da birleşip F'yi veriyor.">
+        <path class="w" d="M30 40H200"/><path class="w" d="M30 70H190"/><path class="w" d="M90 40V62A8 8 0 0 1 90 78V130H200"/><path class="w" d="M30 160H200"/>
+        <path class="w" d="M245 55H270V85H294"/><path class="w" d="M245 145H270V115H294"/><path class="w" d="M354 100H385"/>
+        <circle class="dot" cx="90" cy="40" r="4"/><circle class="g" cx="195" cy="70" r="5"/>
+        <path class="g" d="M200 30H220A25 25 0 0 1 220 80H200Z"/><path class="g" d="M200 120H220A25 25 0 0 1 220 170H200Z"/>
+        <path class="g" d="M290 70Q330 70 354 100Q330 130 290 130Q304 100 290 70Z"/>
+        <text class="lbl" x="10" y="46">A</text><text class="lbl" x="10" y="76">B</text><text class="lbl" x="10" y="166">C</text><text class="lbl" x="388" y="94">F</text>
+      </svg></div>
+      <details class="solution"><summary>Çözümü göster</summary><p>Üst AND: A ve (balon yüzünden) <span class="ov">B</span> → <span class="m">A<span class="ov">B</span></span>. A'nın dalı B'ye bağlı değil (köprü), alt AND'e gidiyor: <span class="m">AC</span>. OR: <span class="m">F = A<span class="ov">B</span> + AC = <b>A(<span class="ov">B</span> + C)</b></span>.</p></details></li>
+    <li><span class="m">F = (A + B)<span class="ov">C</span></span> devresini çiz.
+      <details class="solution"><summary>Çözümü göster</summary><p>A ve B bir OR kapısına girer. C bir NOT kapısından geçer (ya da AND'in o girişine balon koyarsın). OR'un çıkışı ile <span class="ov">C</span> bir AND kapısına girer, çıkışı F.</p></details></li>
+    <li>Sadece NAND kapılarıyla A OR B yap.
+      <details class="solution"><summary>Çözümü göster</summary><p>A'yı NAND(A, A) ile, B'yi NAND(B, B) ile ters çevir. Sonra NAND(<span class="ov">A</span>, <span class="ov">B</span>) = <span class="m"><span class="ov"><span class="ov">A</span> <span class="ov">B</span></span> = A + B</span> (De Morgan). Toplam 3 NAND.</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <p>Sadeleştirme sorularında aynı fonksiyonu veren ve en az cevap kadar kısa olan her ifade doğru sayılır.</p>
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="simplify">Sadeleştirme</option>
+            <option value="theorem">Hangi teorem?</option>
+            <option value="demorgan">De Morgan ile aç</option>
+            <option value="value">İfade değeri</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-input"></div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="01-sayi-sistemleri.html">Önceki: Number Systems</a>
+    <a href="03-mantik-tasarimi.html">Sıradaki: Logic Design</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/lesson02.js"></script>
+</body>
+</html>

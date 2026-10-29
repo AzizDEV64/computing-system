@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Number Systems | YAM205</title>
+  <meta name="description" content="Ders 1: Sayı sistemleri, taban dönüşümleri, tümleyenler, tümleyenle çıkarma, BCD ve Gray kodu, Boole cebirine giriş. Sıfırdan anlatım.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-lesson="01">
+  <a class="skip" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-chip" aria-hidden="true"></span>YAM205</a>
+      <span class="crumb">Ders 1 / 7 <strong>Number Systems</strong></span>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-theme-toggle>Koyu tema</button>
+    </div>
+  </header>
+
+  <div class="lesson-head">
+    <div class="lesson-head-inner">
+      <p class="kicker">Ders 1, 14 Eylül 2026</p>
+      <h1>Number Systems</h1>
+      <p>Bilgisayar her şeyi 0 ve 1 ile yapar. Bu derste sayıların 0 ve 1 ile nasıl yazıldığını, bilgisayarın çıkarmayı neden toplayarak yaptığını, sayıların nasıl kodlandığını ve mantık işlemlerinin temelini öğreneceksin. Hiçbir şey bilmediğini varsayarak başlıyoruz.</p>
+      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+        <li>1's ve 2's complement</li>
+        <li>Subtraction by addition</li>
+        <li>BCD ve ağırlıklı kodlar</li>
+        <li>Gray code</li>
+        <li>Boolean algebra axioms</li>
+        <li>Truth tables</li>
+        <li>Simplification</li>
+        <li>De Morgan</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Bu dersin bölümleri">
+      <details>
+        <summary>Bölümler</summary>
+        <ol>
+          <li><a href="#basla"><span class="n">1</span><span>Bit nedir, neden 0 ve 1?</span></a></li>
+          <li><a href="#konumsal"><span class="n">2</span><span>Basamak değeri ve taban</span></a></li>
+          <li><a href="#donusum"><span class="n">3</span><span>Tabanlar arası dönüşüm</span></a></li>
+          <li><a href="#aritmetik"><span class="n">4</span><span>İkili toplama ve çıkarma</span></a></li>
+          <li><a href="#tumleyen"><span class="n">5</span><span>Tümleyenler (complement)</span></a></li>
+          <li><a href="#cikarma"><span class="n">6</span><span>Toplayarak çıkarma</span></a></li>
+          <li><a href="#isaretli"><span class="n">7</span><span>Negatif sayılar ve taşma</span></a></li>
+          <li><a href="#kodlar"><span class="n">8</span><span>BCD ve ağırlıklı kodlar</span></a></li>
+          <li><a href="#gray"><span class="n">9</span><span>Gray kodu</span></a></li>
+          <li><a href="#boole"><span class="n">10</span><span>Boole cebirine giriş</span></a></li>
+          <li><a href="#islemler"><span class="n">11</span><span>Lojik işlemler</span></a></li>
+          <li><a href="#tablo"><span class="n">12</span><span>Doğruluk tablosu</span></a></li>
+          <li><a href="#sadelestirme"><span class="n">13</span><span>Sadeleştirme ve De Morgan</span></a></li>
+          <li><a href="#ozet"><span class="n">14</span><span>Özet kâğıdı</span></a></li>
+          <li><a href="#alistirma"><span class="n">15</span><span>Alıştırmalar ve test</span></a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main class="content" id="icerik">
+
+<!-- ============================================================ 1 -->
+<section id="basla">
+  <h2><span class="n">1</span>Bit nedir, bilgisayar neden 0 ve 1 kullanır?</h2>
+  <p class="lead">Bir lamba anahtarı düşün. Ya açıktır ya kapalı, ortası yok. Bilgisayarın içindeki milyarlarca minik elektronik anahtar (transistör) da böyle çalışır.</p>
+  <p>Kapalı anahtara <b>0</b>, açık anahtara <b>1</b> deriz. Tek bir anahtarın taşıdığı bu bilgiye <span class="term">bit</span> denir (<span class="en">binary digit</span>, ikili rakam). Bilgisayar 0 ve 1 kullanır, çünkü iki durumu (elektrik var / yok) ayırt etmek çok kolay ve hatasızdır. On farklı voltaj seviyesini ayırt etmeye çalışmak çok daha zor olurdu.</p>
+  <p>Tek bit sadece iki şey söyleyebilir. Ama bitleri yan yana koyunca durum sayısı katlanarak artar:</p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Bit sayısı</th><th>Yazılabilecek desenler</th><th>Farklı değer sayısı</th></tr></thead>
+      <tbody>
+        <tr><td>1 bit</td><td class="b">0, 1</td><td>2</td></tr>
+        <tr><td>2 bit</td><td class="b">00, 01, 10, 11</td><td>4</td></tr>
+        <tr><td>3 bit</td><td class="b">000, 001, …, 111</td><td>8</td></tr>
+        <tr><td>4 bit (<span class="en">nibble</span>)</td><td class="b">0000 … 1111</td><td>16</td></tr>
+        <tr><td>8 bit (<span class="en">byte</span>)</td><td class="b">00000000 … 11111111</td><td>256</td></tr>
+        <tr><td><i>n</i> bit</td><td></td><td>2<sup>n</sup></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Her yeni bit, durum sayısını ikiye katlar. Bu yüzden <b>n bit ile 2<sup>n</sup> farklı değer</b> yazılır. İşaretsiz (sadece sıfır ve pozitif, eksi işareti olmayan) bir sayı için bu değerler 0'dan 2<sup>n</sup> − 1'e kadardır. Örneğin 4 bit ile 0–15, 8 bit ile 0–255.</p>
+  <div class="note tip">
+    <span class="note-title">Ezberle: 2'nin kuvvetleri</span>
+    <p>Sınavda sürekli lazım olacak:
+      <span class="b list">2⁰=1, 2¹=2, 2²=4, 2³=8, 2⁴=16, 2⁵=32, 2⁶=64, 2⁷=128, 2⁸=256, 2⁹=512, 2¹⁰=1024</span>.
+      Kesirler için: <span class="b list">2⁻¹=0.5, 2⁻²=0.25, 2⁻³=0.125, 2⁻⁴=0.0625</span>.</p>
+  </div>
+  <p><a href="../index.html">Ana sayfada</a> 8 anahtarlı bir oyuncak var. Anahtarları açıp kapatarak bir baytın hangi sayıya karşılık geldiğini canlı görebilirsin.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="konumsal">
+  <h2><span class="n">2</span>Basamak değeri ve taban</h2>
+  <p class="lead">İkili sayıları anlamanın sırrı, zaten bildiğin onluk sistemi yeniden düşünmekte.</p>
+
+  <h3>Onluk sistemde aslında ne yapıyoruz?</h3>
+  <p><b>352</b> yazdığında aslında şunu söylüyorsun: 3 tane yüz, 5 tane on, 2 tane bir. Her basamağın bir <span class="term">ağırlığı</span> (<span class="en">weight</span>) var ve ağırlıklar sağdan sola 10'un kuvvetleri olarak büyüyor:</p>
+  <div class="formula"><span class="m">352 = 3×10² + 5×10¹ + 2×10⁰ = 300 + 50 + 2</span></div>
+  <p>Buradaki 10 sayısına <span class="term">taban</span> (<span class="en">base</span> ya da <span class="en">radix</span>) denir. Onluk sistemde 10 farklı rakam (0–9) vardır. Rakamlar bitince bir sola "elde" verip tekrar 0'dan başlarız. Arabanın kilometre sayacı gibi: 09'dan sonra 10 gelir.</p>
+
+  <h3>Aynı fikir, başka tabanlar</h3>
+  <p>Tabanı r olan bir sistemde <b>r tane rakam</b> vardır (0'dan r − 1'e kadar) ve basamak ağırlıkları r'nin kuvvetleridir. Bu yapıya <span class="term">konumsal sayı sistemi</span> (<span class="en">positional number system</span>) denir.</p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Sistem</th><th>Taban</th><th>Rakamlar</th><th>Basamak ağırlıkları (sağdan sola)</th></tr></thead>
+      <tbody>
+        <tr><td>İkili (<span class="en">binary</span>)</td><td>2</td><td class="b">0 1</td><td>1, 2, 4, 8, 16 …</td></tr>
+        <tr><td>Sekizli (<span class="en">octal</span>)</td><td>8</td><td class="b">0–7</td><td>1, 8, 64, 512 …</td></tr>
+        <tr><td>Onluk (<span class="en">decimal</span>)</td><td>10</td><td class="b">0–9</td><td>1, 10, 100, 1000 …</td></tr>
+        <tr><td>Onaltılı (<span class="en">hexadecimal</span>)</td><td>16</td><td class="b">0–9, A–F</td><td>1, 16, 256, 4096 …</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Onaltılı sistemde 10 rakamımız yetmez, o yüzden harf kullanırız: <span class="b list">A=10, B=11, C=12, D=13, E=14, F=15</span>.</p>
+  <p>Hangi tabanda yazdığımızı karıştırmamak için sayının sağ altına tabanı yazarız: <span class="m">(101)<sub>2</sub></span> ile <span class="m">(101)<sub>10</sub></span> çok farklı sayılardır. İlki beş, ikincisi yüz bir.</p>
+
+  <h3>İkili sistemde sayma</h3>
+  <p>Sadece 0 ve 1 olduğu için "elde" çok çabuk oluşur. Kilometre sayacının sadece 0 ve 1 rakamı olduğunu düşün:</p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th><th>Onluk</th><th>İkili</th><th>Sekizli</th><th>Onaltılı</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td class="b">0000</td><td class="b">0</td><td class="b">0</td><td>8</td><td class="b">1000</td><td class="b">10</td><td class="b">8</td></tr>
+        <tr><td>1</td><td class="b">0001</td><td class="b">1</td><td class="b">1</td><td>9</td><td class="b">1001</td><td class="b">11</td><td class="b">9</td></tr>
+        <tr><td>2</td><td class="b">0010</td><td class="b">2</td><td class="b">2</td><td>10</td><td class="b">1010</td><td class="b">12</td><td class="b">A</td></tr>
+        <tr><td>3</td><td class="b">0011</td><td class="b">3</td><td class="b">3</td><td>11</td><td class="b">1011</td><td class="b">13</td><td class="b">B</td></tr>
+        <tr><td>4</td><td class="b">0100</td><td class="b">4</td><td class="b">4</td><td>12</td><td class="b">1100</td><td class="b">14</td><td class="b">C</td></tr>
+        <tr><td>5</td><td class="b">0101</td><td class="b">5</td><td class="b">5</td><td>13</td><td class="b">1101</td><td class="b">15</td><td class="b">D</td></tr>
+        <tr><td>6</td><td class="b">0110</td><td class="b">6</td><td class="b">6</td><td>14</td><td class="b">1110</td><td class="b">16</td><td class="b">E</td></tr>
+        <tr><td>7</td><td class="b">0111</td><td class="b">7</td><td class="b">7</td><td>15</td><td class="b">1111</td><td class="b">17</td><td class="b">F</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Bu tabloya iyi bak. En sağdaki bit her satırda değişiyor (0,1,0,1…), bir solundaki ikişer ikişer, sonraki dörder dörder, en soldaki sekizer sekizer. Bu deseni doğruluk tablosu kurarken tekrar kullanacağız.</p>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu</span>
+    <p>Bu 0–15 tablosunu (ikili ve onaltılı) ezbere bilmek, sınavdaki dönüşüm sorularını yarı yarıya hızlandırır.</p>
+  </div>
+
+  <h3>Kesirli sayılar</h3>
+  <p>Virgülün (noktanın) sağında ağırlıklar küçülmeye devam eder: onlukta 10⁻¹ = 0.1, 10⁻² = 0.01 gibi. İkilide de aynısı: 2⁻¹ = 0.5, 2⁻² = 0.25, 2⁻³ = 0.125. Genel formül:</p>
+  <div class="formula"><span class="m">(d<sub>n−1</sub> … d<sub>1</sub> d<sub>0</sub> . d<sub>−1</sub> d<sub>−2</sub> …)<sub>r</sub> = d<sub>n−1</sub>·r<sup>n−1</sup> + … + d<sub>1</sub>·r + d<sub>0</sub> + d<sub>−1</sub>·r<sup>−1</sup> + d<sub>−2</sub>·r<sup>−2</sup> + …</span></div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="donusum">
+  <h2><span class="n">3</span>Tabanlar arası dönüşüm</h2>
+  <p class="lead">Dört tip dönüşüm var ve her birinin tek bir tarifi var. Tarifleri öğrenince hepsi mekanik hale gelir.</p>
+
+  <h3>3.1 Herhangi bir tabandan onluğa: ağırlıklarla çarp, topla</h3>
+  <p>Her rakamın üstüne basamak ağırlığını yaz, rakamla ağırlığı çarp, hepsini topla. Bu kadar.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: (1011)<sub>2</sub> kaç eder?</h4></div>
+    <div class="example-body">
+      <div class="table-wrap"><table>
+        <tr><th>Ağırlık</th><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+        <tr><th>Bit</th><td class="b">1</td><td class="b">0</td><td class="b">1</td><td class="b">1</td></tr>
+        <tr><th>Çarpım</th><td>8</td><td>0</td><td>2</td><td>1</td></tr>
+      </table></div>
+      <p class="answer">8 + 0 + 2 + 1 = <span class="m">(11)<sub>10</sub></span></p>
+      <p>İkili sayıda bu daha da kolay: <b>1 olan bitlerin ağırlıklarını topla</b>, 0'ları yok say.</p>
+    </div>
+  </div>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: (1011.101)<sub>2</sub> kesirli</h4></div>
+    <div class="example-body">
+      <p>Noktanın solu: 8 + 2 + 1 = 11. Noktanın sağındaki ağırlıklar 0.5, 0.25, 0.125. Bitler 1, 0, 1 olduğu için 0.5 + 0.125 = 0.625.</p>
+      <p class="answer">(1011.101)<sub>2</sub> = <span class="m">(11.625)<sub>10</sub></span></p>
+    </div>
+  </div>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: sekizli ve onaltılı</h4></div>
+    <div class="example-body">
+      <p><span class="m">(157)<sub>8</sub> = 1×64 + 5×8 + 7×1 = 64 + 40 + 7 = 111</span></p>
+      <p><span class="m">(3A7)<sub>16</sub> = 3×256 + 10×16 + 7×1 = 768 + 160 + 7 = 935</span> (A = 10 olduğunu unutma)</p>
+      <p>Yöntem her tabanda aynı: <span class="m">(1230)<sub>4</sub> = 1×64 + 2×16 + 3×4 + 0×1 = 108</span>.</p>
+    </div>
+  </div>
+
+  <h3>3.2 Onluktan başka tabana (tam kısım): sürekli böl, kalanları aşağıdan yukarı oku</h3>
+  <p>Sayıyı hedef tabana böl, kalanı yaz. Bölümü tekrar böl. Bölüm 0 olana kadar devam et. Sonra <b>kalanları en alttan en üste doğru</b> oku. İlk bulduğun kalan en sağdaki (en değersiz) basamaktır.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 41'i ikiliye çevir</h4></div>
+    <div class="example-body">
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>İşlem</th><th>Bölüm</th><th>Kalan</th></tr></thead>
+        <tbody>
+          <tr><td>41 ÷ 2</td><td>20</td><td class="b">1</td></tr>
+          <tr><td>20 ÷ 2</td><td>10</td><td class="b">0</td></tr>
+          <tr><td>10 ÷ 2</td><td>5</td><td class="b">0</td></tr>
+          <tr><td>5 ÷ 2</td><td>2</td><td class="b">1</td></tr>
+          <tr><td>2 ÷ 2</td><td>1</td><td class="b">0</td></tr>
+          <tr><td>1 ÷ 2</td><td>0</td><td class="b">1</td></tr>
+        </tbody>
+      </table></div>
+      <p>Kalanları aşağıdan yukarı oku: 1, 0, 1, 0, 0, 1.</p>
+      <p class="answer">41 = <span class="b">(101001)<sub>2</sub></span>. Kontrol: 32 + 8 + 1 = 41.</p>
+    </div>
+  </div>
+  <p>Aynı yöntem her taban için geçerli, sadece 2 yerine hedef tabana bölersin. Örneğin 153'ü sekizliye çevirelim: 153 ÷ 8 = 19 kalan 1, 19 ÷ 8 = 2 kalan 3, 2 ÷ 8 = 0 kalan 2. Aşağıdan yukarı: <span class="b">(231)<sub>8</sub></span>. Bir örnek daha, 25'i 3 tabanına: 25 ÷ 3 = 8 kalan 1, 8 ÷ 3 = 2 kalan 2, 2 ÷ 3 = 0 kalan 2 → <span class="b">(221)<sub>3</sub></span> (kontrol: 2×9 + 2×3 + 1 = 25). Kontrol: 2×64 + 3×8 + 1 = 153.</p>
+
+  <h3>3.3 Onluktan başka tabana (kesir kısım): sürekli çarp, tam kısımları yukarıdan aşağı oku</h3>
+  <p>Kesri hedef tabanla çarp. Çıkan sonucun tam kısmı (0 ya da 1) bir basamaktır. Kalan kesirle devam et. Kesir 0 olunca dur. Bu sefer basamakları <b>yukarıdan aşağı</b> okursun.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 0.6875'i ikiliye çevir</h4></div>
+    <div class="example-body">
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>İşlem</th><th>Sonuç</th><th>Tam kısım (basamak)</th></tr></thead>
+        <tbody>
+          <tr><td>0.6875 × 2</td><td>1.375</td><td class="b">1</td></tr>
+          <tr><td>0.375 × 2</td><td>0.75</td><td class="b">0</td></tr>
+          <tr><td>0.75 × 2</td><td>1.5</td><td class="b">1</td></tr>
+          <tr><td>0.5 × 2</td><td>1.0</td><td class="b">1</td></tr>
+        </tbody>
+      </table></div>
+      <p class="answer">0.6875 = <span class="b">(0.1011)<sub>2</sub></span>. Kontrol: 0.5 + 0.125 + 0.0625 = 0.6875.</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Dikkat: bazı kesirler hiç bitmez</span>
+    <p>0.1'i ikiliye çevirmeye çalışırsan 0.000110011001100… diye sonsuza kadar gider. Onlukta 1/3 = 0.333… olduğu gibi. Sınavda böyle bir soru gelirse genelde "virgülden sonra 4 (veya 6) basamak bul" der. İstenen basamakta durursun.</p>
+  </div>
+  <p>Hem tam hem kesir kısmı olan sayıda iki kısmı ayrı ayrı çevirip birleştirirsin: 41.6875 = <span class="b">101001.1011</span>.</p>
+
+  <h3>3.4 İkili ↔ sekizli ↔ onaltılı: gruplama kısayolu</h3>
+  <p>8 = 2³ ve 16 = 2⁴ olduğu için çok kolay bir kısayol var: <b>bir sekizli rakam tam 3 bit, bir onaltılı rakam tam 4 bit</b> eder.</p>
+  <ol>
+    <li>İkili sayıyı noktadan başlayarak gruplara ayır: sekizli için 3'erli, onaltılı için 4'erli. Noktanın solunda sağdan sola, sağında soldan sağa grupla.</li>
+    <li>Eksik kalan gruplara sıfır ekle: solda en başa, sağda en sona.</li>
+    <li>Her grubu tek bir rakama çevir.</li>
+  </ol>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: (10110001101011.11110010)<sub>2</sub></h4></div>
+    <div class="example-body">
+      <p><b>Onaltılıya:</b> <span class="b">0010 1100 0110 1011 . 1111 0010</span> → <span class="b">2 C 6 B . F 2</span></p>
+      <p><b>Sekizliye:</b> <span class="b">010 110 001 101 011 . 111 100 100</span> → <span class="b">2 6 1 5 3 . 7 4 4</span></p>
+      <p class="answer">= <span class="b">(2C6B.F2)<sub>16</sub></span> = <span class="b">(26153.744)<sub>8</sub></span></p>
+      <p>Ters yönde her rakamı 3 veya 4 bite açarsın: <span class="b">(673.124)<sub>8</sub></span> = <span class="b">110 111 011 . 001 010 100</span> ve <span class="b">(306.D)<sub>16</sub></span> = <span class="b">0011 0000 0110 . 1101</span>.</p>
+    </div>
+  </div>
+  <div class="note tip">
+    <span class="note-title">Sekizli ↔ onaltılı</span>
+    <p>Sekizliden onaltılıya doğrudan geçilmez. Önce ikiliye aç, sonra 4'erli yeniden grupla.</p>
+  </div>
+
+  <div class="widget" id="w-conv">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: adım adım taban dönüştürücü</h4></div>
+    <div class="widget-body">
+      <p>Bir sayı yaz, tabanları seç. Hesabın her adımı aşağıda çıkar. Kendi çözümünü kontrol etmek için kullan.</p>
+      <div class="controls">
+        <div class="field"><label for="conv-in">Sayı</label><input id="conv-in" type="text" value="41.6875" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="conv-from">Kaynak taban</label>
+          <select id="conv-from"><option value="2">2 (ikili)</option><option value="8">8 (sekizli)</option><option value="10" selected>10 (onluk)</option><option value="16">16 (onaltılı)</option></select></div>
+        <div class="field"><label for="conv-to">Hedef taban</label>
+          <select id="conv-to"><option value="2" selected>2 (ikili)</option><option value="8">8 (sekizli)</option><option value="10">10 (onluk)</option><option value="16">16 (onaltılı)</option></select></div>
+        <button class="btn" type="button" id="conv-go">Çevir</button>
+      </div>
+      <div class="wout" id="conv-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="aritmetik">
+  <h2><span class="n">4</span>İkili toplama ve çıkarma</h2>
+  <p class="lead">İlkokulda öğrendiğin alt alta toplama ile aynı. Tek fark: elde 10'da değil 2'de oluşur.</p>
+
+  <h3>Toplama kuralları</h3>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>İşlem</th><th>Sonuç</th><th>Açıklama</th></tr></thead>
+    <tbody>
+      <tr><td class="b">0 + 0</td><td class="b">0</td><td>elde yok</td></tr>
+      <tr><td class="b">0 + 1</td><td class="b">1</td><td>elde yok</td></tr>
+      <tr><td class="b">1 + 0</td><td class="b">1</td><td>elde yok</td></tr>
+      <tr><td class="b">1 + 1</td><td class="b">10</td><td>0 yaz, 1 elde (çünkü 2 = (10)<sub>2</sub>)</td></tr>
+      <tr><td class="b">1 + 1 + 1</td><td class="b">11</td><td>1 yaz, 1 elde (çünkü 3 = (11)<sub>2</sub>)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Toplamdan çıkan bu "1 elde"ye <span class="term">carry</span> denir. Hocanın notlarında sütunların üstüne küçük <b>c</b> harfi yazılmasının sebebi bu.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 1011 + 0111 (11 + 7)</h4></div>
+    <div class="example-body">
+      <div class="calc">
+        <span class="l"></span><span class="v carry">1111 </span><span class="c">elde (carry)</span>
+        <span class="l"></span><span class="v">1011</span><span class="c">11</span>
+        <span class="l">+</span><span class="v">0111</span><span class="c">7</span>
+        <hr>
+        <span class="l"></span><span class="v">10010</span><span class="c">18</span>
+      </div>
+      <ol class="steps">
+        <li>En sağ sütun: 1 + 1 = 10. <b>0</b> yaz, 1 elde.</li>
+        <li>İkinci sütun: 1 + 1 + elde 1 = 11. <b>1</b> yaz, 1 elde.</li>
+        <li>Üçüncü sütun: 0 + 1 + elde 1 = 10. <b>0</b> yaz, 1 elde.</li>
+        <li>Dördüncü sütun: 1 + 0 + elde 1 = 10. <b>0</b> yaz, 1 elde.</li>
+        <li>Kalan elde en sola iner: <b>1</b>.</li>
+      </ol>
+      <p class="answer">Sonuç <span class="b">10010</span> = 16 + 2 = 18.</p>
+    </div>
+  </div>
+
+  <h3>Çıkarma ve borç alma</h3>
+  <p>Kurallar: 0 − 0 = 0, 1 − 0 = 1, 1 − 1 = 0. Zor olan <b>0 − 1</b>: soldaki basamaktan <span class="term">borç</span> (<span class="en">borrow</span>) alırsın. Onlukta borç alınca basamağa 10 gelir. İkilide ise 2 (yani 10₂) gelir ve 10 − 1 = 1 olur.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: 1101 − 0110 (13 − 6)</h4></div>
+    <div class="example-body">
+      <div class="calc">
+        <span class="l"></span><span class="v">1101</span><span class="c">13</span>
+        <span class="l">−</span><span class="v">0110</span><span class="c">6</span>
+        <hr>
+        <span class="l"></span><span class="v">0111</span><span class="c">7</span>
+      </div>
+      <ol class="steps">
+        <li>En sağ: 1 − 0 = <b>1</b>.</li>
+        <li>İkinci: 0 − 1 olmaz. Soldan borç al: bu basamak 10₂ (yani 2) olur. 2 − 1 = <b>1</b>. Soldaki 1, 0'a düştü.</li>
+        <li>Üçüncü: artık 0 − 1. Yine soldan borç al: 2 − 1 = <b>1</b>. Soldaki 1, 0'a düştü.</li>
+        <li>Dördüncü: 0 − 0 = <b>0</b>.</li>
+      </ol>
+      <p class="answer">Sonuç <span class="b">0111</span> = 7.</p>
+    </div>
+  </div>
+  <p>Borç alarak çıkarmak elle mümkün, ama devre olarak kurması zahmetli. Bilgisayarlar bu yüzden çıkarmayı <b>toplama ile</b> yapar. Bunun için önce tümleyen kavramını öğrenmemiz lazım. Hocanın PDF'i de tam bu noktadan başlıyor.</p>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: çarpma (PDF'de yok)</span>
+    <p>İkili çarpma en kolayı, çünkü her satır ya sayının kendisi ya da sıfırdır. 1011 × 101: <span class="b">1011</span> (×1), <span class="b">0000</span> (×0, bir sola kaydır), <span class="b">1011</span> (×1, iki sola kaydır). Toplam <span class="b">110111</span> = 55 = 11 × 5.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="tumleyen">
+  <h2><span class="n">5</span>Tümleyenler: N ve N−1 complement</h2>
+  <p class="lead">Hocanın PDF'indeki ilk başlık bu. Hocanın başlığındaki "N" tabanı gösteriyor: ikili sistemde N = 2, yani 2's ve 1's complement. Dikkat: aşağıdaki formüllerde tabana <b>r</b>, tümleyenini aldığımız sayıya ise <b>N</b> diyeceğiz.</p>
+
+  <h3>Fikir: "tepeye ne kadar kaldı?"</h3>
+  <p>3 basamaklı bir sayaç düşün. En büyük sayı 999. Bir sayının <b>999'a ne kadar uzak olduğu</b> onun 9'a tümleyenidir. 1000'e ne kadar uzak olduğu ise 10'a tümleyenidir.</p>
+  <ul>
+    <li>247'nin 9'a tümleyeni: 999 − 247 = <b>752</b>. Dikkat et: her rakamı 9'dan çıkardık (9−2, 9−4, 9−7).</li>
+    <li>247'nin 10'a tümleyeni: 1000 − 247 = <b>753</b>. Yani 9'a tümleyen + 1.</li>
+  </ul>
+  <p>Bu iki tümleyenin genel adları şunlar (n basamaklı, r tabanlı bir N sayısı için):</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>Ad</th><th>Formül</th><th>Pratik kural</th><th>İkilide adı</th></tr></thead>
+    <tbody>
+      <tr><td>(r−1)'e tümleyen<br><span class="en">diminished radix complement</span></td><td class="m">(rⁿ − 1) − N</td><td>Her rakamı (r−1)'den çıkar</td><td><b>1's complement</b></td></tr>
+      <tr><td>r'ye tümleyen<br><span class="en">radix complement</span></td><td class="m">rⁿ − N</td><td>(r−1)'e tümleyen + 1</td><td><b>2's complement</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>1's complement (1'e tümleyen)</h3>
+  <p>İkilide r − 1 = 1. Her biti 1'den çıkarırsın: 1 − 0 = 1, 1 − 1 = 0. Yani <b>her biti ters çevirirsin</b>: 0 → 1, 1 → 0. Hepsi bu.</p>
+
+  <h3>2's complement (2'ye tümleyen)</h3>
+  <p>İki yolu var, ikisi de aynı sonucu verir:</p>
+  <ol>
+    <li><b>Uzun yol:</b> Önce 1's complement al (bitleri ters çevir), sonra en sağa 1 ekle.</li>
+    <li><b>Kısayol:</b> Sağdan başla. İlk 1'i görene kadar (o 1 dahil) bitleri <b>aynen</b> yaz. Ondan sonraki bütün bitleri <b>ters çevir</b>.</li>
+  </ol>
+
+  <div class="example">
+    <div class="example-head"><h4>1's complement: (1000101)<sub>2</sub></h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <div class="calc">
+        <span class="l"></span><span class="v">1000101</span><span class="c">sayı</span>
+        <span class="l"></span><span class="v">0111010</span><span class="c">her bit ters çevrildi</span>
+      </div>
+      <p class="answer">1's complement = <span class="b">0111010</span></p>
+      <p>Hocanın notunda sonuç <span class="b">(111010)<sub>2</sub></span> diye yazılmış. Baştaki 0 düşürülmüş, değer aynı. Ama aşağıdaki uyarıyı oku.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>2's complement: (1100110)<sub>2</sub></h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <p><b>Uzun yol</b> (hocanın yaptığı):</p>
+      <div class="calc">
+        <span class="l"></span><span class="v">1100110</span><span class="c">sayı</span>
+        <span class="l"></span><span class="v">0011001</span><span class="c">1's complement</span>
+        <span class="l">+</span><span class="v">1</span><span class="c">1 ekle</span>
+        <hr>
+        <span class="l"></span><span class="v">0011010</span><span class="c">2's complement</span>
+      </div>
+      <p><b>Kısayol:</b> <span class="b">11001<u>10</u></span>. Sağdan ilk 1'e kadar olan kısım <span class="b">10</span>, aynen kalır. Soldaki <span class="b">11001</span> ters çevrilir ve <span class="b">00110</span> olur. Birleştir: <span class="b">0011010</span>. Aynı sonuç.</p>
+      <p class="answer">2's complement = <span class="b">0011010</span> (hocanın yazımıyla <span class="b">(11010)<sub>2</sub></span>)</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <span class="note-title">En sık yapılan hata: basamak sayısı</span>
+    <p>Tümleyen, sayının <b>kaç bitle yazıldığına</b> bağlıdır. <span class="b">101</span>'in 1's complement'i 3 bitte <span class="b">010</span>, ama 8 bitte (<span class="b">00000101</span>) <span class="b">11111010</span> olur. Soruda bit sayısı verilmişse önce sayıyı o uzunluğa sıfırla doldur, sonra tümleyen al. Sonuçtaki baştaki sıfırları da silme, çünkü çıkarma işleminde o sıfırlar önemli.</p>
+  </div>
+
+  <h3>Onluk sistemde aynı şey: 9's ve 10's complement</h3>
+  <p>Sınavda onluk sayılarla da sorulabilir. Kural aynı, sadece "ters çevir" yerine "9'dan çıkar" var:</p>
+  <ul>
+    <li>546700'ün 9's complement'i: her rakam 9'dan çıkar → <span class="b">453299</span>. 10's complement: +1 → <span class="b">453300</span>.</li>
+    <li>012398'in 9's complement'i: <span class="b">987601</span>. 10's complement: <span class="b">987602</span>.</li>
+  </ul>
+  <p>10's complement için de kısayol var: sağdaki sıfırları aynen bırak, sıfır olmayan ilk rakamı 10'dan çıkar, solundaki her rakamı 9'dan çıkar. 546700 → sondaki <span class="b">00</span> kalır, 7 → 3, kalan 5,4,6 → 4,5,3 → <span class="b">453300</span>.</p>
+
+  <div class="widget" id="w-comp">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: tümleyen hesaplayıcı</h4></div>
+    <div class="widget-body">
+      <p>Bir sayı yaz. Baştaki sıfırları da yaz, çünkü basamak sayısını onlar belirler.</p>
+      <div class="controls">
+        <div class="field"><label for="comp-in">Sayı</label><input id="comp-in" type="text" value="1100110" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><span class="lbl">Taban</span>
+          <div class="seg" role="group" aria-label="Taban" id="comp-base"><button type="button" data-v="2" aria-pressed="true">İkili</button><button type="button" data-v="10" aria-pressed="false">Onluk</button></div></div>
+        <button class="btn" type="button" id="comp-go">Hesapla</button>
+      </div>
+      <div class="wout" id="comp-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="cikarma">
+  <h2><span class="n">6</span>Toplayarak çıkarma (subtraction by addition)</h2>
+  <p class="lead">Bu dersin en önemli hesap konusu. Hocanın PDF'inde dört örnek var, dördünü de adım adım çözeceğiz. Önce neden işe yaradığını anlayalım.</p>
+
+  <h3>Neden işe yarıyor?</h3>
+  <p>Onlukta, 2 basamaklı bir sayaçla 72 − 35 yapmak istiyoruz. 35'in 10's complement'i 100 − 35 = 65. Şimdi 72'ye 65 ekle: 72 + 65 = 137. Baştaki 1'i (yani 100'ü) atarsan 37 kalır. Ve 72 − 35 gerçekten 37!</p>
+  <p>Sebebi şu: <span class="m">M + (100 − N) = (M − N) + 100</span>. Toplamın içinde fazladan bir "100" var. O fazlalık en solda taşan <b>1</b> olarak görünür ve onu atınca cevap kalır. Böylece bilgisayar sadece toplama devresiyle çıkarma yapabilir.</p>
+
+  <h3>2's complement ile çıkarma: M − N</h3>
+  <ol class="steps">
+    <li>İki sayının bit sayısını eşitle (kısa olanın soluna 0 ekle).</li>
+    <li>Çıkanın (N) 2's complement'ini al.</li>
+    <li>M ile bu tümleyeni topla.</li>
+    <li><b>En solda taşan elde (carry) varsa:</b> onu at. Kalan sonuç pozitif cevaptır.</li>
+    <li><b>Taşan elde yoksa:</b> cevap negatiftir. Toplamın 2's complement'ini al ve başına eksi koy.</li>
+  </ol>
+
+  <h3>1's complement ile çıkarma: M − N</h3>
+  <ol class="steps">
+    <li>Bit sayısını eşitle.</li>
+    <li>N'nin 1's complement'ini al (bitleri ters çevir).</li>
+    <li>M ile topla.</li>
+    <li><b>Taşan elde varsa:</b> onu atma! Sonucun en sağına <b>ekle</b>. Buna <span class="term">end-around carry</span> (çevrimsel elde) denir. Çıkan sayı pozitif cevaptır.</li>
+    <li><b>Taşan elde yoksa:</b> cevap negatiftir. Toplamın 1's complement'ini al ve başına eksi koy.</li>
+  </ol>
+
+  <div class="note tip">
+    <span class="note-title">Hafıza kartı: iki yöntemin tek farkı</span>
+    <p><b>Elde varsa:</b> 2's'te at, 1's'te en sağa ekle. <b>Elde yoksa:</b> ikisinde de sonuç negatif. Hangi tümleyenle başladıysan onunla geri çevir, eksi koy.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 1: 1001 − 0111, 1's complement ile (9 − 7)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Bit sayıları zaten eşit, 4'er bit.</li>
+        <li>0111'in 1's complement'i: <span class="b">1000</span>.</li>
+        <li>Topla:</li>
+      </ol>
+      <div class="calc">
+        <span class="l"></span><span class="v">1001</span><span class="c">M = 9</span>
+        <span class="l">+</span><span class="v">1000</span><span class="c">0111'in 1's complement'i</span>
+        <hr>
+        <span class="l"></span><span class="v"><span class="hl">1</span>0001</span><span class="c">en solda elde taştı</span>
+        <span class="l">+</span><span class="v">1</span><span class="c">taşan 1'i en sağa ekle</span>
+        <hr>
+        <span class="l"></span><span class="v">0010</span><span class="c">= 2</span>
+      </div>
+      <p>Hoca taşan bu 1'e <b>OF</b> (<span class="en">overflow bit</span>) demiş ve "Move" okuyla en sağa taşımış. Bu tam olarak end-around carry'dir.</p>
+      <p class="answer">Sonuç <span class="b">(0010)<sub>2</sub></span> = +2. Kontrol: 9 − 7 = 2.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 2: 10101 − 11001, 1's complement ile (21 − 25)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <p>Cevabın −4 çıkmasını bekliyoruz, çünkü küçükten büyük çıkıyor.</p>
+      <ol class="steps">
+        <li>Bit sayıları eşit, 5'er bit.</li>
+        <li>11001'in 1's complement'i: <span class="b">00110</span>.</li>
+        <li>Topla:</li>
+      </ol>
+      <div class="calc">
+        <span class="l"></span><span class="v carry"> 1   </span><span class="c">elde</span>
+        <span class="l"></span><span class="v">10101</span><span class="c">M = 21</span>
+        <span class="l">+</span><span class="v">00110</span><span class="c">11001'in 1's complement'i</span>
+        <hr>
+        <span class="l"></span><span class="v">11011</span><span class="c">en solda elde taşmadı</span>
+      </div>
+      <ol class="steps" start="4">
+        <li>Taşan elde yok, yani sonuç <b>negatif</b>. Toplamın 1's complement'ini al: <span class="b">11011</span> → <span class="b">00100</span> = 4.</li>
+        <li>Başına eksi koy.</li>
+      </ol>
+      <p class="answer">Sonuç <span class="b">−(00100)<sub>2</sub></span> = −4. Kontrol: 21 − 25 = −4.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 3: 1011 − 1001, 2's complement ile (11 − 9)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Bit sayıları eşit.</li>
+        <li>1001'in 2's complement'i: 1's complement 0110, +1 → <span class="b">0111</span>. Kısayolla: sağdaki <span class="b">1</span> kalır, <span class="b">100</span> ters çevrilip <span class="b">011</span> olur → <span class="b">0111</span>.</li>
+        <li>Topla:</li>
+      </ol>
+      <div class="calc">
+        <span class="l"></span><span class="v carry"> 111 </span><span class="c">elde (hocanın "ccc"si)</span>
+        <span class="l"></span><span class="v">1011</span><span class="c">M = 11</span>
+        <span class="l">+</span><span class="v">0111</span><span class="c">1001'in 2's complement'i</span>
+        <hr>
+        <span class="l"></span><span class="v"><span class="strike">1</span>0010</span><span class="c">taşan 1'i at</span>
+      </div>
+      <p class="answer">Sonuç <span class="b">(0010)<sub>2</sub></span> = +2. Kontrol: 11 − 9 = 2.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek 4: 1001 − 1011, 2's complement ile (9 − 11)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Bit sayıları eşit.</li>
+        <li>1011'in 2's complement'i: 1's complement 0100, +1 → <span class="b">0101</span>.</li>
+        <li>Topla:</li>
+      </ol>
+      <div class="calc">
+        <span class="l"></span><span class="v carry">   1 </span><span class="c">elde</span>
+        <span class="l"></span><span class="v">1001</span><span class="c">M = 9</span>
+        <span class="l">+</span><span class="v">0101</span><span class="c">1011'in 2's complement'i</span>
+        <hr>
+        <span class="l"></span><span class="v">1110</span><span class="c">elde taşmadı</span>
+      </div>
+      <ol class="steps" start="4">
+        <li>Taşan elde yok, yani sonuç <b>negatif</b>. 1110'un 2's complement'i: 0001 + 1 = <span class="b">0010</span> = 2.</li>
+        <li>Başına eksi koy.</li>
+      </ol>
+      <p class="answer">Sonuç <span class="b">−(0010)<sub>2</sub></span> = −2. Kontrol: 9 − 11 = −2.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Uzunlukları farklıysa: 1101 − 11, 2's complement ile (13 − 3)</h4></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Önce basamakları eşitle: 11 → <span class="b">0011</span>. Bunu yapmadan tümleyen alırsan yanlış sonuç bulursun.</li>
+        <li>0011'in 2's complement'i: 1100 + 1 = <span class="b">1101</span>.</li>
+        <li>1101 + 1101 = <span class="b"><span class="strike">1</span>1010</span>. Elde taştı, at.</li>
+      </ol>
+      <p class="answer">Sonuç <span class="b">1010</span> = +10. Kontrol: 13 − 3 = 10.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <span class="note-title">Özel durum: 1's complement'te M = N</span>
+    <p>0101 − 0101: 0101 + 1010 = <span class="b">1111</span>, elde yok, "negatif" der ve 1111'in tersini alırsın: <span class="b">−0000</span>. Bu 1's complement'in bilinen tuhaflığı olan <b>negatif sıfır</b>dır. Sonucu 0 olarak yaz. 2's complement'te bu sorun yok: 0101 + 1011 = <span class="b"><span class="strike">1</span>0000</span> = 0.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Onlukta da aynısı: 72532 − 3250, 10's complement ile</h4></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>Basamakları eşitle: 3250 → <span class="b">03250</span>.</li>
+        <li>10's complement: 9's complement 96749, +1 → <span class="b">96750</span>.</li>
+        <li>Topla: 72532 + 96750 = <span class="b"><span class="strike">1</span>69282</span>. Elde taştı, at.</li>
+      </ol>
+      <p class="answer">Sonuç +69282.</p>
+      <p>Aynı işlem <b>9's complement</b> ile: 03250'nin 9's complement'i 96749. 72532 + 96749 = <span class="b"><span class="hl">1</span>69281</span>. Elde taştı, en sağa ekle (end-around carry): 69281 + 1 = <b>69282</b>.</p>
+      <p>Ters yönde 3250 − 72532: 72532'nin 10's complement'i 27468. 03250 + 27468 = 30718, elde yok. Sonuç negatif, 30718'in 10's complement'i 69282 → <b>−69282</b>.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <span class="note-title">Terim karışıklığına dikkat: "overflow"</span>
+    <p>Hoca en solda taşan bite "overflow bit" demiş. Bu işaretsiz tümleyen çıkarmasında taşan <b>elde</b> (<span class="en">end carry</span>) demektir. 7. bölümde göreceğin işaretli sayılarda ise "overflow" başka bir şey anlatır: sonucun ayrılan bitlere sığmaması. Sınavda hocanın terimini kullanabilirsin, ama iki anlamı birbirine karıştırma.</p>
+  </div>
+
+  <div class="widget" id="w-sub">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: toplayarak çıkarma, adım adım</h4></div>
+    <div class="widget-body">
+      <p>M ve N'yi yaz, yöntemi seç. Hocanın örneklerini buraya girip sonucu karşılaştırabilirsin.</p>
+      <div class="controls">
+        <div class="field"><label for="sub-m">M (eksilen)</label><input id="sub-m" type="text" value="1001" autocomplete="off" spellcheck="false" size="10"></div>
+        <div class="field"><label for="sub-n">N (çıkan)</label><input id="sub-n" type="text" value="1011" autocomplete="off" spellcheck="false" size="10"></div>
+        <div class="field"><span class="lbl">Taban</span>
+          <div class="seg" role="group" aria-label="Taban" id="sub-base"><button type="button" data-v="2" aria-pressed="true">İkili</button><button type="button" data-v="10" aria-pressed="false">Onluk</button></div></div>
+        <div class="field"><span class="lbl">Yöntem</span>
+          <div class="seg" role="group" aria-label="Yöntem" id="sub-method"><button type="button" data-v="r" aria-pressed="true">2's (10's)</button><button type="button" data-v="r-1" aria-pressed="false">1's (9's)</button></div></div>
+        <button class="btn" type="button" id="sub-go">Çöz</button>
+      </div>
+      <div class="wout" id="sub-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="isaretli">
+  <h2><span class="n">7</span>Negatif sayılar ve taşma</h2>
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: bu bölüm hocanın PDF'inde yok</span>
+    <p>Ama tümleyenlerin neden icat edildiğini açıklıyor ve her Computing Systems sınavında sık çıkan bir konu. Okuman tavsiye edilir.</p>
+  </div>
+  <p>Kâğıtta negatif sayıyı başına "−" koyarak yazarız. Ama bilgisayarda sadece 0 ve 1 var, eksi işareti yok. Çözüm: <b>en soldaki biti işaret biti</b> (<span class="en">sign bit</span>) yapmak. 0 ise pozitif, 1 ise negatif. Geri kalan bitler için üç farklı yöntem var:</p>
+  <ul>
+    <li><b>İşaret-büyüklük</b> (<span class="en">sign-magnitude</span>): işaret biti + sayının kendisi. −3 = <span class="b">1011</span>.</li>
+    <li><b>İşaretli 1's complement</b>: negatif sayı, pozitifinin 1's complement'i. −3 = 0011'in tersi = <span class="b">1100</span>.</li>
+    <li><b>İşaretli 2's complement</b>: negatif sayı, pozitifinin 2's complement'i. −3 = <span class="b">1101</span>. <b>Bilgisayarlar bunu kullanır.</b></li>
+  </ul>
+  <div class="table-wrap"><table class="data">
+    <caption style="caption-side:top;text-align:left;font-weight:700;padding-bottom:.4rem">4 bit için üç gösterim</caption>
+    <thead><tr><th>Değer</th><th>İşaret-büyüklük</th><th>1's complement</th><th>2's complement</th></tr></thead>
+    <tbody>
+      <tr><td>+7 … +0</td><td class="b" colspan="3">0111 … 0000 (pozitiflerde üçü de aynı)</td></tr>
+      <tr><td>−0</td><td class="b">1000</td><td class="b">1111</td><td>yok</td></tr>
+      <tr><td>−1</td><td class="b">1001</td><td class="b">1110</td><td class="b">1111</td></tr>
+      <tr><td>−2</td><td class="b">1010</td><td class="b">1101</td><td class="b">1110</td></tr>
+      <tr><td>−3</td><td class="b">1011</td><td class="b">1100</td><td class="b">1101</td></tr>
+      <tr><td>−4</td><td class="b">1100</td><td class="b">1011</td><td class="b">1100</td></tr>
+      <tr><td>−5</td><td class="b">1101</td><td class="b">1010</td><td class="b">1011</td></tr>
+      <tr><td>−6</td><td class="b">1110</td><td class="b">1001</td><td class="b">1010</td></tr>
+      <tr><td>−7</td><td class="b">1111</td><td class="b">1000</td><td class="b">1001</td></tr>
+      <tr><td>−8</td><td>yok</td><td>yok</td><td class="b">1000</td></tr>
+    </tbody>
+  </table></div>
+  <p>2's complement'in üstünlüğü: tek bir sıfır var (ilk ikisinde +0 ve −0 diye iki sıfır var) ve toplama devresi işareti hiç düşünmeden doğru sonuç verir. n bitle 2's complement aralığı <span class="m">−2<sup>n−1</sup> … +2<sup>n−1</sup> − 1</span>. 4 bitte −8…+7, 8 bitte −128…+127.</p>
+  <p>Bir 2's complement sayının değerini bulmak için en soldaki bitin ağırlığını <b>negatif</b> say: <span class="b">1101</span> = −8 + 4 + 0 + 1 = −3.</p>
+
+  <h3>Taşma (overflow)</h3>
+  <p>İki işaretli sayıyı toplarken sonuç ayrılan bitlere sığmayabilir. 4 bitte 6 + 3 = 9, ama 4 bitte en büyük sayı +7:</p>
+  <div class="calc-row">
+    <div class="calc">
+      <span class="l"></span><span class="v">0110</span><span class="c">+6</span>
+      <span class="l">+</span><span class="v">0011</span><span class="c">+3</span>
+      <hr>
+      <span class="l"></span><span class="v">1001</span><span class="c">−7 diye okunur!</span>
+    </div>
+    <div class="calc">
+      <span class="l"></span><span class="v">1100</span><span class="c">−4</span>
+      <span class="l">+</span><span class="v">1011</span><span class="c">−5</span>
+      <hr>
+      <span class="l"></span><span class="v"><span class="strike">1</span>0111</span><span class="c">+7 diye okunur!</span>
+    </div>
+  </div>
+  <p><b>Taşmayı tanıma kuralı:</b> İki pozitifin toplamı negatif çıktıysa ya da iki negatifin toplamı pozitif çıktıysa taşma vardır. Farklı işaretli iki sayıyı toplarken taşma asla olmaz. Devre gözüyle: işaret bitine giren elde ile işaret bitinden çıkan elde farklıysa taşma vardır.</p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="kodlar">
+  <h2><span class="n">8</span>Kodlama: BCD ve ağırlıklı kodlar</h2>
+  <p class="lead">Hoca bu konuyu "Coding → Binary Coded Digit → 4 digits → 8421 coding" diye özetlemiş. Açalım.</p>
+  <p class="hint">Not: hocanın yazdığı "Binary Coded Digit" ifadesinin doğrusu <b>Binary Coded Decimal</b>'dır (ikili kodlanmış onluk). "4 digits" de aslında "4 bit" demek.</p>
+  <p>Şimdiye kadar bir sayıyı bütün olarak ikiliye çevirdik. Ama hesap makinesi ya da dijital saat gibi cihazlar sayıları <b>basamak basamak</b> ekranda gösterir. Bunun için her onluk rakamı ayrı ayrı 4 bitle yazmak çok daha pratik. İşte bu fikre <span class="term">kodlama</span> (<span class="en">coding</span>) diyoruz.</p>
+
+  <h3>BCD (Binary Coded Decimal), yani 8421 kodu</h3>
+  <p>Her onluk rakam (0–9) kendi 4 bitlik ikili karşılığıyla yazılır. Bitlerin ağırlıkları soldan sağa <b>8, 4, 2, 1</b> olduğu için adı <b>8421</b> kodudur. 4 bit kullanılır, çünkü 9'u yazmak için 3 bit yetmez (3 bit en fazla 7 eder).</p>
+  <div class="example">
+    <div class="example-head"><h4>Rakam rakam BCD</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-body">
+      <p><span class="m">7 → <span class="b">0111</span></span> (4+2+1) ve <span class="m">9 → <span class="b">1001</span></span> (8+1)</p>
+      <p>Çok basamaklı sayıda her rakamı ayrı çevir: 396 → <span class="b">0011 1001 0110</span>.</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">BCD ile düz ikili aynı şey değil</span>
+    <p>185'in düz ikilisi <span class="b">10111001</span> (8 bit). BCD'si ise <span class="b">0001 1000 0101</span> (12 bit): 1, 8 ve 5 ayrı ayrı çevrildi. BCD daha çok bit harcar ama rakamlara ayırmak kolaydır.</p>
+    <p>4 bitle 16 desen yazılır ama BCD'de sadece 10'u kullanılır. <span class="b list">1010, 1011, 1100, 1101, 1110, 1111</span> BCD'de <b>geçersizdir</b>. Hiçbir rakama karşılık gelmezler.</p>
+  </div>
+
+  <h3>Ağırlıklı kodlar ve hocanın "4812" örneği</h3>
+  <p>8421 tek seçenek değil. Bir <span class="term">ağırlıklı kodda</span> (<span class="en">weighted code</span>) her bit pozisyonunun bir ağırlığı vardır ve rakamın değeri, <b>1 olan bitlerin ağırlıkları toplamıdır</b>. Ağırlıkları değiştirince farklı bir kod elde edersin.</p>
+  <div class="example">
+    <div class="example-head"><h4>9 rakamı 4812 kodunda nedir?</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-body">
+      <p>4812 kodunda bit ağırlıkları soldan sağa <b>4, 8, 1, 2</b>. 9'u bu ağırlıkların toplamı olarak yazmamız lazım: 9 = 8 + 1.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Ağırlık</th><td>4</td><td>8</td><td>1</td><td>2</td></tr>
+        <tr><th>Bit</th><td class="b">0</td><td class="b">1</td><td class="b">1</td><td class="b">0</td></tr>
+      </table></div>
+      <p class="answer">9, BCD'de <span class="b">1001</span>, 4812 kodunda <span class="b">0110</span>.</p>
+      <p>Hocanın notundaki "9 in BCD is 1001, 9 in 4812 is 0110" satırı tam olarak bu.</p>
+    </div>
+  </div>
+  <p>Bu tür bir soruda yöntem hep aynı: ağırlıkları bitlerin üstüne yaz, rakamı bu ağırlıkların toplamı olarak oluştur, kullandığın ağırlıkların altına 1, diğerlerine 0 yaz.</p>
+  <div class="table-wrap"><table class="data">
+    <caption style="caption-side:top;text-align:left;font-weight:700;padding-bottom:.4rem">Sık kullanılan dört bitlik kodlar</caption>
+    <thead><tr><th>Rakam</th><th>BCD (8421)</th><th>4812</th><th>2421</th><th>8 4 −2 −1</th><th>Excess-3</th></tr></thead>
+    <tbody id="code-table"></tbody>
+  </table></div>
+  <ul>
+    <li><b>2421</b> ve <b>84−2−1</b> de ağırlıklı kodlardır. 84−2−1'de bazı ağırlıklar negatiftir: 1 = <span class="b">0111</span> = 4 − 2 − 1.</li>
+    <li><b>Excess-3</b> ağırlıklı değildir. Rakamın BCD'sine 3 eklenerek bulunur: 5 → 5 + 3 = 8 → <span class="b">1000</span>.</li>
+    <li>2421, 84−2−1 ve Excess-3 <span class="term">kendini tümleyen</span> (<span class="en">self-complementing</span>) kodlardır. Bir rakamın kodundaki bitleri ters çevirirsen o rakamın 9's complement'inin kodu çıkar. Excess-3'te 2 = <span class="b">0101</span>, tersi <span class="b">1010</span> = 7, ve 9 − 2 = 7.</li>
+  </ul>
+
+  <div class="note extra">
+    <span class="note-title">Ek bilgi: BCD toplama (PDF'de yok)</span>
+    <p>İki BCD rakamı toplarken sonuç 9'dan büyük çıkarsa (ya da elde oluşursa) sonuca <span class="b">0110</span> (6) eklenir. Çünkü 4 bitteki 6 geçersiz deseni atlamak gerekir. 8 + 5: 1000 + 0101 = 1101 (geçersiz) → + 0110 = <span class="b">1 0011</span> → BCD olarak 13.</p>
+  </div>
+
+  <div class="widget" id="w-codes">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: onluk sayıyı kodla</h4></div>
+    <div class="widget-body">
+      <div class="controls">
+        <div class="field"><label for="codes-in">Onluk sayı</label><input id="codes-in" type="text" value="2026" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="codes-w">Kendi ağırlıkların (isteğe bağlı)</label><input id="codes-w" type="text" value="4 8 1 2" autocomplete="off" spellcheck="false" size="10"></div>
+        <button class="btn" type="button" id="codes-go">Kodla</button>
+      </div>
+      <div class="wout" id="codes-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="gray">
+  <h2><span class="n">9</span>Gray kodu</h2>
+  <p class="lead">Gray kodunun tek bir kuralı var: art arda gelen iki sayı arasında <b>sadece bir bit</b> değişir.</p>
+
+  <h3>Neden gerekli?</h3>
+  <p>Normal ikilide 3'ten 4'e geçerken (<span class="b">011 → 100</span>) üç bit birden değişir. Gerçek bir devrede bu üç bit tam aynı anda değişmez. Bir an için <span class="b">111</span> ya da <span class="b">000</span> gibi yanlış bir değer okunabilir. Gray kodunda her adımda sadece bir bit değiştiği için böyle bir ara hata oluşamaz. Döner konum sensörlerinde (<span class="en">rotary encoder</span>) bu yüzden kullanılır.</p>
+  <p>Gray kodunu ayrıca 4. derste <b>Karnaugh haritalarında</b> göreceksin. Haritanın kenarındaki sıra (00, 01, 11, 10) bir Gray kodu sırasıdır.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>3 bitlik Gray kodu tablosu</h4><span class="src">Hocanın tablosu, PDF s.2</span></div>
+    <div class="example-body">
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>Onluk</th><th>İkili</th><th class="out">Gray</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>000</td><td class="out">000</td></tr>
+          <tr><td>1</td><td>001</td><td class="out">001</td></tr>
+          <tr><td>2</td><td>010</td><td class="out">011</td></tr>
+          <tr><td>3</td><td>011</td><td class="out">010</td></tr>
+          <tr><td>4</td><td>100</td><td class="out">110</td></tr>
+          <tr><td>5</td><td>101</td><td class="out">111</td></tr>
+          <tr><td>6</td><td>110</td><td class="out">101</td></tr>
+          <tr><td>7</td><td>111</td><td class="out">100</td></tr>
+        </tbody>
+      </table></div>
+      <p>Gray sütununda yukarıdan aşağı in. Her satırda sadece bir bit değişiyor. Sondan başa (100 → 000) dönerken de tek bit değişiyor.</p>
+      <p>Hocanın tablosunda orta sütunun başlığı "BCD". 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında bu sütun düz ikilidir.</p>
+    </div>
+  </div>
+
+  <h3>Yansıtma yöntemiyle Gray kodu üretmek</h3>
+  <p>Tabloyu ezberlemek yerine her an yeniden üretebilirsin:</p>
+  <ol class="steps">
+    <li>1 bit ile başla: <span class="b">0, 1</span>.</li>
+    <li>Listeyi alt alta yaz, altına aynasını (tersten) ekle: <span class="b">0, 1, 1, 0</span>.</li>
+    <li>Üst yarının başına 0, alt yarının başına 1 koy: <span class="b">00, 01, 11, 10</span>. Bu 2 bitlik Gray kodu.</li>
+    <li>Aynısını tekrarla: <span class="b">000, 001, 011, 010</span> | <span class="b">110, 111, 101, 100</span>. Bu 3 bitlik Gray kodu, hocanın tablosuyla aynı.</li>
+  </ol>
+
+  <h3>İkiliden Gray'e çevirme</h3>
+  <p>Burada XOR işlemine ihtiyacımız var. Kuralı çok basit: <b>iki bit farklıysa 1, aynıysa 0</b>. Yani 0⊕0 = 0, 0⊕1 = 1, 1⊕0 = 1, 1⊕1 = 0. (11. bölümde XOR'u ayrıntılı göreceğiz.)</p>
+  <ol class="steps">
+    <li>Gray'in ilk (en sol) biti, ikilinin ilk bitiyle aynıdır.</li>
+    <li>Sonraki her Gray biti = ikilideki o bit ⊕ ikilideki solundaki bit.</li>
+  </ol>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: ikili 1011 → Gray</h4></div>
+    <div class="example-body">
+      <ul>
+        <li>1. bit: aynen <b>1</b></li>
+        <li>2. bit: 1 ⊕ 0 = <b>1</b> (farklı)</li>
+        <li>3. bit: 0 ⊕ 1 = <b>1</b> (farklı)</li>
+        <li>4. bit: 1 ⊕ 1 = <b>0</b> (aynı)</li>
+      </ul>
+      <p class="answer">Gray = <span class="b">1110</span></p>
+    </div>
+  </div>
+
+  <h3>Gray'den ikiliye çevirme</h3>
+  <ol class="steps">
+    <li>İkilinin ilk biti, Gray'in ilk bitiyle aynıdır.</li>
+    <li>Sonraki her ikili bit = <b>az önce bulduğun ikili bit</b> ⊕ Gray'deki o bit.</li>
+  </ol>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: Gray 1110 → ikili</h4></div>
+    <div class="example-body">
+      <ul>
+        <li>1. bit: aynen <b>1</b></li>
+        <li>2. bit: (bulunan 1) ⊕ (Gray 1) = <b>0</b></li>
+        <li>3. bit: (bulunan 0) ⊕ (Gray 1) = <b>1</b></li>
+        <li>4. bit: (bulunan 1) ⊕ (Gray 0) = <b>1</b></li>
+      </ul>
+      <p class="answer">İkili = <span class="b">1011</span> (bir önceki örneğin tersi, doğru)</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">Sık hata</span>
+    <p>Gray'den ikiliye çevirirken Gray bitlerini kendi aralarında XOR'lama. Her adımda <b>bir önceki adımda bulduğun ikili biti</b> kullanırsın.</p>
+  </div>
+
+  <div class="widget" id="w-gray">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: Gray dönüştürücü</h4></div>
+    <div class="widget-body">
+      <div class="controls">
+        <div class="field"><label for="gray-in">Bitler</label><input id="gray-in" type="text" value="1011" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><span class="lbl">Yön</span>
+          <div class="seg" role="group" aria-label="Yön" id="gray-dir"><button type="button" data-v="b2g" aria-pressed="true">İkili → Gray</button><button type="button" data-v="g2b" aria-pressed="false">Gray → İkili</button></div></div>
+        <button class="btn" type="button" id="gray-go">Çevir</button>
+      </div>
+      <div class="wout" id="gray-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="boole">
+  <h2><span class="n">10</span>Boole cebirine giriş</h2>
+  <p class="lead">Şimdiye kadar sayılarla uğraştık. Şimdi 0 ve 1'i "doğru" ve "yanlış" olarak kullanıp mantık hesabı yapacağız. Dijital devrelerin dili bu.</p>
+
+  <h3>Doğru = 1, yanlış = 0: bu bir anlaşmadır</h3>
+  <p>Hoca notunda bir kutu çizip <b>True : 1, False : 0</b> yazmış ve altına "Convention" demiş. Convention "anlaşma, gelenek" demektir. Doğruya 1 demek bir zorunluluk değil, herkesin kabul ettiği bir tercih. Bu standarda <span class="term">pozitif mantık</span> (<span class="en">positive logic</span>) denir. Tam tersini (True : 0, False : 1) kullanırsan <span class="term">negatif mantık</span> olur. Hocanın kutunun yanına yazdığı ikinci seçenek bu. Aksi söylenmedikçe her zaman pozitif mantık kullanacağız.</p>
+
+  <h3>Normal cebir ile Boole cebiri</h3>
+  <p>Boole cebirinde de "toplama" ve "çarpma" var, ama anlamları farklı:</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th></th><th>Normal cebir</th><th>Boole cebiri</th></tr></thead>
+    <tbody>
+      <tr><td>Toplama <b>+</b></td><td>aritmetik toplama</td><td><b>OR</b> (VEYA)</td></tr>
+      <tr><td>Çarpma <b>·</b></td><td>aritmetik çarpma</td><td><b>AND</b> (VE)</td></tr>
+      <tr><td>Değerler</td><td>tüm sayılar</td><td>sadece 0 ve 1</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn">
+    <span class="note-title">En büyük tuzak</span>
+    <p>Boole cebirinde <span class="m">1 + 1 = 1</span>'dir, 2 değil! Çünkü + işareti VEYA demek: "doğru VEYA doğru" yine doğrudur. Sonuç asla 0 ve 1 dışına çıkmaz. Bunu ikili sayılardaki toplamayla (1 + 1 = 10) karıştırma.</p>
+  </div>
+  <p>Bir de <span class="term">DEĞİL</span> (<span class="en">NOT</span>, tümleme) işlemi var: değeri tersine çevirir. İki şekilde yazılır: <span class="m">A'</span> ya da <span class="m"><span class="ov">A</span></span> (üstü çizgili A). A = 1 ise <span class="m"><span class="ov">A</span> = 0</span>, A = 0 ise <span class="m"><span class="ov">A</span> = 1</span>.</p>
+
+  <h3>Lamba ve anahtar benzetmesi</h3>
+  <p>Bir lambayı iki anahtarla kontrol ettiğini düşün:</p>
+  <ul>
+    <li><b>Seri bağlantı (AND):</b> Anahtarlar art arda. Lamba sadece <b>ikisi de</b> açıkken yanar. A·B.</li>
+    <li><b>Paralel bağlantı (OR):</b> Anahtarlar yan yana. <b>Herhangi biri</b> açıksa lamba yanar. A+B.</li>
+  </ul>
+
+  <h3>Aksiyomlar</h3>
+  <p>Hocanın listelediği 7 temel kural bunlar. Her birini anlamak için A'ya önce 0, sonra 1 koyup kontrol edebilirsin. Sadece iki ihtimal olduğu için bu yöntem kesin ispattır (<span class="en">perfect induction</span>).</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>#</th><th>Kural</th><th>Türkçesi</th><th>A = 0 iken</th><th>A = 1 iken</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="m">A + 0 = A</td><td>0 ile VEYA'lamak bir şey değiştirmez</td><td class="b">0+0=0 ✓</td><td class="b">1+0=1 ✓</td></tr>
+      <tr><td>2</td><td class="m">A · 0 = 0</td><td>0 ile VE'lemek her şeyi sıfırlar</td><td class="b">0·0=0 ✓</td><td class="b">1·0=0 ✓</td></tr>
+      <tr><td>3</td><td class="m">A + 1 = 1</td><td>1 ile VEYA'lamak her şeyi 1 yapar</td><td class="b">0+1=1 ✓</td><td class="b">1+1=1 ✓</td></tr>
+      <tr><td>4</td><td class="m">A · 1 = A</td><td>1 ile VE'lemek bir şey değiştirmez</td><td class="b">0·1=0 ✓</td><td class="b">1·1=1 ✓</td></tr>
+      <tr><td>5</td><td class="m">A + <span class="ov">A</span> = 1</td><td>Bir şey ya doğrudur ya değildir</td><td class="b">0+1=1 ✓</td><td class="b">1+0=1 ✓</td></tr>
+      <tr><td>6</td><td class="m">A · <span class="ov">A</span> = 0</td><td>Bir şey aynı anda hem doğru hem yanlış olamaz</td><td class="b">0·1=0 ✓</td><td class="b">1·0=0 ✓</td></tr>
+      <tr><td>7</td><td class="m"><span class="ov"><span class="ov">A</span></span> = A</td><td>İki kez tersine çevirmek eski hale getirir</td><td class="b">0→1→0 ✓</td><td class="b">1→0→1 ✓</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note tip">
+    <span class="note-title">Sınav ipucu</span>
+    <p>Sadeleştirme sorularında her adımın yanına hangi kuralı kullandığını yaz (ör. "Aksiyom 5"). Hocalar adımları gerekçeli görmek ister. Bu dersin sonundaki sadeleştirme örneklerinde bunu nasıl yapacağını göreceksin. Diğer kurallar (dağılma, yutma vb.) 2. dersin (Boolean Algebra) konusu.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="islemler">
+  <h2><span class="n">11</span>Temel lojik işlemler ve doğruluk tabloları</h2>
+  <p class="lead">Bir işlemin <span class="term">doğruluk tablosu</span> (<span class="en">truth table</span>), girişlerin bütün olası değerleri için çıkışın ne olduğunu gösteren tablodur. Her işlemi tablosuyla birlikte öğren.</p>
+
+  <div class="ops">
+    <div class="op">
+      <h4>AND</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H22M0 35H22M70 25H100"/><path d="M22 5H48A20 20 0 0 1 48 45H22Z"/></g></svg>
+      <div class="expr m">F = A · B = AB</div>
+      <p>İkisi de 1 ise 1. Biri bile 0 ise 0.</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out">0</td></tr><tr><td>0</td><td>1</td><td class="out">0</td></tr><tr><td>1</td><td>0</td><td class="out">0</td></tr><tr><td>1</td><td>1</td><td class="out one">1</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>OR</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H23M0 35H23M72 25H100"/><path d="M18 5Q45 5 72 25Q45 45 18 45Q30 25 18 5Z"/></g></svg>
+      <div class="expr m">F = A + B</div>
+      <p>En az biri 1 ise 1. İkisi de 0 ise 0.</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out">0</td></tr><tr><td>0</td><td>1</td><td class="out one">1</td></tr><tr><td>1</td><td>0</td><td class="out one">1</td></tr><tr><td>1</td><td>1</td><td class="out one">1</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>NOT</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 25H25M75 25H100"/><path d="M25 7L63 25L25 43Z"/><circle cx="69" cy="25" r="5"/></g></svg>
+      <div class="expr m">F = A' = <span class="ov">A</span></div>
+      <p>Tersine çevirir. Tek girişlidir.</p>
+      <table class="tt"><thead><tr><th>A</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td class="out one">1</td></tr><tr><td>1</td><td class="out">0</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>EXOR (XOR)</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H15M0 35H15M78 25H100"/><path d="M10 5Q22 25 10 45"/><path d="M22 5Q50 5 78 25Q50 45 22 45Q34 25 22 5Z"/></g></svg>
+      <div class="expr m">F = A ⊕ B</div>
+      <p>Girişler farklıysa 1, aynıysa 0. "Özel veya" (<span class="en">exclusive OR</span>).</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out">0</td></tr><tr><td>0</td><td>1</td><td class="out one">1</td></tr><tr><td>1</td><td>0</td><td class="out one">1</td></tr><tr><td>1</td><td>1</td><td class="out">0</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>NAND</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H20M0 35H20M78 25H100"/><path d="M20 5H44A20 20 0 0 1 44 45H20Z"/><circle cx="71" cy="25" r="5"/></g></svg>
+      <div class="expr m">F = <span class="ov">A · B</span></div>
+      <p>AND'in tersi (Not And). Sadece ikisi de 1 iken 0.</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out one">1</td></tr><tr><td>0</td><td>1</td><td class="out one">1</td></tr><tr><td>1</td><td>0</td><td class="out one">1</td></tr><tr><td>1</td><td>1</td><td class="out">0</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>NOR</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H21M0 35H21M80 25H100"/><path d="M16 5Q41 5 64 25Q41 45 16 45Q28 25 16 5Z"/><circle cx="70" cy="25" r="5"/></g></svg>
+      <div class="expr m">F = <span class="ov">A + B</span></div>
+      <p>OR'un tersi (Not Or). Sadece ikisi de 0 iken 1.</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out one">1</td></tr><tr><td>0</td><td>1</td><td class="out">0</td></tr><tr><td>1</td><td>0</td><td class="out">0</td></tr><tr><td>1</td><td>1</td><td class="out">0</td></tr></tbody></table>
+    </div>
+    <div class="op">
+      <h4>EXNOR (XNOR)</h4>
+      <svg viewBox="0 0 100 50" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 15H15M0 35H15M82 25H100"/><path d="M10 5Q22 25 10 45"/><path d="M22 5Q47 5 70 25Q47 45 22 45Q34 25 22 5Z"/><circle cx="76" cy="25" r="5"/></g></svg>
+      <div class="expr m">F = A ⊙ B</div>
+      <p>XOR'un tersi (EXOR and NOT). Girişler aynıysa 1. Bu yüzden "eşitlik kapısı" da denir.</p>
+      <table class="tt"><thead><tr><th>A</th><th>B</th><th class="out">F</th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td><td class="out one">1</td></tr><tr><td>0</td><td>1</td><td class="out">0</td></tr><tr><td>1</td><td>0</td><td class="out">0</td></tr><tr><td>1</td><td>1</td><td class="out one">1</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <h3>Tüm işlemlerin yazılışı</h3>
+  <p>Hocanın "All Operations" listesi. Gösterimleri tanıyabilmek sınavda soruyu okuyabilmek demek:</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th>İşlem</th><th>Sembol</th><th>Yazılışı</th><th>Eşdeğeri</th></tr></thead>
+    <tbody>
+      <tr><td>AND</td><td>·</td><td class="m">A · B = AB</td><td>Nokta genelde yazılmaz</td></tr>
+      <tr><td>OR</td><td>+</td><td class="m">A + B</td><td></td></tr>
+      <tr><td>NOT</td><td>' veya ‾</td><td class="m">A', <span class="ov">A</span></td><td></td></tr>
+      <tr><td>EXOR</td><td>⊕</td><td class="m">A ⊕ B</td><td class="m">= <span class="ov">A ⊙ B</span> = <span class="ov">A</span>B + A<span class="ov">B</span> (bu ifadenin tablodan nasıl çıktığını 12. bölümde göreceğiz)</td></tr>
+      <tr><td>EXNOR</td><td>⊙</td><td class="m">A ⊙ B</td><td class="m">= <span class="ov">A ⊕ B</span> = <span class="ov">A</span> <span class="ov">B</span> + AB</td></tr>
+      <tr><td>NAND</td><td>‾ üstünde ·</td><td class="m"><span class="ov">A · B</span> = <span class="ov">AB</span></td><td></td></tr>
+      <tr><td>NOR</td><td>‾ üstünde +</td><td class="m"><span class="ov">A + B</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn">
+    <span class="note-title">Çizgi uzunluğu anlam değiştirir</span>
+    <p><span class="m"><span class="ov">AB</span></span> (NAND: önce VE, sonra tümünü ters çevir) ile <span class="m"><span class="ov">A</span> <span class="ov">B</span></span> (ikisini ayrı ayrı ters çevir, sonra VE) <b>farklıdır</b>. A = 1, B = 0 için ilki 1, ikincisi 0 verir. Elle yazarken çizgilerin nerede başlayıp bittiğine çok dikkat et.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="tablo">
+  <h2><span class="n">12</span>İfadeden doğruluk tablosuna, tablodan ifadeye</h2>
+  <p class="lead">Bir ifade verildiğinde tablosunu çıkarmak ve bir tablo verildiğinde ifadesini yazmak, sonraki bütün derslerin temeli.</p>
+
+  <h3>İfadeden tabloya: tarif</h3>
+  <ol class="steps">
+    <li><b>Değişkenleri say.</b> n değişken varsa tablo 2<sup>n</sup> satırdır. 2 değişken 4 satır, 3 değişken 8 satır.</li>
+    <li><b>Giriş sütunlarını doldur.</b> 0'dan 2<sup>n</sup>−1'e kadar ikili say. 3 değişkende en sol sütun 4 tane 0, 4 tane 1; ortadaki 2'şer 2'şer; en sağdaki 0,1,0,1.</li>
+    <li><b>Ara sütunlar ekle.</b> İfadeyi parçalara ayır (ör. BC, <span class="ov">A</span>) ve her parça için bir sütun hesapla. Hata yapmamanın en iyi yolu bu.</li>
+    <li><b>Son sütunu hesapla.</b> Ara sütunları birleştirerek F'yi bul.</li>
+  </ol>
+  <p>Hangi işlemin önce yapılacağı: <b>parantez → NOT → AND → OR</b>. Normal cebirdeki "çarpma toplamadan önce" kuralı gibi. Yani A + BC, A + (BC) demektir. XOR (⊕) ve XNOR (⊙) içeren ifadelerde karışıklık olmasın diye her zaman parantez kullan: A + (B ⊕ C) gibi.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = A + BC</h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-body">
+      <p>3 değişken (A, B, C) → 8 satır. Önce BC sütununu hesapla (B ve C ikisi de 1 ise 1), sonra A ile VEYA'la.</p>
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>A</th><th>B</th><th>C</th><th>BC</th><th class="out">F = A + BC</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>0</td><td>1</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td class="one">1</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td class="one">1</td><td class="out one">1</td></tr>
+        </tbody>
+      </table></div>
+      <p>Mantığı: A = 1 olan alt 4 satırın hepsi 1 olur, çünkü 1 + herhangi bir şey = 1 (Aksiyom 3). Üst yarıda sadece BC = 1 olan satır 1 olur.</p>
+      <p class="answer">F sütunu: 0, 0, 0, 1, 1, 1, 1, 1. Hocanın tablosuyla aynı.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = <span class="ov"><span class="ov">A</span>(B ⊕ C)</span></h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-body">
+      <p>Uzun çizgi ifadenin tamamının üstünde, kısa çizgi sadece A'nın üstünde. Yani önce <span class="ov">A</span> ile (B ⊕ C)'yi VE'le, sonra sonucun tamamını ters çevir.</p>
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>A</th><th>B</th><th>C</th><th><span class="ov">A</span></th><th>B⊕C</th><th><span class="ov">A</span>(B⊕C)</th><th class="out">F</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td class="out">0</td></tr>
+          <tr class="wrong"><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+          <tr class="wrong"><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td class="out one">1</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td class="out one">1</td></tr>
+          <tr class="wrong"><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="out one">1</td></tr>
+        </tbody>
+      </table></div>
+      <p class="answer">F sütunu: 1, 0, 0, 1, 1, 1, 1, 1</p>
+      <div class="note warn">
+        <span class="note-title">Hocanın tablosunda üç satır yanlış</span>
+        <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri" loading="lazy"><figcaption>Hocanın notu, PDF s.4: soru işaretli satırlar</figcaption></figure>
+        <p>PDF'te bu tablonun yanına soru işaretleri konmuş ve <b>011, 101, 111</b> satırları 0 yazılmış. Doğrusu bu üç satırda da <b>1</b> (yukarıda kırmızı arka planla işaretli). Örneğin 011 satırı: <span class="ov">A</span> = 1, B ⊕ C = 1 ⊕ 1 = 0, çarpım 1 · 0 = 0, tersi <b>1</b>. A = 1 olan satırlarda <span class="ov">A</span> = 0 olduğu için çarpım hep 0, tersi hep 1. Bu yüzden alt dört satırın hepsi 1 olmalı.</p>
+        <p>Sağlama: De Morgan kuralıyla (13. bölüm) F = A + <span class="ov">(B ⊕ C)</span> = A + (B ⊙ C) olur. Bu da "A = 1 ise 1, değilse B ile C eşitse 1" demek. Tablo bununla birebir uyuşuyor.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Tablodan ifadeye: 1 olan satırları topla</h3>
+  <p>Ters yön de çok mekanik:</p>
+  <ol class="steps">
+    <li>Çıkışı <b>1</b> olan satırları bul.</li>
+    <li>Her biri için bir çarpım terimi (değişkenlerin VE'lenmesi, ör. <span class="ov">A</span>B) yaz. O satırda değeri 1 olan değişkeni düz, 0 olanı üstü çizgili yaz.</li>
+    <li>Bu terimleri <b>+</b> (VEYA) ile birleştir.</li>
+  </ol>
+  <p>Bu şekilde yazılan ifadeye <span class="term">çarpımlar toplamı</span> (<span class="en">sum of products, SOP</span>) denir. Her çarpım terimi, tabloda sadece kendi satırında 1 olur.</p>
+  <div class="example">
+    <div class="example-head"><h4>Örnek: EXOR'un ifadesini tablodan çıkar</h4><span class="src">Hocanın örneği, PDF s.5</span></div>
+    <div class="example-body">
+      <div class="table-wrap"><table class="tt">
+        <thead><tr><th>A</th><th>B</th><th class="out">F</th><th>Satırın terimi</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td class="out">0</td><td class="m"><span class="ov">A</span> <span class="ov">B</span></td></tr>
+          <tr class="hit"><td>0</td><td>1</td><td class="out one">1</td><td class="m"><span class="ov">A</span>B</td></tr>
+          <tr class="hit"><td>1</td><td>0</td><td class="out one">1</td><td class="m">A<span class="ov">B</span></td></tr>
+          <tr><td>1</td><td>1</td><td class="out">0</td><td class="m">AB</td></tr>
+        </tbody>
+      </table></div>
+      <p>F = 1 olan satırlar 01 ve 10. 01 satırında A = 0 (çizgili), B = 1 (düz) → <span class="m"><span class="ov">A</span>B</span>. 10 satırında → <span class="m">A<span class="ov">B</span></span>.</p>
+      <p class="answer">F = A ⊕ B = <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span></span></p>
+    </div>
+  </div>
+
+  <div class="widget" id="w-tt">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: doğruluk tablosu ve eşitlik kontrolü</h4></div>
+    <div class="widget-body">
+      <p>Bir ifade yaz, tablosu çıksın. İkinci kutuya da bir ifade yazarsan iki ifadenin eşit olup olmadığını söyler. Sadeleştirme sonucunu kontrol etmek için ideal.</p>
+      <div class="controls">
+        <div class="field"><label for="tt-a">İfade</label><input id="tt-a" class="wide" type="text" value="(A'(B^C))'" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="tt-b">Karşılaştır (isteğe bağlı)</label><input id="tt-b" class="wide" type="text" value="A+(B⊙C)" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" type="button" id="tt-go">Tabloyu çıkar</button>
+      </div>
+      <p class="hint">Yazım: DEĞİL için <kbd>'</kbd> (A' veya (AB)'), VE için yan yana yaz (AB) ya da <kbd>*</kbd>, VEYA için <kbd>+</kbd>, XOR için <kbd>^</kbd>, XNOR için <kbd>⊙</kbd>. Üstü çizgili bir grup yazmak için onu paranteze alıp sonuna ' koy: <span class="m"><span class="ov">A+B</span></span> → <code>(A+B)'</code></p>
+      <div class="wout" id="tt-out" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section id="sadelestirme">
+  <h2><span class="n">13</span>Sadeleştirme ve De Morgan kuralı</h2>
+  <p class="lead">Aynı işi yapan iki ifadeden kısa olanı her zaman daha iyidir. Her işlem bir kapı demek: daha az kapı, daha ucuz, daha hızlı ve daha az enerji harcayan devre.</p>
+
+  <h3>Sadeliği ölçmek</h3>
+  <p>Hoca iki ölçü kullanmış:</p>
+  <ul>
+    <li><b>Op. Count</b> (işlem sayısı): ifadedeki AND, OR, NOT işlemlerinin sayısı. Kabaca kaç kapı gerektiği.</li>
+    <li><b>Var. Count</b> (değişken sayısı): ifadede geçen farklı değişken sayısı.</li>
+  </ul>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = AB + <span class="ov">A</span>B</h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>İki terimde de B var. Normal cebirdeki gibi ortak çarpan parantezine al (bu, dağılma kuralı; Boole cebirinde de geçerli, 2. derste ayrıntılı): <span class="m">AB + <span class="ov">A</span>B = B(A + <span class="ov">A</span>)</span>.</li>
+        <li>Aksiyom 5: <span class="m">A + <span class="ov">A</span> = 1</span>. Yani <span class="m">B · 1</span>.</li>
+        <li>Aksiyom 4: <span class="m">B · 1 = B</span>.</li>
+      </ol>
+      <p class="answer">F = B</p>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th></th><th>Op. Count</th><th>Var. Count</th></tr></thead>
+        <tbody>
+          <tr><td class="m">AB + <span class="ov">A</span>B</td><td>4 (iki AND, bir NOT, bir OR)</td><td>2 (A, B)</td></tr>
+          <tr><td class="m">B</td><td>0</td><td>1 (B)</td></tr>
+        </tbody>
+      </table></div>
+      <p>Anlamı: F, A'ya hiç bağlı değil. B = 0 iken F = 0, B = 1 iken F = 1. Dört kapılık devre yerine tek bir kablo yeter!</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = A<span class="ov">B</span> <span class="ov">C</span> + <span class="ov">A</span>B<span class="ov">C</span> + ABC</h4><span class="src">Hocanın örneği, PDF s.4–5</span></div>
+    <div class="example-body">
+      <ol class="steps">
+        <li>İlk iki terimde ortak olan ne? İkisinde de <span class="ov">C</span> var. Hoca bunları altlarına nokta koyarak işaretlemiş.</li>
+        <li><span class="ov">C</span>'yi parantezine al: <span class="m"><span class="ov">C</span>(A<span class="ov">B</span> + <span class="ov">A</span>B) + ABC</span>.</li>
+        <li>Parantezin içine dikkat et: <span class="m">A<span class="ov">B</span> + <span class="ov">A</span>B</span>. Bu, az önce tablodan çıkardığımız EXOR ifadesi! Yerine <span class="m">A ⊕ B</span> yaz.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">C</span>(A ⊕ B) + ABC</span></p>
+      <p>Hoca bu örnekte EXOR'un tablosunu hemen yanına çizmiş, çünkü bu kalıbı tanımak sadeleştirmenin anahtarı. <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span></span> gördüğün her yerde <span class="m">A ⊕ B</span> yazabilirsin.</p>
+      <p>Hoca ayrıca 2. ve 3. terimi bir yayla bağlamış: ikisinde de B ortak. Bu gruplamayla <span class="m" style="white-space:normal">F = A<span class="ov">B</span> <span class="ov">C</span> + B(<span class="ov">A</span> <span class="ov">C</span> + AC) = A<span class="ov">B</span> <span class="ov">C</span> + B(A ⊙ C)</span> olur. İki sonuç da doğrudur, hangi terimleri grupladığına bağlıdır.</p>
+    </div>
+  </div>
+
+  <h3>De Morgan kuralı</h3>
+  <p>Hocanın son örneğinde ifadenin üstünde uzun çizgiler var ve bunları açmak için De Morgan kuralı gerekiyor. Bu kural, bir grubun üstündeki çizgiyi nasıl dağıtacağını söyler:</p>
+  <div class="formula">
+    <span class="m"><span class="ov">A · B</span> = <span class="ov">A</span> + <span class="ov">B</span></span>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="m"><span class="ov">A + B</span> = <span class="ov">A</span> · <span class="ov">B</span></span>
+  </div>
+  <p><b>Ezber cümlesi: "Çizgiyi kır, işareti değiştir."</b> Uzun çizgiyi her değişkenin üstüne ayrı ayrı böl ve aradaki işareti çevir: · ise + yap, + ise · yap.</p>
+  <p>Günlük dilde: "Hem yağmur yağıyor hem soğuk" cümlesi yanlışsa, ya yağmur yağmıyordur ya da soğuk değildir (ya da ikisi birden). İlk kural bu.</p>
+  <div class="tables-row">
+    <div class="table-wrap"><table class="tt">
+      <caption>Birinci kuralın ispatı</caption>
+      <thead><tr><th>A</th><th>B</th><th class="out"><span class="ov">AB</span></th><th class="out"><span class="ov">A</span>+<span class="ov">B</span></th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>0</td><td>1</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>0</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="out">0</td></tr>
+      </tbody>
+    </table></div>
+    <div class="table-wrap"><table class="tt">
+      <caption>İkinci kuralın ispatı</caption>
+      <thead><tr><th>A</th><th>B</th><th class="out"><span class="ov">A+B</span></th><th class="out"><span class="ov">A</span><span class="ov">B</span></th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td class="out one">1</td><td class="out one">1</td></tr>
+        <tr><td>0</td><td>1</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>1</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="out">0</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>Kural istediğin kadar değişkene genişler: <span class="m"><span class="ov">ABC</span> = <span class="ov">A</span> + <span class="ov">B</span> + <span class="ov">C</span></span> ve <span class="m"><span class="ov">A+B+C</span> = <span class="ov">A</span> <span class="ov">B</span> <span class="ov">C</span></span>.</p>
+  <p>Dikkat edersen birinci kural NAND kapısını, ikinci kural NOR kapısını açıyor. Hocanın notunda örneğin altına "NOR, NAND" yazmasının sebebi bu.</p>
+
+  <div class="example">
+    <div class="example-head"><h4>Örnek: F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın sorusu, PDF s.5</span></div>
+    <div class="example-body">
+      <p>Hocanın notunda bu soru açık bırakılmış. Çözelim. İfadede iki büyük parça var: soldaki bir NOR (<span class="ov">… + …</span>), sağdaki bir NAND (<span class="ov">… · …</span>). Her birini ayrı açacağız.</p>
+      <ol class="steps">
+        <li><b>Sol parça:</b> <span class="m"><span class="ov">A + <span class="ov">BC</span></span></span>. Uzun çizgiyi kır, + işaretini · yap: <span class="m"><span class="ov">A</span> · <span class="ov"><span class="ov">BC</span></span></span>.</li>
+        <li><span class="m"><span class="ov"><span class="ov">BC</span></span></span> iki kez ters çevrilmiş. Aksiyom 7 ile <span class="m">BC</span>'ye döner. Sol parça: <span class="m"><span class="ov">A</span>BC</span>.</li>
+        <li><b>Sağ parça:</b> <span class="m"><span class="ov">A<span class="ov">C</span></span></span>. Çizgiyi kır, · işaretini + yap: <span class="m"><span class="ov">A</span> + <span class="ov"><span class="ov">C</span></span></span> = <span class="m"><span class="ov">A</span> + C</span> (Aksiyom 7).</li>
+        <li><b>Birleştir:</b> <span class="m">F = <span class="ov">A</span>BC + <span class="ov">A</span> + C</span>.</li>
+        <li>İlk iki terimde ortak <span class="ov">A</span> var: <span class="m"><span class="ov">A</span>BC + <span class="ov">A</span> = <span class="ov">A</span>(BC + 1)</span>. Burada <span class="ov">A</span>'yı <span class="m"><span class="ov">A</span> · 1</span> olarak düşündük.</li>
+        <li>Aksiyom 3: <span class="m">BC + 1 = 1</span>. Aksiyom 4: <span class="m"><span class="ov">A</span> · 1 = <span class="ov">A</span></span>.</li>
+      </ol>
+      <p class="answer">F = <span class="m"><span class="ov">A</span> + C</span></p>
+      <p>Sağlama (8 satır, sırayla 000'dan 111'e): orijinal ifade de <span class="m"><span class="ov">A</span> + C</span> de <span class="b">1 1 1 1 0 1 0 1</span> verir. Yukarıdaki doğruluk tablosu aracına <code>(A+(BC)')'+(AC')'</code> ve <code>A'+C</code> yazıp kendin de görebilirsin.</p>
+    </div>
+  </div>
+  <div class="note warn">
+    <span class="note-title">De Morgan'da en sık yapılan hata</span>
+    <p>Çizgiyi kırıp işareti değiştirmeyi unutmak: <span class="m"><span class="ov">A+B</span> ≠ <span class="ov">A</span> + <span class="ov">B</span></span>. A = 1, B = 0 ile dene: sol taraf 0, sağ taraf 1.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 14 -->
+<section id="ozet">
+  <h2><span class="n">14</span>Özet kâğıdı</h2>
+  <p>Sınavdan önce son tekrar için. Sayfayı yazdırırsan (<kbd>Ctrl</kbd> + <kbd>P</kbd>) araçlar gizlenir, sadece anlatım çıkar.</p>
+  <div class="cheat">
+    <div>
+      <h4>Dönüşümler</h4>
+      <ul>
+        <li>r → 10: rakam × ağırlık, topla</li>
+        <li>10 → r tam kısım: sürekli böl, kalanları <b>aşağıdan yukarı</b> oku</li>
+        <li>10 → r kesir: sürekli çarp, tam kısımları <b>yukarıdan aşağı</b> oku</li>
+        <li>2 ↔ 8: 3'erli grupla. 2 ↔ 16: 4'erli grupla (noktadan başla)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Tümleyenler (n bit)</h4>
+      <ul>
+        <li>1's: bütün bitleri ters çevir. Formül (2ⁿ−1) − N</li>
+        <li>2's: 1's + 1. Ya da sağdan ilk 1'e kadar aynen yaz, gerisini ters çevir. Formül 2ⁿ − N</li>
+        <li>Onlukta: 9's = her rakam 9'dan çıkar, 10's = 9's + 1</li>
+        <li>Bit sayısını hep koru</li>
+      </ul>
+    </div>
+    <div>
+      <h4>M − N toplayarak</h4>
+      <ul>
+        <li>Bit sayısını eşitle, N'nin tümleyenini al, M ile topla</li>
+        <li>2's: elde varsa at → pozitif</li>
+        <li>1's: elde varsa en sağa ekle → pozitif</li>
+        <li>Elde yoksa → negatif: toplamın aynı tümleyenini al, eksi koy</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kodlar</h4>
+      <ul>
+        <li>BCD = 8421: her onluk rakam ayrı 4 bit. 1010–1111 geçersiz</li>
+        <li>Ağırlıklı kod: değer = 1 olan bitlerin ağırlıkları toplamı (4812'de 9 = 0110)</li>
+        <li>Excess-3 = BCD + 3</li>
+        <li>Gray: komşular arasında 1 bit fark</li>
+        <li>İkili → Gray: en soldaki bit aynen; sonraki her Gray biti = ikilide o bit ⊕ solundaki bit</li>
+        <li>Gray → ikili: en soldaki bit aynen; sonraki her ikili bit = bulunan son ikili bit ⊕ o Gray biti</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Boole aksiyomları</h4>
+      <ul>
+        <li>A + 0 = A, A · 1 = A</li>
+        <li>A · 0 = 0, A + 1 = 1</li>
+        <li>A + <span class="ov">A</span> = 1, A · <span class="ov">A</span> = 0</li>
+        <li><span class="ov"><span class="ov">A</span></span> = A</li>
+        <li>Boole'da 1 + 1 = 1</li>
+      </ul>
+    </div>
+    <div>
+      <h4>İşlemler ve De Morgan</h4>
+      <ul>
+        <li>AND: hepsi 1 → 1. OR: biri 1 → 1</li>
+        <li>XOR: farklı → 1. XNOR: aynı → 1</li>
+        <li>NAND, NOR: AND ve OR'un tersi</li>
+        <li>A ⊕ B = <span class="ov">A</span>B + A<span class="ov">B</span></li>
+        <li><span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span>, <span class="ov">A+B</span> = <span class="ov">A</span> <span class="ov">B</span></li>
+        <li>Öncelik: parantez → NOT → AND → OR (⊕ ve ⊙ ile parantez kullan)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>İngilizce–Türkçe terimler</h3>
+  <dl class="glossary">
+    <dt>base, radix</dt><dd>taban</dd>
+    <dt>bit, nibble, byte</dt><dd>ikili rakam; 4 bit; 8 bit</dd>
+    <dt>carry / borrow</dt><dd>elde / borç</dd>
+    <dt>1's complement</dt><dd>1'e tümleyen (bitleri ters çevirme)</dd>
+    <dt>2's complement</dt><dd>2'ye tümleyen (1's + 1)</dd>
+    <dt>end-around carry</dt><dd>çevrimsel elde: 1's ile çıkarmada taşan eldeyi en sağa ekleme</dd>
+    <dt>overflow</dt><dd>taşma</dd>
+    <dt>sign bit</dt><dd>işaret biti</dd>
+    <dt>BCD, weighted code</dt><dd>ikili kodlanmış onluk; ağırlıklı kod</dd>
+    <dt>Gray code</dt><dd>Gray kodu (komşular tek bit farklı)</dd>
+    <dt>truth table</dt><dd>doğruluk tablosu</dd>
+    <dt>axiom</dt><dd>aksiyom, temel kural</dd>
+    <dt>complement (Boolean)</dt><dd>tümleme, DEĞİL işlemi</dd>
+    <dt>sum of products (SOP)</dt><dd>çarpımlar toplamı</dd>
+    <dt>simplification</dt><dd>sadeleştirme</dd>
+  </dl>
+</section>
+
+<!-- ============================================================ 15 -->
+<section id="alistirma">
+  <h2><span class="n">15</span>Alıştırmalar ve test</h2>
+  <p class="lead">Önce kâğıt kalemle çöz, sonra çözüme bak. Çözüme bakmadan önce kendi cevabını yazmak, öğrenmenin en etkili yolu.</p>
+
+  <h3>Çözümlü alıştırmalar</h3>
+  <ol class="exercises">
+    <li><span class="m">(110101)<sub>2</sub></span> sayısını onluğa çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>Ağırlıklar 32 16 8 4 2 1. 1 olan bitler: 32 + 16 + 4 + 1 = <b>53</b>.</p></details></li>
+    <li>77 sayısını ikiliye çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>77÷2 = 38 k1, 38÷2 = 19 k0, 19÷2 = 9 k1, 9÷2 = 4 k1, 4÷2 = 2 k0, 2÷2 = 1 k0, 1÷2 = 0 k1. Aşağıdan yukarı: <span class="b">1001101</span>. Kontrol: 64 + 8 + 4 + 1 = 77.</p></details></li>
+    <li>0.375 sayısını ikiliye çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>0.375×2 = 0.75 → 0, 0.75×2 = 1.5 → 1, 0.5×2 = 1.0 → 1. Yukarıdan aşağı: <span class="b">0.011</span>. Kontrol: 0.25 + 0.125 = 0.375.</p></details></li>
+    <li><span class="m">(2F)<sub>16</sub></span> sayısını ikiliye ve onluğa çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>2 = <span class="b">0010</span>, F = <span class="b">1111</span> → <span class="b">00101111</span>. Onluk: 2×16 + 15 = <b>47</b>.</p></details></li>
+    <li><span class="b">10110100</span> sayısının 1's ve 2's complement'ini bul.
+      <details class="solution"><summary>Çözümü göster</summary><p>1's: her biti ters çevir → <span class="b">01001011</span>. 2's: 1's + 1 → <span class="b">01001100</span>. Kısayolla: sağdaki <span class="b">100</span> aynen kalır, soldaki <span class="b">10110</span> ters çevrilip <span class="b">01001</span> olur → <span class="b">01001100</span>.</p></details></li>
+    <li>4250 sayısının (4 basamak) 9's ve 10's complement'ini bul.
+      <details class="solution"><summary>Çözümü göster</summary><p>9's: 9−4, 9−2, 9−5, 9−0 → <span class="b">5749</span>. 10's: +1 → <span class="b">5750</span>.</p></details></li>
+    <li><span class="b">1100 − 0101</span> işlemini 2's complement ile yap.
+      <details class="solution"><summary>Çözümü göster</summary><p>0101'in 2's complement'i <span class="b">1011</span>. 1100 + 1011 = <span class="b">1 0111</span>. Elde var, at → <span class="b">0111</span> = +7. Kontrol: 12 − 5 = 7.</p></details></li>
+    <li><span class="b">0101 − 1100</span> işlemini 2's complement ile yap.
+      <details class="solution"><summary>Çözümü göster</summary><p>1100'ün 2's complement'i <span class="b">0100</span>. 0101 + 0100 = <span class="b">1001</span>. Elde yok, sonuç negatif. 1001'in 2's complement'i <span class="b">0111</span> → <b>−0111</b> = −7. Kontrol: 5 − 12 = −7.</p></details></li>
+    <li><span class="b">1010 − 0011</span> işlemini 1's complement ile yap.
+      <details class="solution"><summary>Çözümü göster</summary><p>0011'in 1's complement'i <span class="b">1100</span>. 1010 + 1100 = <span class="b">1 0110</span>. Elde var, en sağa ekle: 0110 + 1 = <span class="b">0111</span> = +7. Kontrol: 10 − 3 = 7.</p></details></li>
+    <li><span class="b">0011 − 1010</span> işlemini 1's complement ile yap.
+      <details class="solution"><summary>Çözümü göster</summary><p>1010'un 1's complement'i <span class="b">0101</span>. 0011 + 0101 = <span class="b">1000</span>. Elde yok, sonuç negatif. 1000'in 1's complement'i <span class="b">0111</span> → <b>−0111</b> = −7. Kontrol: 3 − 10 = −7.</p></details></li>
+    <li>2026 sayısını BCD ile yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>2 → 0010, 0 → 0000, 2 → 0010, 6 → 0110 → <span class="b">0010 0000 0010 0110</span>.</p></details></li>
+    <li>7 rakamını 4812 kodunda yaz.
+      <details class="solution"><summary>Çözümü göster</summary><p>Ağırlıklar 4, 8, 1, 2. 7 = 4 + 1 + 2. 4 → 1, 8 → 0, 1 → 1, 2 → 1 → <span class="b">1011</span>.</p></details></li>
+    <li>İkili <span class="b">1101</span> sayısını Gray koduna çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>İlk bit 1. Sonra 1⊕1 = 0, 1⊕0 = 1, 0⊕1 = 1 → <span class="b">1011</span>.</p></details></li>
+    <li>Gray <span class="b">0111</span> kodunu ikiliye çevir.
+      <details class="solution"><summary>Çözümü göster</summary><p>İlk bit 0. Sonra (0)⊕1 = 1, (1)⊕1 = 0, (0)⊕1 = 1 → <span class="b">0101</span>. Parantez içindekiler bir önceki adımda bulunan ikili bit.</p></details></li>
+    <li><span class="m">F = <span class="ov">A</span>B + C</span> için doğruluk tablosunu çıkar.
+      <details class="solution"><summary>Çözümü göster</summary><p>Satırlar 000 → 111 sırasıyla: <span class="ov">A</span>B sütunu 0,0,1,1,0,0,0,0. F = <span class="ov">A</span>B + C: <span class="b">0, 1, 1, 1, 0, 1, 0, 1</span>.</p></details></li>
+    <li><span class="m">F = AB + A<span class="ov">B</span></span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>A ortak: A(B + <span class="ov">B</span>) = A · 1 (Aksiyom 5) = <b>A</b> (Aksiyom 4).</p></details></li>
+    <li><span class="m"><span class="ov"><span class="ov">A</span> + <span class="ov">B</span></span></span> ifadesini De Morgan ile aç.
+      <details class="solution"><summary>Çözümü göster</summary><p>Çizgiyi kır, + işaretini · yap: <span class="ov"><span class="ov">A</span></span> · <span class="ov"><span class="ov">B</span></span> = <b>AB</b> (Aksiyom 7). Yani bu bir AND kapısıdır.</p></details></li>
+    <li><span class="m">F = <span class="ov">A + B</span> + <span class="ov">A</span>B</span> ifadesini sadeleştir.
+      <details class="solution"><summary>Çözümü göster</summary><p>De Morgan: <span class="ov">A + B</span> = <span class="ov">A</span> <span class="ov">B</span>. F = <span class="ov">A</span> <span class="ov">B</span> + <span class="ov">A</span>B = <span class="ov">A</span>(<span class="ov">B</span> + B) = <span class="ov">A</span> · 1 = <b><span class="ov">A</span></b>.</p></details></li>
+  </ol>
+
+  <h3>Sınırsız test</h3>
+  <div class="widget" id="w-quiz">
+    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Rastgele soru üretici</h4></div>
+    <div class="widget-body">
+      <p>Her basışta bu dersin konularından yeni bir soru gelir. Cevabını yaz, kontrol et. Yanlışsa çözümünü gösterir.</p>
+      <div class="controls" style="margin-bottom:.6rem">
+        <div class="field"><label for="quiz-topic">Konu</label>
+          <select id="quiz-topic">
+            <option value="all">Hepsi karışık</option>
+            <option value="b2d">İkili → onluk</option>
+            <option value="d2b">Onluk → ikili</option>
+            <option value="b2h">İkili → onaltılı</option>
+            <option value="ones">1's complement</option>
+            <option value="twos">2's complement</option>
+            <option value="sub2">2's ile çıkarma</option>
+            <option value="sub1">1's ile çıkarma</option>
+            <option value="bcd">BCD</option>
+            <option value="gray">İkili → Gray</option>
+            <option value="gray2b">Gray → ikili</option>
+            <option value="logic">Lojik ifade değeri</option>
+          </select></div>
+        <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>
+        <span class="quiz-score" id="quiz-score">0 / 0 doğru</span>
+      </div>
+      <p class="quiz-q" id="quiz-q"></p>
+      <div class="controls">
+        <div class="field"><label for="quiz-ans">Cevabın</label><input id="quiz-ans" type="text" class="wide" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" type="button" id="quiz-check">Kontrol et</button>
+      </div>
+      <div id="quiz-fb" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <nav class="lesson-nav" aria-label="Dersler arası geçiş">
+    <a href="../index.html">Ders listesine dön</a>
+    <a href="02-boole-cebiri.html">Sıradaki: Boolean Algebra</a>
+  </nav>
+</section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/binary.js"></script>
+  <script src="../assets/js/logic.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/lesson01.js"></script>
+</body>
+</html>
