@@ -576,7 +576,7 @@
 
   <div class="note warn">
     <span class="note-title">Terim karışıklığına dikkat: "overflow"</span>
-    <p>Hoca en solda taşan bite "overflow bit" demiş. Bu işaretsiz tümleyen çıkarmasında taşan <b>elde</b> (<span class="en">end carry</span>) demektir. 7. bölümde göreceğin işaretli sayılarda ise "overflow" başka bir şey anlatır: sonucun ayrılan bitlere sığmaması. Sınavda hocanın terimini kullanabilirsin, ama iki anlamı birbirine karıştırma.</p>
+    <p>Hoca en solda taşan bite "overflow bit" demiş. Bu işaretsiz tümleyen çıkarmasında taşan <b>elde</b> (<span class="en">end carry</span>) demektir. "Overflow" kelimesinin 7. bölümde başka bir anlamını da göreceksin, o zaman ikisini karıştırmamaya dikkat et. Sınavda hocanın terimini kullanabilirsin.</p>
   </div>
 
   <div class="widget" id="w-sub">
@@ -721,7 +721,7 @@
 
   <h3>Neden gerekli?</h3>
   <p>Normal ikilide 3'ten 4'e geçerken (<span class="b">011 → 100</span>) üç bit birden değişir. Gerçek bir devrede bu üç bit tam aynı anda değişmez. Bir an için <span class="b">111</span> ya da <span class="b">000</span> gibi yanlış bir değer okunabilir. Gray kodunda her adımda sadece bir bit değiştiği için böyle bir ara hata oluşamaz. Döner konum sensörlerinde (<span class="en">rotary encoder</span>) bu yüzden kullanılır.</p>
-  <p>Gray kodunu ayrıca 4. derste <b>Karnaugh haritalarında</b> göreceksin. Haritanın kenarındaki sıra (00, 01, 11, 10) bir Gray kodu sırasıdır.</p>
+  <p>Gray kodu 4. derste (Karnaugh haritaları) tekrar karşına çıkacak ve orada çok önemli olacak. Bu yüzden iyi öğren.</p>
 
   <div class="example">
     <div class="example-head"><h4>3 bitlik Gray kodu tablosu</h4><span class="src">Hocanın tablosu, PDF s.2</span></div>
@@ -931,8 +931,8 @@
       <tr><td>AND</td><td>·</td><td class="m">A · B = AB</td><td>Nokta genelde yazılmaz</td></tr>
       <tr><td>OR</td><td>+</td><td class="m">A + B</td><td></td></tr>
       <tr><td>NOT</td><td>' veya ‾</td><td class="m">A', <span class="ov">A</span></td><td></td></tr>
-      <tr><td>EXOR</td><td>⊕</td><td class="m">A ⊕ B</td><td class="m">= <span class="ov">A ⊙ B</span> = <span class="ov">A</span>B + A<span class="ov">B</span> (bu ifadenin tablodan nasıl çıktığını 12. bölümde göreceğiz)</td></tr>
-      <tr><td>EXNOR</td><td>⊙</td><td class="m">A ⊙ B</td><td class="m">= <span class="ov">A ⊕ B</span> = <span class="ov">A</span> <span class="ov">B</span> + AB</td></tr>
+      <tr><td>EXOR</td><td>⊕</td><td class="m">A ⊕ B</td><td class="m">= <span class="ov">A ⊙ B</span></td></tr>
+      <tr><td>EXNOR</td><td>⊙</td><td class="m">A ⊙ B</td><td class="m">= <span class="ov">A ⊕ B</span></td></tr>
       <tr><td>NAND</td><td>‾ üstünde ·</td><td class="m"><span class="ov">A · B</span> = <span class="ov">AB</span></td><td></td></tr>
       <tr><td>NOR</td><td>‾ üstünde +</td><td class="m"><span class="ov">A + B</span></td><td></td></tr>
     </tbody>
@@ -1001,7 +1001,7 @@
         <span class="note-title">Hocanın tablosunda üç satır yanlış</span>
         <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri" loading="lazy"><figcaption>Hocanın notu, PDF s.4: soru işaretli satırlar</figcaption></figure>
         <p>PDF'te bu tablonun yanına soru işaretleri konmuş ve <b>011, 101, 111</b> satırları 0 yazılmış. Doğrusu bu üç satırda da <b>1</b> (yukarıda kırmızı arka planla işaretli). Örneğin 011 satırı: <span class="ov">A</span> = 1, B ⊕ C = 1 ⊕ 1 = 0, çarpım 1 · 0 = 0, tersi <b>1</b>. A = 1 olan satırlarda <span class="ov">A</span> = 0 olduğu için çarpım hep 0, tersi hep 1. Bu yüzden alt dört satırın hepsi 1 olmalı.</p>
-        <p>Sağlama: De Morgan kuralıyla (13. bölüm) F = A + <span class="ov">(B ⊕ C)</span> = A + (B ⊙ C) olur. Bu da "A = 1 ise 1, değilse B ile C eşitse 1" demek. Tablo bununla birebir uyuşuyor.</p>
+        <p>Sağlama için ifadeyi iki duruma ayır. A = 1 ise <span class="ov">A</span> = 0, çarpım 0, tersi 1: alt dört satır 1. A = 0 ise <span class="ov">A</span> = 1, çarpım B ⊕ C'nin kendisi, F onun tersi: B ile C <b>eşitken</b> 1 (000 ve 011 satırları). Tablo bununla birebir uyuşuyor.</p>
       </div>
     </div>
   </div>
@@ -1028,6 +1028,7 @@
       </table></div>
       <p>F = 1 olan satırlar 01 ve 10. 01 satırında A = 0 (çizgili), B = 1 (düz) → <span class="m"><span class="ov">A</span>B</span>. 10 satırında → <span class="m">A<span class="ov">B</span></span>.</p>
       <p class="answer">F = A ⊕ B = <span class="m"><span class="ov">A</span>B + A<span class="ov">B</span></span></p>
+      <p>Aynı yöntemle XNOR: tablosunda 1 olan satırlar 00 ve 11. 00 satırı <span class="m"><span class="ov">A</span> <span class="ov">B</span></span>, 11 satırı <span class="m">AB</span> verir, yani <span class="m">A ⊙ B = <span class="ov">A</span> <span class="ov">B</span> + AB</span>.</p>
     </div>
   </div>
 
