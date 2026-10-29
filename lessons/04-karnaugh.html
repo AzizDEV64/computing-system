@@ -373,11 +373,6 @@
       <p>Hoca sonda <span class="m"><span class="ov">C</span>D + C<span class="ov">D</span></span> kalıbını XOR olarak tanımış. Haritada CD = 01 ve CD = 10 sütunları (C ile D'nin farklı olduğu sütunlar) tamamen 1 ise o kısım <span class="m">C ⊕ D</span>'dir. CD = 00 ve 11 sütunları tamamen 1 ise <span class="m">C ⊙ D</span>.</p>
     </div>
   </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: 0'ları gruplayarak POS</span>
-    <p>1'ler yerine 0'ları aynı kurallarla gruplarsan <span class="m"><span class="ov">F</span></span>'nin en sade SOP'unu bulursun. De Morgan ile çevirince F'nin en sade POS (toplamlar çarpımı) hali çıkar. Grup okurken maxterm kuralı geçerli: 0 olan değişken düz, 1 olan çizgili, aralarında +. Soru "simplest POS" derse bu yolu kullan.</p>
-    <p>Örnek: 4. bölümdeki F = Σ(0, 1, 4, 5, 7) haritasında 0'lar m₂, m₃, m₆. {m₂, m₃} grubunda A = 0, B = 1 → <span class="m">(A + <span class="ov">B</span>)</span>. {m₂, m₆} grubunda B = 1, C = 0 → <span class="m">(<span class="ov">B</span> + C)</span>. <span class="m">F = (A + <span class="ov">B</span>)(<span class="ov">B</span> + C)</span>. Açarsan <span class="m"><span class="ov">B</span> + AC</span> çıkar, SOP sonucuyla aynı.</p>
-  </div>
 
   <h3>İfadeden haritaya</h3>
   <p>İfade kanonik değilse (terimlerde eksik değişken varsa) her terimi bir <b>blok</b> olarak haritaya koyabilirsin: eksik değişken, o değişkenin hem 0 hem 1 olduğu bütün hücreleri doldurur.</p>

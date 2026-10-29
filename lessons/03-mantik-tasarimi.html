@@ -157,11 +157,6 @@
     <p>Π listesindeki numaralar fonksiyonun <b>0 olduğu</b> satırlardır, 1 olduğu değil. Σ = 1'ler, Π = 0'lar.</p>
   </div>
 
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: "kanonik" ile "standart" farkı</span>
-    <p><b>Kanonik</b> formda her terim bütün değişkenleri içerir (<span class="m"><span class="ov">A</span>BC</span> gibi). Sadeleştirince terimler kısalır (<span class="m">B + AC</span> gibi). Buna artık kanonik değil <b>standart</b> (ya da sadeleştirilmiş) SOP denir. Sınavda "write in canonical form" derse bütün değişkenleri yazmak zorundasın.</p>
-    <p>Bir de şu: <span class="m"><span class="ov">F</span></span>'nin mintermleri, F'nin maxterm numaralarıdır. <span class="m">F = Σ(2,3,6)</span> ise <span class="m"><span class="ov">F</span> = Σ(0,1,4,5,7)</span>.</p>
-  </div>
 </section>
 
 <!-- ============================================================ 5 -->
@@ -292,10 +287,6 @@
     <p>Sözle sağlama: "B açıksa alarm çalar (tek başına ya da başkasıyla). B kapalıysa sadece A ve C ikisi birden açıkken çalar." Bu tam olarak problemin söylediği.</p>
   </div>
 
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: Π yolundan I. seçenek kendiliğinden çıkıyor</span>
-    <p>F'nin 0 olduğu satırlar 0, 1, 4: <span class="m">F = Π(0, 1, 4) = (A + B + C)(A + B + <span class="ov">C</span>)(<span class="ov">A</span> + B + C)</span>. İlk çarpanı iki kez kullan (tekrar kuralı). Her ikili <span class="m">(X + C)(X + <span class="ov">C</span>) = X + C<span class="ov">C</span> = X + 0 = X</span> kalıbına uyar (dağılma 2): <span class="m">(A + B + C)(A + B + <span class="ov">C</span>) = A + B</span> ve <span class="m">(A + B + C)(<span class="ov">A</span> + B + C) = B + C</span>. Sonuç: <span class="m">(A + B)(B + C)</span>. POS ile başlamak POS biçiminde bir sonuç verir.</p>
-  </div>
 
   <h3>4th Step: devre şeması</h3>
   <p>Hoca I. seçeneği çizmiş: iki OR kapısı (A+B ve B+C) ve bunları birleştiren bir AND. B kablosu noktadan dallanıp iki OR'a da gidiyor.</p>
@@ -427,7 +418,7 @@
       <tr><td>1</td><td>1</td><td>1</td><td class="out one">1</td><td class="one">1</td><td class="help">3</td></tr>
     </tbody>
   </table></div>
-  <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b> (çok girişli XOR'un kuralı). <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
+  <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b>. <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
 
   <div class="example">
     <div class="example-head"><h4>S'nin formülü</h4><span class="src">Hocanın çözümü, PDF s.3–4</span></div>
@@ -463,11 +454,6 @@
       </div>
       <p class="answer">C<sub>out</sub> = <span class="m">BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</span></p>
     </div>
-  </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: C<sub>out</sub>'un diğer eşdeğer yazılışları</span>
-    <p>Kitaplarda C<sub>out</sub> genelde <span class="m">AB + C<sub>in</sub>(A ⊕ B)</span> ya da çoğunluk fonksiyonu olarak <span class="m">AB + AC<sub>in</sub> + BC<sub>in</sub></span> diye yazılır. Üçü de aynı fonksiyondur (doğruluk tabloları birebir aynı). Hoca eşleştirmeyi farklı terimlerle yaptığı için farklı bir yazılışa ulaşmış. Sınavda hangisini yazsan doğrudur.</p>
-    <p><span class="m">AB + C<sub>in</sub>(A ⊕ B)</span> yazılışının güzel bir yanı var: A ⊕ B kapısı S için de kullanılıyor. Böylece tam toplayıcı <b>iki yarım toplayıcı ve bir OR kapısı</b> ile kurulabilir.</p>
   </div>
 
   <p>Hocanın tam toplayıcı devresi: S için 3 girişli bir XOR. C<sub>out</sub> için B ⊕ C<sub>in</sub>'i A ile VE'leyen bir AND, BC<sub>in</sub> için ayrı bir AND ve ikisini birleştiren bir OR. Hoca girişleri dikey hatlar (bus) halinde çizmiş, yatay kablolar dikey hatların üstünden köprüyle geçiyor.</p>
@@ -584,10 +570,6 @@
       </ol>
       <p class="answer">OF S₂S₁S₀ = <span class="b">1001</span> = 9. Kontrol: 3 + 6 = 9. 3 bitle en fazla 7 yazılabildiği için OF = 1.</p>
     </div>
-  </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: aynı devre çıkarma da yapar</span>
-    <p>Bu toplayıcıya birkaç kapı ekleyerek çıkarma da yaptırılabilir. 1. dersteki "toplayarak çıkarma" fikri burada bir devreye dönüşüyor. Nasıl yapıldığını 6. derste göreceksin.</p>
   </div>
 </section>
 

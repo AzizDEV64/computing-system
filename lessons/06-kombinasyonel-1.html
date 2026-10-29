@@ -69,10 +69,6 @@
   <h2><span class="n">1</span>Kombinasyonel devre nedir?</h2>
   <p class="lead">Çıkışı sadece <b>o anki girişlere</b> bağlı olan devre. Hafızası yoktur: aynı girişi verirsen her zaman aynı çıkışı alırsın.</p>
   <p>Şimdiye kadar tasarladığımız her devre (alarm, toplayıcılar, 7 segment dönüştürücü) kombinasyonel devreydi. Hoca bunu küçük bir örnekle göstermiş: A = 1, B = 0, C = 1 iken A ve B bir AND'e, sonucu (0) ve C bir OR'a giriyor: F = 0 + 1 = <b>1</b>. Bu girişler değişmediği sürece F de değişmez.</p>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: karşıtı ardışıl devre</span>
-    <p>Çıkışı geçmiş girişlere de bağlı olan devrelere <span class="term">ardışıl</span> (<span class="en">sequential</span>) devre denir. Bunların hafızası vardır (flip-flop, sayaç, register gibi). "Combinational" kelimesi bu farkı vurgular: çıkış, girişlerin o anki <b>kombinasyonunun</b> bir fonksiyonudur.</p>
-  </div>
   <p>Hocanın blok çizimi: N bitlik giriş → SSI₁ → SSI₂ → SSI₃ → M bitlik çıkış. Büyük bir kombinasyonel sistem, küçük kombinasyonel blokların art arda bağlanmasıyla kurulur. Kablonun üstündeki eğik çizgi ve yanındaki harf (N, M) o yolda kaç bit olduğunu gösterir.</p>
   <p>Bu derste ve bir sonrakinde göreceğimiz yapı taşları (hocanın listesi): <b>Adders</b> (toplayıcılar), <b>Decoders and Encoders</b> (kod çözücüler ve kodlayıcılar), <b>Multiplexers and Demultiplexer</b>, <b>Adder/Subtractor</b> (toplayıcı/çıkarıcı), <b>Comparators</b> (karşılaştırıcılar).</p>
 </section>
@@ -91,11 +87,7 @@
       <tr><td><b>XLSI</b></td><td>Extremely Large Scale Integrated circuits</td><td>Hoca: anakart (motherboard)</td></tr>
     </tbody>
   </table></div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: kaç kapı?</span>
-    <p>Kitaplarda sınırlar kabaca şöyle verilir: SSI 10'dan az kapı, MSI onlarca ile yüzlerce kapı, LSI binlerce, VLSI on binlerden milyonlara. Kaynaklar arasında farklılık var, bu yüzden sayıları değil sıralamayı ve örnekleri bil. Bazı kitaplar en büyük ölçek için XLSI yerine ULSI (Ultra Large Scale) der.</p>
-    <p>Not: anakart tek bir entegre devre değil, üzerinde birçok yonga taşıyan bir baskı devre kartıdır. Sınavda hocanın eşleştirmesini (XLSI → motherboard) yaz ama bunun gevşek bir örnek olduğunu bil.</p>
-  </div>
+  <p class="hint">Anakart tek bir entegre devre değil, üzerinde birçok yonga taşıyan bir karttır. Sınavda hocanın eşleştirmesini (XLSI → motherboard) yaz, ama bunun gevşek bir örnek olduğunu bil.</p>
 </section>
 
 <!-- ============================================================ 3 -->
@@ -211,10 +203,6 @@
     <span class="note-title">Dikkat: devre 5. adımın "invert R" kısmını yapmıyor</span>
     <p>Sonuç negatifse (elde taşmadı), devrenin çıkışındaki F₂F₁F₀ cevabın büyüklüğü değil, büyüklüğün 1's complement'idir. Algoritmadaki "invert R" adımı bu sonucu okunabilir hale getirmek içindir. F₃ = C<sub>out2</sub> çıkarma modunda işaret bilgisi verir: <b>F₃ = 1 → sonuç pozitif</b>, <b>F₃ = 0 → sonuç negatif</b>. Örnek: 2 − 5'te çıkış 100 olur, tersi 011 = 3 → −3.</p>
     <p>A = B olduğunda 1's complement'in bilinen bir tuhaflığı ortaya çıkar: A + <span class="ov">B</span> = 111 olur. Elde başlangıçta 0 ise devre 111'de kalır, bu "−0" demektir (1. dersteki negatif sıfır). Geri besleme hattı yüzünden 1000 (+0) durumu da kararlıdır, devre ikisinden birinde kalabilir. Bu, 1's complement tasarımının bir zayıflığıdır. 2's complement tasarımında böyle bir döngü yoktur.</p>
-  </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: 2's complement'li toplayıcı/çıkarıcı</span>
-    <p>Kitaplardaki standart tasarım 2's complement kullanır ve daha basittir: XOR'lar aynı, ama AND kapısı ve geri besleme yok. İşlem seçme girişi doğrudan C<sub>in0</sub>'a bağlanır. Çıkarmada C<sub>in0</sub> = 1 olur ve <span class="m"><span class="ov">B</span> + 1</span> = B'nin 2's complement'i kendiliğinden eklenir. Negatif sıfır sorunu da yoktur.</p>
   </div>
 
 </section>
@@ -505,7 +493,6 @@
   <h3>İngilizce–Türkçe terimler</h3>
   <dl class="glossary">
     <dt>combinational circuit</dt><dd>kombinasyonel (birleşimsel) devre</dd>
-    <dt>sequential circuit</dt><dd>ardışıl devre (hafızalı)</dd>
     <dt>integrated circuit (IC)</dt><dd>tümleşik devre, entegre</dd>
     <dt>adder/subtractor</dt><dd>toplayıcı/çıkarıcı</dd>
     <dt>operation code (op code)</dt><dd>işlem kodu</dd>

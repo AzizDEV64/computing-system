@@ -103,12 +103,6 @@
     <li><b>Cebirsel ispat:</b> Bilinen kurallarla bir tarafı adım adım diğer tarafa dönüştür.</li>
   </ul>
 
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: dualite (duality) ilkesi</span>
-    <p>Boole cebirinde doğru olan her eşitlikte <b>+ ile ·'yı, 0 ile 1'i yer değiştirirsen</b> yine doğru bir eşitlik elde edersin. Değişkenlere ve üst çizgilere dokunulmaz. Örnek: <span class="m">A + 0 = A</span> doğruysa dualı <span class="m">A · 1 = A</span> da doğrudur.</p>
-    <p>Bu yüzden her teorem iki satır halinde yazılır. Birini bilirsen diğerini kendin bulursun. Ezber yükünü yarıya indirir.</p>
-    <p>Dikkat: dual alırken gizli parantezleri koru. <span class="m">A + BC</span>'nin duali <span class="m">A(B + C)</span>'dir, <span class="m">AB + C</span> değil.</p>
-  </div>
 </section>
 
 <!-- ============================================================ 3 -->
@@ -281,10 +275,6 @@
   <p><b>Neden?</b> Dağılmanın ikinci haliyle: <span class="m">A + <span class="ov">A</span>B = (A + <span class="ov">A</span>)(A + B) = 1 · (A + B) = A + B</span>. Sözlü: "A doğruysa sonuç doğru. A yanlışsa <span class="ov">A</span> = 1 olur ve geriye sadece B kalır."</p>
   <p>Bu ikinci kural en çok kullanılanı. Hocanın 12. bölümdeki <span class="m">B + <span class="ov">B</span><span class="ov">C</span> = B + <span class="ov">C</span></span> adımı bu kuralın bir örneği.</p>
 
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: uzlaşı (consensus) teoremi</span>
-    <p><span class="m">AB + <span class="ov">A</span>C + BC = AB + <span class="ov">A</span>C</span>. Bir değişken bir terimde düz, diğerinde ters geçiyorsa (burada A), bu iki terimin "kalanlarının" çarpımı (BC) gereksizdir ve silinebilir. Karnaugh haritalarında (4. ders) bunun görsel karşılığını göreceksin.</p>
-  </div>
 </section>
 
 <!-- ============================================================ 8 -->
@@ -346,10 +336,6 @@
       <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M0 20H25M0 40H25M93 30H120"/><path d="M20 5Q33 30 20 55"/><path d="M32 5Q66 5 93 30Q66 55 32 55Q45 30 32 5Z"/></g></svg>
       <figcaption><b>EXOR</b>: F = A ⊕ B. Arkada ikinci bir eğri var.</figcaption>
     </figure>
-  </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: çok girişli XOR</span>
-    <p>Hoca 4 girişli EXOR da çizmiş. Çok girişli XOR'un kuralı: <b>girişlerdeki 1'lerin sayısı tek ise çıkış 1</b>, çift ise 0. Örneğin A = 1, B = 1, C = 1 için A ⊕ B ⊕ C = 1 (üç tane 1, tek). Bu özelliği hata tespitindeki kullanırız: bir veri gönderilirken 1'lerin sayısının tek mi çift mi olduğunu gösteren fazladan bir bit (<b>parite biti</b>) eklenir. Alıcı aynı XOR'u hesaplayıp bir bitin bozulup bozulmadığını anlar.</p>
   </div>
 
   <h3>NAND, NOR, EXNOR: kapı + NOT</h3>
@@ -684,8 +670,6 @@
         <li>Yutma: A + AB = A, A(A + B) = A</li>
         <li>A + <span class="ov">A</span>B = A + B</li>
         <li>A(<span class="ov">A</span> + B) = AB</li>
-        <li>Uzlaşı: AB + <span class="ov">A</span>C + BC = AB + <span class="ov">A</span>C</li>
-        <li>Dualite: + ↔ ·, 0 ↔ 1</li>
       </ul>
     </div>
     <div>
@@ -729,8 +713,6 @@
     <dt>distributive</dt><dd>dağılma özelliği</dd>
     <dt>idempotent</dt><dd>tekrar kuralı (A + A = A)</dd>
     <dt>absorption</dt><dd>yutma</dd>
-    <dt>consensus</dt><dd>uzlaşı</dd>
-    <dt>duality</dt><dd>dualite, eşleklik</dd>
     <dt>gate</dt><dd>kapı</dd>
     <dt>bubble</dt><dd>balon (tersleme dairesi)</dd>
     <dt>connected / not connected</dt><dd>bağlı / bağlı değil</dd>

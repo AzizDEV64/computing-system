@@ -159,10 +159,6 @@
     <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
   </div>
   <p>Hoca devreyi sonunda tek bir "4×2 Encoder" kutusu olarak çizmiş ve çıkışlarını F₁ (yüksek bit, A) ve F₀ (düşük bit, B) diye adlandırmış. Basit encoder'la karşılaştır: fark, B formülündeki <span class="ov">I₂</span>. I₂ aktifken I₁'in sesi kısılıyor, öncelik buradan geliyor.</p>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: "geçerli" (valid) çıkışı</span>
-    <p>Bu tasarımda "sadece I₀ aktif" ile "hiçbir giriş aktif değil" durumları aynı çıkışı (00) verir, ayırt edilemez. Gerçek öncelikli encoder'larda bir de <b>V</b> (valid) çıkışı olur: <span class="m">V = I₀ + I₁ + I₂ + I₃</span>. V = 0 ise hiçbir giriş aktif değildir ve A, B dikkate alınmaz.</p>
-  </div>
 </section>
 
 <!-- ============================================================ 4 -->
@@ -195,10 +191,6 @@
       <svg data-gen="dec" role="img" aria-label="I0 ve I1 bir NOR kapısına girip F0'ı veriyor. I0 ile I1'in tersi F1'i, I1 ile I0'ın tersi F2'yi, I1 ile I0 F3'ü veriyor."></svg>
     </div>
     <div class="circuit-foot"><div class="row"><span data-v="note"></span></div></div>
-  </div>
-  <div class="note extra">
-    <span class="note-title">Ek bilgi: decoder ile DEMUX aynı devre</span>
-    <p>1×4 DEMUX'un formülleri (<span class="m"><span class="ov">S₁</span><span class="ov">S₀</span>I</span>, …) ile 2×4 decoder'ın formüllerini karşılaştır. DEMUX'ta veri girişi I'yı sabit 1 yaparsan geriye decoder kalır. Bu yüzden entegre devre kataloglarında genelde "decoder/demultiplexer" diye tek bir yonga bulunur. Gerçek decoder yongalarında bir de <b>enable</b> (E, "etkinleştir") girişi olur: E = 0 iken bütün çıkışlar 0, E = 1 iken decoder normal çalışır. Bu E girişi, DEMUX'taki veri girişi I'nın işini görür.</p>
   </div>
 </section>
 
@@ -360,7 +352,6 @@
     <dt>decoder</dt><dd>kod çözücü</dd>
     <dt>comparator</dt><dd>karşılaştırıcı</dd>
     <dt>keypad</dt><dd>tuş takımı</dd>
-    <dt>valid (V)</dt><dd>geçerli çıkışı</dd>
     <dt>one-hot</dt><dd>sadece bir hattın 1 olduğu kod</dd>
   </dl>
 </section>
