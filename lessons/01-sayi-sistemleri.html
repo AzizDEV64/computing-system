@@ -31,7 +31,7 @@
       <p class="kicker">Ders 1, 14 Eylül 2026</p>
       <h1>Number Systems</h1>
       <p>Bilgisayar her şeyi 0 ve 1 ile yapar. Bu derste sayıların 0 ve 1 ile nasıl yazıldığını, bilgisayarın çıkarmayı neden toplayarak yaptığını, sayıların nasıl kodlandığını ve mantık işlemlerinin temelini öğreneceksin. Hiçbir şey bilmediğini varsayarak başlıyoruz.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>1's ve 2's complement</li>
         <li>Subtraction by addition</li>
         <li>BCD ve ağırlıklı kodlar</li>
@@ -340,14 +340,14 @@
       <p class="answer">Sonuç <span class="b">0111</span> = 7.</p>
     </div>
   </div>
-  <p>Borç alarak çıkarmak elle mümkün, ama devre olarak kurması zahmetli. Bilgisayarlar bu yüzden çıkarmayı <b>toplama ile</b> yapar. Bunun için önce tümleyen kavramını öğrenmemiz lazım. Hocanın PDF'i de tam bu noktadan başlıyor.</p>
+  <p>Borç alarak çıkarmak elle mümkün, ama devre olarak kurması zahmetli. Bilgisayarlar bu yüzden çıkarmayı <b>toplama ile</b> yapar. Bunun için önce tümleyen kavramını öğrenmemiz lazım.</p>
 
 </section>
 
 <!-- ============================================================ 5 -->
 <section id="tumleyen">
   <h2><span class="n">5</span>Tümleyenler: N ve N−1 complement</h2>
-  <p class="lead">Hocanın PDF'indeki ilk başlık bu. Hocanın başlığındaki "N" tabanı gösteriyor: ikili sistemde N = 2, yani 2's ve 1's complement. Dikkat: aşağıdaki formüllerde tabana <b>r</b>, tümleyenini aldığımız sayıya ise <b>N</b> diyeceğiz.</p>
+  <p class="lead">İkili sistemde iki tümleyen var: 1's ve 2's complement. Dikkat: aşağıdaki formüllerde tabana <b>r</b>, tümleyenini aldığımız sayıya ise <b>N</b> diyeceğiz.</p>
 
   <h3>Fikir: "tepeye ne kadar kaldı?"</h3>
   <p>3 basamaklı bir sayaç düşün. En büyük sayı 999. Bir sayının <b>999'a ne kadar uzak olduğu</b> onun 9'a tümleyenidir. 1000'e ne kadar uzak olduğu ise 10'a tümleyenidir.</p>
@@ -375,7 +375,7 @@
   </ol>
 
   <div class="example">
-    <div class="example-head"><h4>1's complement: (1000101)<sub>2</sub></h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>1's complement: (1000101)<sub>2</sub></h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <div class="calc">
         <span class="l"></span><span class="v">1000101</span><span class="c">sayı</span>
@@ -383,12 +383,11 @@
       </div>
       <p class="answer">1's complement = <span class="b">0111010</span></p>
       <p>Hocanın yazımıyla tek satır: <span class="m">(1000101)<sub>2</sub><span class="arr" data-l="1's comp."></span>(0111010)<sub>2</sub></span></p>
-      <p>Hocanın notunda sonuç <span class="b">(111010)<sub>2</sub></span> diye yazılmış. Baştaki 0 düşürülmüş, değer aynı. Ama aşağıdaki uyarıyı oku.</p>
     </div>
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>2's complement: (1100110)<sub>2</sub></h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>2's complement: (1100110)<sub>2</sub></h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p><b>Uzun yol</b> (hocanın yaptığı):</p>
       <div class="calc">
@@ -425,7 +424,7 @@
 <!-- ============================================================ 6 -->
 <section id="cikarma">
   <h2><span class="n">6</span>Toplayarak çıkarma (subtraction by addition)</h2>
-  <p class="lead">Bu dersin en önemli hesap konusu. Hocanın PDF'inde dört örnek var, dördünü de adım adım çözeceğiz. Önce neden işe yaradığını anlayalım.</p>
+  <p class="lead">Bu dersin en önemli hesap konusu. Hocanın dört örneğini adım adım çözeceğiz. Önce neden işe yaradığını anlayalım.</p>
 
   <h3>Neden işe yarıyor?</h3>
   <p>Onlukta, 2 basamaklı bir sayaçla 72 − 35 yapmak istiyoruz. 35'i 100'e tamamlayan sayı 100 − 35 = 65. Şimdi 72'ye 65 ekle: 72 + 65 = 137. Baştaki 1'i (yani 100'ü) atarsan 37 kalır. Ve 72 − 35 gerçekten 37!</p>
@@ -455,7 +454,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 1: 1001 − 0111, 1's complement ile (9 − 7)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 1: 1001 − 0111, 1's complement ile (9 − 7)</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları zaten eşit, 4'er bit.</li>
@@ -479,7 +478,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 2: 10101 − 11001, 1's complement ile (21 − 25)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 2: 10101 − 11001, 1's complement ile (21 − 25)</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Hoca önce soruyu alt alta yazıp onluk karşılıklarıyla cevabı tahmin etmiş:</p>
       <div class="calc">
@@ -511,7 +510,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 3: 1011 − 1001, 2's complement ile (11 − 9)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 3: 1011 − 1001, 2's complement ile (11 − 9)</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları eşit.</li>
@@ -530,7 +529,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 4: 1001 − 1011, 2's complement ile (9 − 11)</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 4: 1001 − 1011, 2's complement ile (9 − 11)</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>Bit sayıları eşit.</li>
@@ -595,14 +594,12 @@
 <!-- ============================================================ 8 -->
 <section id="kodlar">
   <h2><span class="n">7</span>Kodlama: BCD ve ağırlıklı kodlar</h2>
-  <p class="lead">Hoca bu konuyu "Coding → Binary Coded Digit → 4 digits → 8421 coding" diye özetlemiş. Açalım.</p>
-  <p class="hint">Not: hocanın yazdığı "Binary Coded Digit" ifadesinin doğrusu <b>Binary Coded Decimal</b>'dır (ikili kodlanmış onluk). "4 digits" de aslında "4 bit" demek.</p>
   <p>Şimdiye kadar bir sayıyı bütün olarak ikiliye çevirdik. Ama hesap makinesi ya da dijital saat gibi cihazlar sayıları <b>basamak basamak</b> ekranda gösterir. Bunun için her onluk rakamı ayrı ayrı 4 bitle yazmak çok daha pratik. İşte bu fikre <span class="term">kodlama</span> (<span class="en">coding</span>) diyoruz.</p>
 
   <h3>BCD (Binary Coded Decimal), yani 8421 kodu</h3>
   <p>Her onluk rakam (0–9) kendi 4 bitlik ikili karşılığıyla yazılır. Bitlerin ağırlıkları soldan sağa <b>8, 4, 2, 1</b> olduğu için adı <b>8421</b> kodudur. 4 bit kullanılır, çünkü 9'u yazmak için 3 bit yetmez (3 bit en fazla 7 eder).</p>
   <div class="example">
-    <div class="example-head"><h4>Rakam rakam BCD</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-head"><h4>Rakam rakam BCD</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p><span class="m">7<span class="arr" data-l="BCD"></span><span class="b">0111</span></span> (4+2+1) ve <span class="m">9<span class="arr" data-l="BCD"></span><span class="b">1001</span></span> (8+1)</p>
       <p>Çok basamaklı sayıda her rakamı ayrı çevir: 396 → <span class="b">0011 1001 0110</span>.</p>
@@ -617,7 +614,7 @@
   <h3>Ağırlıklı kodlar ve hocanın "4812" örneği</h3>
   <p>8421 tek seçenek değil. Bir <span class="term">ağırlıklı kodda</span> (<span class="en">weighted code</span>) her bit pozisyonunun bir ağırlığı vardır ve rakamın değeri, <b>1 olan bitlerin ağırlıkları toplamıdır</b>. Ağırlıkları değiştirince farklı bir kod elde edersin.</p>
   <div class="example">
-    <div class="example-head"><h4>9 rakamı 4812 kodunda nedir?</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-head"><h4>9 rakamı 4812 kodunda nedir?</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>4812 kodunda bit ağırlıkları soldan sağa <b>4, 8, 1, 2</b>. 9'u bu ağırlıkların toplamı olarak yazmamız lazım: 9 = 8 + 1.</p>
       <div class="table-wrap"><table>
@@ -658,7 +655,7 @@
   <p>Gray kodu 4. derste (Karnaugh haritaları) tekrar karşına çıkacak ve orada çok önemli olacak. Bu yüzden iyi öğren.</p>
 
   <div class="example">
-    <div class="example-head"><h4>3 bitlik Gray kodu tablosu</h4><span class="src">Hocanın tablosu, PDF s.2</span></div>
+    <div class="example-head"><h4>3 bitlik Gray kodu tablosu</h4><span class="src">Hocanın tablosu</span></div>
     <div class="example-body">
       <div class="table-wrap"><table class="tt">
         <thead><tr><th>Dec</th><th>BCD</th><th class="out">Gray</th></tr></thead>
@@ -674,7 +671,6 @@
         </tbody>
       </table></div>
       <p>Gray sütununda yukarıdan aşağı in. Her satırda sadece bir bit değişiyor. Sondan başa (100 → 000) dönerken de tek bit değişiyor.</p>
-      <p>Başlıkları hocanın tablosundaki gibi yazdık: Dec (onluk), BCD, Gray. 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında orta sütun düz ikilidir.</p>
     </div>
   </div>
 
@@ -838,7 +834,7 @@
   <p>Hangi işlemin önce yapılacağı: <b>parantez → NOT → AND → OR</b>. Normal cebirdeki "çarpma toplamadan önce" kuralı gibi. Yani A + BC, A + (BC) demektir. XOR (⊕) ve XNOR (⊙) içeren ifadelerde karışıklık olmasın diye her zaman parantez kullan: A + (B ⊕ C) gibi.</p>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = A + BC</h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-head"><h4>Örnek: F = A + BC</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>3 değişken (A, B, C) → 8 satır. Önce BC sütununu hesapla (B ve C ikisi de 1 ise 1), sonra A ile VEYA'la.</p>
       <div class="table-wrap"><table class="tt">
@@ -860,7 +856,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = <span class="ov"><span class="ov">A</span>(B ⊕ C)</span></h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-head"><h4>Örnek: F = <span class="ov"><span class="ov">A</span>(B ⊕ C)</span></h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Uzun çizgi ifadenin tamamının üstünde, kısa çizgi sadece A'nın üstünde. Yani önce <span class="ov">A</span> ile (B ⊕ C)'yi VE'le, sonra sonucun tamamını ters çevir.</p>
       <div class="table-wrap"><table class="tt">
@@ -880,8 +876,8 @@
       <p class="answer">F sütunu: 1, 0, 0, 1, 1, 1, 1, 1</p>
       <div class="note warn">
         <span class="note-title">Hocanın tablosunda üç satır yanlış</span>
-        <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri"><figcaption>Hocanın notu, PDF s.4: soru işaretli satırlar</figcaption></figure>
-        <p>PDF'te bu tablonun yanına soru işaretleri konmuş ve <b>011, 101, 111</b> satırları 0 yazılmış. Doğrusu bu üç satırda da <b>1</b> (yukarıda kırmızı arka planla işaretli). Örneğin 011 satırı: <span class="ov">A</span> = 1, B ⊕ C = 1 ⊕ 1 = 0, çarpım 1 · 0 = 0, tersi <b>1</b>. A = 1 olan satırlarda <span class="ov">A</span> = 0 olduğu için çarpım hep 0, tersi hep 1. Bu yüzden alt dört satırın hepsi 1 olmalı.</p>
+        <figure class="hoca-fig" style="max-width:260px"><img src="../assets/img/hoca/l1-tablo.png" alt="Hocanın el yazısı doğruluk tablosu: F sütunu 1,0,0,0,1,0,1,0 ve yanında soru işaretleri"><figcaption>Hocanın notu: soru işaretli satırlar</figcaption></figure>
+        <p>Hocanın notunda bu tablonun yanına soru işaretleri konmuş ve <b>011, 101, 111</b> satırları 0 yazılmış. Doğrusu bu üç satırda da <b>1</b> (yukarıda kırmızı arka planla işaretli). Örneğin 011 satırı: <span class="ov">A</span> = 1, B ⊕ C = 1 ⊕ 1 = 0, çarpım 1 · 0 = 0, tersi <b>1</b>. A = 1 olan satırlarda <span class="ov">A</span> = 0 olduğu için çarpım hep 0, tersi hep 1. Bu yüzden alt dört satırın hepsi 1 olmalı.</p>
         <p>Sağlama için ifadeyi iki duruma ayır. A = 1 ise <span class="ov">A</span> = 0, çarpım 0, tersi 1: alt dört satır 1. A = 0 ise <span class="ov">A</span> = 1, çarpım B ⊕ C'nin kendisi, F onun tersi: B ile C <b>eşitken</b> 1 (000 ve 011 satırları). Tablo bununla birebir uyuşuyor.</p>
       </div>
     </div>
@@ -896,7 +892,7 @@
   </ol>
   <p>Bu şekilde yazılan ifadeye <span class="term">çarpımlar toplamı</span> (<span class="en">sum of products, SOP</span>) denir. Her çarpım terimi, tabloda sadece kendi satırında 1 olur.</p>
   <div class="example">
-    <div class="example-head"><h4>Örnek: EXOR'un ifadesini tablodan çıkar</h4><span class="src">Hocanın örneği, PDF s.5</span></div>
+    <div class="example-head"><h4>Örnek: EXOR'un ifadesini tablodan çıkar</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <div class="table-wrap"><table class="tt">
         <thead><tr><th>A</th><th>B</th><th class="out">F</th><th>Satırın terimi</th></tr></thead>
@@ -941,7 +937,7 @@
   </ul>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = AB + <span class="ov">A</span>B</h4><span class="src">Hocanın örneği, PDF s.4</span></div>
+    <div class="example-head"><h4>Örnek: F = AB + <span class="ov">A</span>B</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>İki terimde de B var. Normal cebirdeki gibi ortak çarpan parantezine al (bu, dağılma kuralı; Boole cebirinde de geçerli, 2. derste ayrıntılı): <span class="m">AB + <span class="ov">A</span>B = B(A + <span class="ov">A</span>)</span>.</li>
@@ -961,7 +957,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = A<span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>B<span class="ov">C</span> + ABC</h4><span class="src">Hocanın örneği, PDF s.4–5</span></div>
+    <div class="example-head"><h4>Örnek: F = A<span class="ov">B</span><span class="ov">C</span> + <span class="ov">A</span>B<span class="ov">C</span> + ABC</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>İlk iki terimde ortak olan ne? İkisinde de <span class="ov">C</span> var. Hoca bunları altlarına nokta koyarak işaretlemiş.</li>
@@ -1009,7 +1005,7 @@
   <p>Dikkat edersen birinci kural NAND kapısını, ikinci kural NOR kapısını açıyor. Hocanın notunda örneğin altına "NOR, NAND" yazmasının sebebi bu.</p>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın sorusu, PDF s.5</span></div>
+    <div class="example-head"><h4>Örnek: F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın sorusu</span></div>
     <div class="example-body">
       <p>Hocanın notunda bu soru açık bırakılmış. Çözelim. İfadede iki büyük parça var: soldaki bir NOR (<span class="ov">… + …</span>), sağdaki bir NAND (<span class="ov">… · …</span>). Her birini ayrı açacağız.</p>
       <ol class="steps">

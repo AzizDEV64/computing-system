@@ -31,7 +31,7 @@
       <p class="kicker">Ders 5, 7 Ekim 2026</p>
       <h1>K-Maps with Don't Care</h1>
       <p>Bazen bir girişin hiç gelmeyeceğini biliriz ya da o durumda çıkışın ne olduğu umurumuzda değildir. Bu hücrelere X (don't care) yazarız ve onları işimize geldiği gibi kullanırız. Bu derste X'lerle sadeleştirmeyi, haritadan POS yazmayı ve gerçek bir tasarımı öğreneceksin: sayıları ekranda gösteren 7 segment dönüştürücü.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>X = don't care</li>
         <li>K-maps with X</li>
         <li>K-maps in POS</li>
@@ -93,7 +93,7 @@
   <h2><span class="n">2</span>X'li haritayı çözmek</h2>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 1</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 1</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Hoca soruyu doğrudan dolu bir haritayla veriyor (1, 0 ve X hücreleri). Aynı haritanın liste gösterimi: <span class="m">F = Σm(0, 2, 3, 4, 9, 12) + d(5, 6, 7, 8, 13)</span>. Hoca bu listeyi yazmıyor, sen de sınavda haritayı doğrudan doldurursun.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,2,3,4,9,12" data-dcs="5,6,7,8,13" data-groups="A'D'|A'C|AC'"></div></div>
@@ -109,7 +109,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek 2</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>Örnek 2</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Haritanın liste gösterimi (hoca yazmıyor): <span class="m">F = Σm(0, 3, 7, 8, 13) + d(2, 6, 9, 10, 11, 12, 14, 15)</span>.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,3,7,8,13" data-dcs="2,6,9,10,11,12,14,15" data-groups="C|A|B'D'"></div></div>
@@ -149,7 +149,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>What is F in POS?</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-head"><h4>What is F in POS?</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="0,10,12,13" data-dcs="1,6,8,14,15" data-pos-groups="(A+C')|(A+B')|(B+D')"></div></div>
       <ol class="steps">
@@ -163,7 +163,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Write F in POS</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-head"><h4>Write F in POS</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-ones="3,4,6,13,10" data-dcs="1,2,7,12,14,11" data-pos-groups="(B+C)|(A+B'+D')|(A'+C'+D')"></div></div>
       <ol class="steps">
@@ -187,7 +187,7 @@
 <section id="kare">
   <h2><span class="n">4</span>Çok çıkışlı tasarım: 2 bitlik kare devresi</h2>
   <div class="example">
-    <div class="example-head"><h4>Draw the logic circuit diagram of a circuit that calculates the square of 2-bit inputs</h4><span class="src">Hocanın örneği, PDF s.2–3</span></div>
+    <div class="example-head"><h4>Draw the logic circuit diagram of a circuit that calculates the square of 2-bit inputs</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>2 bitlik bir giriş (A₁A₀) 0–3 arası bir sayıdır. Karesi en fazla 9 olur. 9'u yazmak için 4 bit gerekir, o yüzden devrenin <b>4 çıkışı</b> var: F₃F₂F₁F₀.</p>
       <p>Hoca önce devreyi bir kutu olarak çizmiş: 2 giriş, 4 çıkış.</p>
@@ -209,7 +209,6 @@
           <tr><td>1</td><td>1</td><td class="out one">1</td><td>0</td><td>0</td><td class="one">1</td></tr>
         </tbody>
       </table></div>
-      <p>Hocanın notunda çıkış sütununun başlığı "BCD". 0, 1, 4, 9 sayıları 10'dan küçük olduğu için BCD ile düz ikili burada aynı, sorun yok.</p>
       <p><b>Anahtar fikir:</b> Çok çıkışlı bir devrede her çıkış ayrı bir fonksiyondur. Her biri için ayrı doğruluk tablosu sütunu, ayrı formül.</p>
       <ol class="steps">
         <li><b>F₃</b> sadece 11 satırında 1 → <span class="m">F₃ = A₁A₀</span> (AND).</li>
@@ -260,7 +259,7 @@
   </figure></div>
   <p><b>Şekildeki semboller:</b> Zikzak çizgi <b>direnç</b>tir (R): LED'den geçen akımı sınırlar, yoksa LED bozulur. Ucunda dik çizgi olan üçgen bir <b>diyot</b>tur, akım sadece üçgenin gösterdiği yönde geçer. Üstündeki iki küçük ok ışık saçtığını gösterir: <b>LED</b> (<span class="en">Light Emitting Diode</span>, ışık yayan diyot). Üç kısa yatay çizgi <b>toprak</b>tır (GND, 0 V; 2. dersten hatırla). Çıkış biti 1 olunca akım R → D → toprak yolundan akar ve LED yanar. Bit 0 olunca iki uç da 0 V'tadır, akım akmaz, LED söner.</p>
   <div class="example">
-    <div class="example-head"><h4>LED'ler: ON, ON, OFF, ON</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-head"><h4>LED'ler: ON, ON, OFF, ON</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>D₃ = ON, D₂ = ON, D₁ = OFF, D₀ = ON → ikili <span class="b">1101</span> → onluk 8 + 4 + 1 = <b>13</b>.</p>
       <p>Sorun şu: bir insanın LED'lere bakıp kafasında ikiliden onluğa çevirmesi gerekiyor. Daha kullanışlı olanı sayıyı doğrudan rakam olarak göstermek. Bunun için 7 segment gösterge kullanılır.</p>
@@ -279,7 +278,7 @@
   <div class="seg7" id="seg-names"></div>
   <div class="note warn">
     <span class="note-title">Hocanın segment adları standarttan farklı</span>
-        <figure class="hoca-fig" style="max-width:180px"><img src="../assets/img/hoca/l5-segment.png" alt="Hocanın 7 segment çizimi ve segment harfleri"><figcaption>Hocanın notu, PDF s.3: a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt (d alt, bir sonraki sayfada)</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:180px"><img src="../assets/img/hoca/l5-segment.png" alt="Hocanın 7 segment çizimi ve segment harfleri"><figcaption>Hocanın notu: a üst, b sol üst, f sağ üst, g orta, c sol alt, e sağ alt (d alt, bir sonraki sayfada)</figcaption></figure>
     <p>Hoca segmentleri şöyle adlandırmış: <b>a</b> üst, <b>b</b> sol üst, <b>f</b> sağ üst, <b>g</b> orta, <b>c</b> sol alt, <b>e</b> sağ alt, <b>d</b> alt. Veri sayfalarında ve çoğu kitapta kullanılan standart düzende ise a üstten başlayıp <b>saat yönünde</b> döner: <b>b</b> sağ üst, <b>c</b> sağ alt, <b>d</b> alt, <b>e</b> sol alt, <b>f</b> sol üst, <b>g</b> orta.</p>
     <p>Yani hocanın b'si standart f, hocanın f'si standart b, hocanın c'si standart e, hocanın e'si standart c. Bu sayfada hocanın düzeni kullanılıyor. Sınavda soru hangi düzeni veriyorsa onu kullan. Bir şekil verilmemişse hangi düzeni kullandığını cevabının başına bir çizimle belirt.</p>
   </div>
@@ -303,7 +302,7 @@
   <p class="lead">"Design a 4-bit binary to 7-segment display converter."</p>
   <p>Hoca çözüme önce bir blok çizimiyle başlıyor. Sınavda bu satırı yazarak başla:</p>
   <p style="line-height:2.4"><b class="nw">Inputs</b><span class="arr" data-l=""></span><b class="nw">Logic System</b><span class="arr" data-l="Outputs"></span><b>Binary to 7-Segment Display Converter</b><span class="arr" data-l=""></span><b class="nw">7-Segment Display</b></p>
-  <p>Dönüştürücünün 4 girişi (D₃D₂D₁D₀) ve 7 çıkışı (a–g) var. Yani aslında <b>7 ayrı fonksiyon</b> tasarlayacağız, her segment için bir tane. 4. bölümdeki kare devresiyle aynı fikir. (Hoca LED'lere de D₃–D₀ demişti. Orada D diyot, burada ise göstergeyi süren 4 veri biti.)</p>
+  <p>Dönüştürücünün 4 girişi (D₃D₂D₁D₀) ve 7 çıkışı (a–g) var. Yani aslında <b>7 ayrı fonksiyon</b> tasarlayacağız, her segment için bir tane. 4. bölümdeki kare devresiyle aynı fikir.</p>
 
   <h3>1. adım: doğruluk tablosu</h3>
   <p>Hocanın tablosunda sadece D₃ D₂ D₁ D₀ | a b c d e f g sütunları var. En sağdaki soluk "rakam" sütunu sadece sana yardım için, sınavda yazma.</p>
@@ -312,14 +311,10 @@
     <tbody></tbody>
   </table></div>
   <p><b>10–15 neden X?</b> Girişe sadece 0–9 arası rakamlar gelecek (BCD). 1010–1111 desenleri hiç gelmeyeceği için o satırların çıkışı umurumuzda değil. Bu X'ler haritalarda grupları çok büyütecek.</p>
-  <div class="note warn">
-    <span class="note-title">Hocanın başlığına dikkat</span>
-    <p>Soru "4-bit binary" diyor ama tabloda 10–15 X. Yani bu aslında bir <b>BCD → 7 segment</b> dönüştürücü: giriş sadece 0–9. Gerçekten 4 bitlik ikili (0–15) gösterilecek olsaydı 10–15 için X değil A, b, C, d, E, F harf desenleri gerekirdi. 5. bölümdeki 13 gibi bir sayıyı göstermek için de iki gösterge (iki BCD rakam: 0001 0011) gerekir. Sınavda hocanın tablosunu kullan.</p>
-  </div>
 
   <h3>2. adım: her segment için bir harita</h3>
   <div class="example">
-    <div class="example-head"><h4>a segmenti</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-head"><h4>a segmenti</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <p>a = 1 olan rakamlar: 0, 2, 3, 5, 6, 7, 8, 9. Sadece 1 ve 4'te sönük.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-vars="D" data-ones="0,2,3,5,6,7,8,9" data-dcs="10,11,12,13,14,15" data-groups="C|A|BD|B'D'"></div></div>
@@ -335,7 +330,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>b segmenti (hocanın düzeninde sol üst)</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-head"><h4>b segmenti (hocanın düzeninde sol üst)</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <p>b = 1 olan rakamlar: 0, 4, 5, 6, 8, 9.</p>
       <div class="kmap-figure"><div class="kmap5" data-n="4" data-vars="D" data-ones="0,4,5,6,8,9" data-dcs="10,11,12,13,14,15" data-groups="A|BD'|BC'|C'D'"></div></div>

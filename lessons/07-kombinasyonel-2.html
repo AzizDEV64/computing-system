@@ -31,7 +31,7 @@
       <p class="kicker">Ders 7, 19 Ekim 2026</p>
       <h1>Combinational Circuits 2</h1>
       <p>Son ders. Klavyeden basılan tuşu ikili koda çeviren encoder'ı, ikili kodu tek bir hatta çeviren decoder'ı ve iki sayıyı karşılaştıran comparator'ı tasarlayacağız. Sonunda bütün dersi kapsayan bir sınav öncesi kontrol listesi var.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>Encoder</li>
         <li>4×2 priority encoder</li>
         <li>Decoder (2×4, 3×8)</li>
@@ -118,7 +118,7 @@
   <h2><span class="n">3</span>Öncelikli encoder (priority encoder)</h2>
   <p class="lead">Basit bir encoder aynı anda tek girişin aktif olduğunu varsayar. Ya iki tuşa birden basılırsa? Öncelikli encoder kuralı koyar: <b>numarası en büyük olan aktif giriş kazanır</b>.</p>
   <div class="example">
-    <div class="example-head"><h4>4×2 Decimal-to-binary Priority Encoder</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-head"><h4>4×2 Decimal-to-binary Priority Encoder</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>4 giriş (I₀–I₃), 2 çıkış (A, B). Çıkış, aktif girişlerin en büyük numarasının ikili kodu. <b>A yüksek bit, B düşük bit</b>. Öncelik sırası: I₃ en yüksek, I₀ en düşük.</p>
       <p>Hocanın örnekleri:</p>
@@ -127,8 +127,7 @@
         <li>0010: sadece I₁ → 1 → <span class="b">AB = 01</span>.</li>
         <li>0101: aktifler I₂, I₀. En büyüğü I₂ → 2 → <span class="b">AB = 10</span>.</li>
       </ul>
-      <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l7-oncelik.png" alt="Hocanın el yazısı öncelik sırası ve üç örnek, sağda B A başlığı"><figcaption>Hocanın notu, PDF s.2: öncelik örnekleri</figcaption></figure>
-      <p class="hint">Hocanın bu örnekteki sütun başlığı "B A" diye yazılmış ama değerler A'dan başlayarak okunuyor (doğruluk tablosundaki "A B" sırası). Değerler doğru, sadece başlık ters.</p>
+      <figure class="hoca-fig" style="max-width:420px"><img src="../assets/img/hoca/l7-oncelik.png" alt="Hocanın el yazısı öncelik sırası ve üç örnek, sağda B A başlığı"><figcaption>Hocanın notu: öncelik örnekleri</figcaption></figure>
 
       <h4>Doğruluk tablosu</h4>
       <p class="hint">Hocanın tablosunda sadece I₃ I₂ I₁ I₀ | A B var. Gri "Kazanan" sütunu sadece anlaman için, sınavda yazma.</p>
@@ -167,7 +166,7 @@
   <p>Örneğin 3×8 decoder'a 101 (5) gelirse sadece 5 numaralı çıkış 1 olur. Bir otelde oda numarasını tuşlayıp o odanın ışığını yakmak gibi. Böyle, tek bir hattın 1 diğerlerinin 0 olduğu koda <b>one-hot</b> denir.</p>
   <p class="hint">Adlandırma: "n×m" n giriş, m çıkış demek. 4×2 encoder 4 giriş 2 çıkış, 2×4 decoder 2 giriş 4 çıkış.</p>
   <div class="example">
-    <div class="example-head"><h4>2×4 Decoder</h4><span class="src">Hocanın çözümü, PDF s.3</span></div>
+    <div class="example-head"><h4>2×4 Decoder</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <p>2 giriş (I₁ yüksek bit, I₀ düşük bit), 4 çıkış. Hocanın örnekleri: 11 → F₃ = 1; 10 → F₂ = 1; 00 → F₀ = 1.</p>
       <div class="table-wrap"><table class="tt">
@@ -198,7 +197,7 @@
   <h2><span class="n">5</span>Decoder ile tam toplayıcı</h2>
   <p class="lead">Decoder'ın her çıkışı bir minterm olduğuna göre, <b>her fonksiyon</b> bir decoder ve bir OR kapısıyla yapılabilir: fonksiyonun Σ listesindeki çıkışları OR'la.</p>
   <div class="example">
-    <div class="example-head"><h4>Design of a FA with a 3×8 Decoder</h4><span class="src">Hocanın örneği, PDF s.3–4</span></div>
+    <div class="example-head"><h4>Design of a FA with a 3×8 Decoder</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Hoca önce tam toplayıcının tablosunu tekrar yazmış (toplama R demiş, S yerine). 3. dersten: R, 1'lerin sayısı tekse 1. C<sub>out</sub>, en az iki 1 varsa 1.</p>
       <div class="table-wrap"><table class="tt" style="width:auto">
@@ -239,7 +238,7 @@
   <h2><span class="n">6</span>1 bitlik karşılaştırıcı (comparator)</h2>
   <p class="lead">İki biti karşılaştırır ve üç çıkıştan birini 1 yapar: A &gt; B, A &lt; B ya da A = B.</p>
   <div class="example">
-    <div class="example-head"><h4>Comparator</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-head"><h4>Comparator</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <p>Hoca önce bir "Comp." kutusu çizip çıkışları adlandırmış: <b>F<sub>A&gt;B</sub> (F₂)</b>, <b>F<sub>A&lt;B</sub> (F₁)</b>, <b>F<sub>A=B</sub> (F₀)</b>. Devrede F₁ çıkışına F<sub>B&gt;A</sub> demiş, ikisi aynı şey. Tabloda sadece F₂ F₁ F₀ yazıyor:</p>
       <div class="table-wrap"><table class="tt">
@@ -274,8 +273,8 @@
   <p class="lead">Hoca dört tane 1 bitlik karşılaştırıcı kutusu çizmiş ama devreyi tamamlamamış. Bu bölümde nasıl tamamlanacağını görelim. Sınavda sorulma ihtimali yüksek.</p>
   <div class="note warn">
     <span class="note-title">Hocanın notu bu noktada yarım</span>
-        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l7-karsilastirici.png" alt="Hocanın el yazısıyla çizdiği dört tane 1-bit comp kutusu"><figcaption>Hocanın notu, PDF s.5: çıkışları bağlanmamış dört 1 bitlik karşılaştırıcı</figcaption></figure>
-    <p>PDF'te A₃B₃, A₂B₂, A₁B₁, A₀B₀ girişli dört "1-bit Comp" kutusu var, çıkışları birbirine bağlanmamış. Aşağıdaki tamamlama, kitaplardaki standart 4 bitlik karşılaştırıcıdır.</p>
+        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l7-karsilastirici.png" alt="Hocanın el yazısıyla çizdiği dört tane 1-bit comp kutusu"><figcaption>Hocanın notu: çıkışları bağlanmamış dört 1 bitlik karşılaştırıcı</figcaption></figure>
+    <p>Hocanın notunda A₃B₃, A₂B₂, A₁B₁, A₀B₀ girişli dört "1-bit Comp" kutusu var, çıkışları birbirine bağlanmamış. Aşağıdaki tamamlama, kitaplardaki standart 4 bitlik karşılaştırıcıdır.</p>
   </div>
   <h3>Fikir: sözlükteki gibi karşılaştır</h3>
   <p>Sözlükte kelimeleri baştan başlayıp ilk farklı harfe bakarak sıralarız (ARABA &lt; ARI, çünkü üçüncü harfte A &lt; I). Sayılarda da aynısı. İki sayıyı kafanda nasıl karşılaştırırsın? 4719 ile 4752: önce en soldaki basamaklar (4 = 4), eşit. Sonra 7 = 7, eşit. Sonra 1 &lt; 5, karar verildi, sağdakilere bakmaya gerek yok. İkili sayılarda da aynı yöntem: <b>en yüksek bitten başla, ilk farklı bit sonucu belirler</b>.</p>

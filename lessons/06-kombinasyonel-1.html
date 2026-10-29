@@ -31,7 +31,7 @@
       <p class="kicker">Ders 6, 7 Ekim 2026</p>
       <h1>Combinational Circuits 1</h1>
       <p>Şimdiye kadar öğrendiğin her şeyi (kapılar, sadeleştirme, toplayıcılar) birleştirip bilgisayarın gerçek yapı taşlarını kuruyoruz: hem toplayıp hem çıkarabilen bir devre, birçok veriden birini seçen multiplexer ve bir veriyi birçok hedeften birine gönderen demultiplexer.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>SSI, MSI, LSI, VLSI</li>
         <li>3-bit adder</li>
         <li>Adder/Subtractor</li>
@@ -156,7 +156,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Örnek: A = 101, B = 100, çıkarma</h4><span class="src">Hocanın örneği, PDF s.2</span></div>
+    <div class="example-head"><h4>Örnek: A = 101, B = 100, çıkarma</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>Op = 1. XOR'lar B'yi ters çevirir (1's complement).</li>
@@ -239,7 +239,7 @@
   <h3>2×1 MUX'u tasarlayalım</h3>
   <p>İki veri girişi I₀ ve I₁, bir seçme girişi S. Kural: <b>S = 0 → F = I₀</b>, <b>S = 1 → F = I₁</b>. Bu bir tasarım problemi, 3. dersteki adımlarla çözelim.</p>
   <div class="example">
-    <div class="example-head"><h4>2×1 MUX</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-head"><h4>2×1 MUX</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <div class="formula chain"><span class="m">S = 0 → I₀</span><span class="m">S = 1 → I₁</span></div>
       <div class="tables-row">
@@ -311,13 +311,13 @@
     <tr><td>0</td><td>0</td><td class="out">I₀</td><td class="m"><span class="ov">S₁</span><span class="ov">S₀</span></td></tr><tr><td>0</td><td>1</td><td class="out">I₁</td><td class="m"><span class="ov">S₁</span>S₀</td></tr><tr><td>1</td><td>0</td><td class="out">I₂</td><td class="m">S₁<span class="ov">S₀</span></td></tr><tr><td>1</td><td>1</td><td class="out">I₃</td><td class="m">S₁S₀</td></tr>
   </tbody></table></div>
   <div class="example">
-    <div class="example-head"><h4>4×1 MUX</h4><span class="src">Hocanın formülü ve devresi, PDF s.4–5</span></div>
+    <div class="example-head"><h4>4×1 MUX</h4><span class="src">Hocanın formülü ve devresi</span></div>
     <div class="example-body">
       <p class="hint">Hocanın cevap sırası: önce blok şeması (I₀–I₃ girişleri, F çıkışı, altta S₁ S₀), sonra formül, sonra kapılarla devre. Yukarıdaki S₁S₀ tablosu sadece çalışma yardımı, hoca tablo çizmiyor.</p>
       <p>2×1'deki fikri genişlet: her veri girişini, kendi seçme kombinasyonunun mintermiyle AND'le, hepsini OR'la.</p>
       <div class="formula"><span class="m" style="white-space:normal">F = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</span></div>
       <p>Formülün her terimi, tablodaki satırın mintermi ile o satırın veri girişinin çarpımı. Hocanın devresi: dört tane 3 girişli AND (her biri bir veri girişi ve iki seçme hattı), S₁ ve S₀ için birer NOT, sonda 4 girişli bir OR.</p>
-      <figure class="hoca-fig" style="max-width:480px"><img src="../assets/img/hoca/l6-mux4-devre.png" alt="Hocanın el yazısıyla çizdiği 4x1 MUX devresi: dört 3 girişli AND, S1 ve S0 için NOT kapıları, 4 girişli OR"><figcaption>Hocanın 4×1 MUX devresi, PDF s.5. Sınavda "4×1 MUX'u çiz" denirse bu yapıyı çiz.</figcaption></figure>
+      <figure class="hoca-fig" style="max-width:480px"><img src="../assets/img/hoca/l6-mux4-devre.png" alt="Hocanın el yazısıyla çizdiği 4x1 MUX devresi: dört 3 girişli AND, S1 ve S0 için NOT kapıları, 4 girişli OR"><figcaption>Hocanın 4×1 MUX devresi. Sınavda "4×1 MUX'u çiz" denirse bu yapıyı çiz.</figcaption></figure>
       <p>Hoca 2×1'i de aynı kalıpta kırmızı kutuya almış: <span class="m">I₀<span class="ov">S</span> + I₁S</span>. Genel kural: <b>2ⁿ×1 MUX = Σ (seçme mintermi<sub>i</sub> · I<sub>i</sub>)</b>.</p>
     </div>
   </div>
@@ -366,7 +366,7 @@
     </figure>
   </div>
   <div class="example">
-    <div class="example-head"><h4>Let's design 1×2 Demux</h4><span class="src">Hocanın çözümü, PDF s.5–6</span></div>
+    <div class="example-head"><h4>Let's design 1×2 Demux</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <p>Kural: <b>S = 0 → I, F₀'a gider</b>, <b>S = 1 → I, F₁'e gider</b>.</p>
       <div class="table-wrap"><table class="tt">
@@ -414,17 +414,17 @@
 <section id="demux4">
   <h2><span class="n">9</span>1×4 DEMUX</h2>
   <div class="example">
-    <div class="example-head"><h4>Write the output expressions for 1×4 DEMUX</h4><span class="src">Hocanın sorusu, PDF s.6</span></div>
+    <div class="example-head"><h4>Write the output expressions for 1×4 DEMUX</h4><span class="src">Hocanın sorusu</span></div>
     <div class="example-body">
       <p>Her çıkış, girişin kendi seçme kombinasyonuyla AND'lenmiş hali. MUX'ta olduğu gibi S₁ yüksek bit: S₁S₀ = 00 → F₀, 01 → F₁, 10 → F₂, 11 → F₃.</p>
       <div class="formula chain"><span class="m">F₀ = <span class="ov">S₁</span><span class="ov">S₀</span>I</span><span class="m">F₁ = <span class="ov">S₁</span>S₀I</span><span class="m">F₂ = S₁<span class="ov">S₀</span>I</span><span class="m">F₃ = S₁S₀I</span></div>
       <div class="note warn">
         <span class="note-title">Hocanın notunda F₁ ile F₂ yer değiştirmiş</span>
         <div class="hoca-row">
-        <figure class="hoca-fig" style="max-width:250px"><img src="../assets/img/hoca/l6-demux4.png" alt="Hocanın el yazısı 1x4 DEMUX ifadeleri F0 ile F3 arası"><figcaption>Hocanın DEMUX ifadeleri, PDF s.6</figcaption></figure>
-        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l6-mux4.png" alt="Hocanın el yazısı 4x1 MUX formülü"><figcaption>Karşılaştırma için hocanın 4×1 MUX formülü, PDF s.4</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:250px"><img src="../assets/img/hoca/l6-demux4.png" alt="Hocanın el yazısı 1x4 DEMUX ifadeleri F0 ile F3 arası"><figcaption>Hocanın DEMUX ifadeleri</figcaption></figure>
+        <figure class="hoca-fig" style="max-width:340px"><img src="../assets/img/hoca/l6-mux4.png" alt="Hocanın el yazısı 4x1 MUX formülü"><figcaption>Karşılaştırma için hocanın 4×1 MUX formülü</figcaption></figure>
         </div>
-        <p>PDF'te <span class="m">F₁ = <span class="ov">S₀</span>S₁I</span> ve <span class="m">F₂ = S₀<span class="ov">S₁</span>I</span> yazıyor. Yani F₁, S₁ = 1, S₀ = 0 iken seçiliyor. Bu, hocanın bir önceki sayfadaki 4×1 MUX formülüyle çelişiyor. Orada I₁, <span class="m"><span class="ov">S₁</span>S₀</span> ile seçiliyordu. S₁S₀ ikili sayı gibi okunursa (S₁ yüksek bit) 01 = 1 → F₁ olmalı. Doğrusu yukarıdaki gibi: <span class="m">F₁ = <span class="ov">S₁</span>S₀I</span>, <span class="m">F₂ = S₁<span class="ov">S₀</span>I</span>.</p>
+        <p>Hocanın notunda <span class="m">F₁ = <span class="ov">S₀</span>S₁I</span> ve <span class="m">F₂ = S₀<span class="ov">S₁</span>I</span> yazıyor. Yani F₁, S₁ = 1, S₀ = 0 iken seçiliyor. Bu, hocanın bir önceki sayfadaki 4×1 MUX formülüyle çelişiyor. Orada I₁, <span class="m"><span class="ov">S₁</span>S₀</span> ile seçiliyordu. S₁S₀ ikili sayı gibi okunursa (S₁ yüksek bit) 01 = 1 → F₁ olmalı. Doğrusu yukarıdaki gibi: <span class="m">F₁ = <span class="ov">S₁</span>S₀I</span>, <span class="m">F₂ = S₁<span class="ov">S₀</span>I</span>.</p>
         <p>Hocanın yazdığı ancak S₀ yüksek bit kabul edilirse doğru olurdu. Sınavda hangi bitin yüksek olduğunu belirtip ona göre tutarlı yaz. En güvenlisi bu sayfadaki standart düzen.</p>
       </div>
     </div>

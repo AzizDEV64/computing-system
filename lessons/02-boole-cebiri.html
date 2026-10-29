@@ -31,7 +31,7 @@
       <p class="kicker">Ders 2, 23 Eylül 2026</p>
       <h1>Boolean Algebra</h1>
       <p>1. derste Boole cebirinin temel kurallarını (aksiyomları) gördük. Bu derste uzun ifadeleri kısaltmaya yarayan teoremleri, lojik kapıların çizimini ve bir devre şemasından formül çıkarmayı öğreneceksin. Sınavda "bu devrenin F'si nedir, sadeleştir" sorusu neredeyse kesin çıkar. Bu ders tam olarak bunun için.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>Axioms</li>
         <li>Commutative, associative</li>
         <li>Distributive</li>
@@ -209,7 +209,7 @@
     <span class="m"><span class="ov">A · B</span> = <span class="ov">A</span> + <span class="ov">B</span></span>
   </div>
   <p><b>"Çizgiyi kır, işareti değiştir."</b> Uzun çizgiyi parçalara böl, her parçanın üstüne kendi çizgisini koy ve aradaki işareti çevir. İki kuralın birbirinin dualı olduğuna dikkat et (+ ile · yer değiştirmiş).</p>
-  <p>Kural istediğin kadar terime genişler. Hoca bunu 3. sayfada kenara not etmiş: <span class="m"><span class="ov"><span class="ov">A</span>B<span class="ov">C</span></span> = <span class="ov"><span class="ov">A</span></span> + <span class="ov">B</span> + <span class="ov"><span class="ov">C</span></span> = A + <span class="ov">B</span> + C</span>.</p>
+  <p>Kural istediğin kadar terime genişler. Örneğin: <span class="m"><span class="ov"><span class="ov">A</span>B<span class="ov">C</span></span> = <span class="ov"><span class="ov">A</span></span> + <span class="ov">B</span> + <span class="ov"><span class="ov">C</span></span> = A + <span class="ov">B</span> + C</span>.</p>
 
   <h3>İç içe çizgilerde nasıl çalışılır?</h3>
   <ol class="steps">
@@ -221,7 +221,7 @@
   </ol>
 
   <div class="example">
-    <div class="example-head"><h4>F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-head"><h4>F = <span class="ov">A + <span class="ov">BC</span></span> + <span class="ov">A<span class="ov">C</span></span> = ?</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Bu soruyu 1. dersin sonunda çözmüştük. Hocanın bu dersteki çözümü aynı yolu izliyor:</p>
       <ol class="steps">
@@ -462,7 +462,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>Bu devrenin F'si nedir? Sadeleştir.</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-head"><h4>Bu devrenin F'si nedir? Sadeleştir.</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <h4>Adım 1: formülü kur</h4>
       <ol class="steps">
@@ -497,8 +497,8 @@
 
       <div class="note warn">
         <span class="note-title">Hocanın çözümünde hata var: sonuç AB̄ değil</span>
-        <figure class="hoca-fig"><img src="../assets/img/hoca/l2-devre1.png" alt="Hocanın el yazısı devre ve çözümü: F = (A'+B)' XNOR A, x = AB', sonuç kutu içinde F = AB'"><figcaption>Hocanın notu, PDF s.3: "F = x̄Ā + xA" satırından sonraki satırda x'in üstündeki çizgi kayboluyor</figcaption></figure>
-        <p>PDF'te sonuç kutu içinde <span class="m">F = A<span class="ov">B</span></span> diye verilmiş. Hata, x̄Ā terimine x'i yerleştirdiği satırda (yukarıdaki 4. maddede uyardığımız yer): hoca <span class="m"><span class="ov">x</span><span class="ov">A</span></span> terimine x'i koyarken x'in üstündeki çizgiyi düşürmüş ve <span class="m">A<span class="ov">B</span><span class="ov">A</span></span> yazmış. Doğrusu <span class="m"><span class="ov">A<span class="ov">B</span></span> · <span class="ov">A</span></span>. O terim 0 değil, <span class="m"><span class="ov">A</span></span> çıkıyor.</p>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l2-devre1.png" alt="Hocanın el yazısı devre ve çözümü: F = (A'+B)' XNOR A, x = AB', sonuç kutu içinde F = AB'"><figcaption>Hocanın notu: "F = x̄Ā + xA" satırından sonraki satırda x'in üstündeki çizgi kayboluyor</figcaption></figure>
+        <p>Hocanın notunda sonuç kutu içinde <span class="m">F = A<span class="ov">B</span></span> diye verilmiş. Hata, x̄Ā terimine x'i yerleştirdiği satırda (yukarıdaki 4. maddede uyardığımız yer): hoca <span class="m"><span class="ov">x</span><span class="ov">A</span></span> terimine x'i koyarken x'in üstündeki çizgiyi düşürmüş ve <span class="m">A<span class="ov">B</span><span class="ov">A</span></span> yazmış. Doğrusu <span class="m"><span class="ov">A<span class="ov">B</span></span> · <span class="ov">A</span></span>. O terim 0 değil, <span class="m"><span class="ov">A</span></span> çıkıyor.</p>
         <div class="table-wrap"><table class="tt">
           <thead><tr><th>A</th><th>B</th><th><span class="ov"><span class="ov">A</span>+B</span></th><th class="out">F (devre)</th><th class="out"><span class="ov">A</span>+<span class="ov">B</span></th><th class="out">Hoca: A<span class="ov">B</span></th></tr></thead>
           <tbody>
@@ -569,7 +569,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>F nedir? Mümkünse sadeleştir.</h4><span class="src">Hocanın örneği, PDF s.3</span></div>
+    <div class="example-head"><h4>F nedir? Mümkünse sadeleştir.</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <h4>Adım 1: formülü kur</h4>
       <ol class="steps">

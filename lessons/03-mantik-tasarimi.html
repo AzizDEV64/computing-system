@@ -31,7 +31,7 @@
       <p class="kicker">Ders 3, 28 Eylül 2026</p>
       <h1>Logic Design</h1>
       <p>Şimdiye kadar bize verilen bir formülü inceledik. Bu derste tersini yapacağız: sözle anlatılan bir problemden (ör. "en az iki kapı açıksa alarm çalsın") başlayıp çalışan bir devre tasarlayacağız. Bunun için minterm, maxterm ve kanonik formları öğreneceksin. Sonra bilgisayarın kalbindeki devreyi, toplayıcıyı, kendin kuracaksın.</p>
-      <ul class="covers" aria-label="Hocanın PDF'indeki konular">
+      <ul class="covers" aria-label="Bu dersin konuları">
         <li>Minterms, maxterms</li>
         <li>Canonical forms: SOP, POS</li>
         <li>Σ ve Π gösterimi</li>
@@ -89,13 +89,12 @@
   <p>Mintermlere satır numarasıyla isim verilir: <b>m<sub>i</sub></b>. Satır numarası, girişlerin ikili sayı olarak değeridir. A en soldaki (en değerli) bittir. Değişken sırası değişirse numaralar da değişir, o yüzden sınavda F(A, B, C) sırasına uy. Örneğin ABC = 101 → 5 → <b>m₅</b> = <span class="m">A<span class="ov">B</span>C</span>.</p>
 
   <div class="example">
-    <div class="example-head"><h4>3 değişken için minterm ve maxterm tablosu</h4><span class="src">Hocanın tablosu, PDF s.1</span></div>
+    <div class="example-head"><h4>3 değişken için minterm ve maxterm tablosu</h4><span class="src">Hocanın tablosu</span></div>
     <div class="example-body">
       <div class="table-wrap"><table class="tt" id="mm-table">
         <thead><tr><th>Onluk</th><th>A</th><th>B</th><th>C</th><th class="out">Minterm m<sub>i</sub></th><th class="out">Maxterm M<sub>i</sub></th></tr></thead>
         <tbody></tbody>
       </table></div>
-      <p>Hocanın tablosunda orta sütunun başlığı "BCD Form". 0–7 arası için BCD ile düz ikili aynı olduğundan sorun yok, ama aslında bu sütun düz ikilidir.</p>
     </div>
   </div>
   <div class="note tip">
@@ -163,7 +162,7 @@
   <h2><span class="n">5</span>Bir ifadeyi kanonik forma çevirmek</h2>
   <p class="lead">İfadede bazı terimler eksik değişkenle gelir. Onları tamamlamanın hilesi: eksik değişken X ise terimi <span class="m">(X + <span class="ov">X</span>)</span> ile çarp. Bu ifade 1'e eşit olduğu için hiçbir şey değişmez.</p>
   <div class="example">
-    <div class="example-head"><h4>F(A, B, C) = AB<span class="ov">C</span> + <span class="ov">A</span>B: her iki kanonik formda yaz</h4><span class="src">Hocanın örneği, PDF s.1</span></div>
+    <div class="example-head"><h4>F(A, B, C) = AB<span class="ov">C</span> + <span class="ov">A</span>B: her iki kanonik formda yaz</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>İlk terim <span class="m">AB<span class="ov">C</span></span>: üç değişken de var, bu zaten bir minterm. 110 → <b>m₆</b>.</li>
@@ -218,7 +217,7 @@
 <section id="alarm">
   <h2><span class="n">7</span>Örnek: kapı alarmı</h2>
   <div class="example">
-    <div class="example-head"><h4>Problem</h4><span class="src">Hocanın örneği, PDF s.1–2</span></div>
+    <div class="example-head"><h4>Problem</h4><span class="src">Hocanın örneği</span></div>
     <div class="example-body">
       <p>Üç kapı var: A, B, C. Bir mantık devresi kapılara bakıp bir alarmı kontrol ediyor. <b>"If at least two of the doors are open <u>or</u> only door B is open the alarm should be on."</b> Yani en az iki kapı açıksa <b>veya</b> sadece B kapısı açıksa alarm çalmalı.</p>
       <p>Hoca "or" kelimesini daire içine almış: iki koşuldan biri sağlanırsa yeter.</p>
@@ -279,7 +278,7 @@
 
   <div class="note warn">
     <span class="note-title">II. seçenek doğru ama en sade hali değil</span>
-        <figure class="hoca-fig"><img src="../assets/img/hoca/l3-alarm.png" alt="Hocanın el yazısı sadeleştirme adımları, I. opt (A+B)(B+C) ve II. opt B+AB+AC+BC kırmızı kutularda"><figcaption>Hocanın notu, PDF s.2: I. ve II. seçenek</figcaption></figure>
+        <figure class="hoca-fig"><img src="../assets/img/hoca/l3-alarm.png" alt="Hocanın el yazısı sadeleştirme adımları, I. opt (A+B)(B+C) ve II. opt B+AB+AC+BC kırmızı kutularda"><figcaption>Hocanın notu: I. ve II. seçenek</figcaption></figure>
     <p><span class="m">B + AB + AC + BC</span> ifadesinde AB ve BC terimleri B tarafından yutulur (<span class="m">B + AB = B</span>, <span class="m">B + BC = B</span>). Geriye kalan:</p>
     <div class="formula"><span class="m">F = B + AC</span></div>
     <p>Aynı sonuca 3. adımdan doğrudan da gidebilirdin: <span class="m">B + <span class="ov">B</span>(AC) = B + AC</span> (ters değişkenli yutma). Bu en kısa hal: 1 AND + 1 OR = <b>2 kapı</b>. Bu arada I. seçenek de aslında aynı şey: dağılma 2 ile <span class="m">(B + A)(B + C) = B + AC</span>. Yani I. seçenek en sade POS, B + AC en sade SOP. I. seçenek 2 OR + 1 AND = 3 kapı. Sınavda "simplify" denirse <span class="m">B + AC</span> yaz. Hocanın iki cevabı da doğru fonksiyonu verir, sadece daha uzun.</p>
@@ -336,10 +335,6 @@
     <li><b>C<sub>out</sub></b> (<span class="en">Carry out</span>, elde): sola taşan bit.</li>
   </ul>
   <p>Hoca bunu yanına küçük bir işlemle göstermiş: 1 + 1 = 10. Soldaki 1 elde (carry), sağdaki 0 sonuç (result).</p>
-  <div class="note warn">
-    <span class="note-title">Dikkat: buradaki + işareti VEYA değil</span>
-    <p>Hocanın notunda "S = A+B output" yazıyor. Burada + aritmetik toplama demek, "S, A ile B'nin toplamının biti" anlamında. Boole cebirindeki VEYA değil. Hemen aşağıda göreceğin gibi S aslında <span class="m">A ⊕ B</span>.</p>
-  </div>
   <div class="tables-row">
     <div class="table-wrap"><table class="tt">
       <thead><tr><th>A</th><th>B</th><th class="out">S</th><th>C<sub>out</sub></th><th class="help">Ondalık toplam (yardımcı)</th></tr></thead>
@@ -420,7 +415,7 @@
   <p>"1'lerin sayısı" sütununa bak: <b>S, 1'lerin sayısı tek ise 1</b>. <b>C<sub>out</sub>, en az iki tane 1 varsa 1</b>. Bu ikincisi, alarm örneğindeki "en az iki kapı açık" koşulunun aynısı. Bu fonksiyona çoğunluk (<span class="en">majority</span>) fonksiyonu denir.</p>
 
   <div class="example">
-    <div class="example-head"><h4>S'nin formülü</h4><span class="src">Hocanın çözümü, PDF s.3–4</span></div>
+    <div class="example-head"><h4>S'nin formülü</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>1 olan satırlar 1, 2, 4, 7: <span class="m" style="white-space:normal">S = <span class="ov">A</span><span class="ov">B</span>C<sub>in</sub> + <span class="ov">A</span>B<span class="ov">C<sub>in</sub></span> + A<span class="ov">B</span><span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>. Hoca C<sub>in</sub>'i düz olanların altını iki çizgiyle, çizgili olanların altını tek çizgiyle işaretlemiş.</li>
@@ -435,7 +430,7 @@
   </div>
 
   <div class="example">
-    <div class="example-head"><h4>C<sub>out</sub>'un formülü</h4><span class="src">Hocanın çözümü, PDF s.4</span></div>
+    <div class="example-head"><h4>C<sub>out</sub>'un formülü</h4><span class="src">Hocanın çözümü</span></div>
     <div class="example-body">
       <ol class="steps">
         <li>1 olan satırlar 3, 5, 6, 7: <span class="m" style="white-space:normal">C<sub>out</sub> = <span class="ov">A</span>BC<sub>in</sub> + A<span class="ov">B</span>C<sub>in</sub> + AB<span class="ov">C<sub>in</sub></span> + ABC<sub>in</sub></span>.</li>
@@ -456,7 +451,6 @@
   </div>
 
   <p>Hocanın tam toplayıcı devresi: S için 3 girişli bir XOR. C<sub>out</sub> için B ⊕ C<sub>in</sub>'i A ile VE'leyen bir AND, BC<sub>in</sub> için ayrı bir AND ve ikisini birleştiren bir OR. Hoca girişleri dikey hatlar (bus) halinde çizmiş, yatay kablolar dikey hatların üstünden köprüyle geçiyor.</p>
-  <p>Hocanın çiziminde aslında 6 dikey hat var: her girişin yanına küçük bir NOT kapısıyla tersini (<span class="ov">A</span>, <span class="ov">B</span>, <span class="ov">C<sub>in</sub></span>) de hat olarak eklemiş. Bu devrede ters hatlar hiç kullanılmıyor, bütün kapılar düz A, B, C<sub>in</sub> hatlarına bağlı. Bu, "her girişin hem düzü hem tersi hazır olsun" alışkanlığından gelir: kanonik SOP devrelerinde ters hatlar gerekir. Sitedeki çizimde kullanılmayan ters hatlar gösterilmedi. Sınavda hocanın çizimini örnek alacaksan 6 dikey hattın hepsini çiz: A, B, C<sub>in</sub> ve her birinin NOT kapısından geçen tersi.</p>
 
   <div class="circuit" id="c-fa">
     <div class="circuit-head">
