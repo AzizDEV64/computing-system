@@ -410,22 +410,12 @@
     <p>Tümleyen, sayının <b>kaç bitle yazıldığına</b> bağlıdır. <span class="b">101</span>'in 1's complement'i 3 bitte <span class="b">010</span>, ama 8 bitte (<span class="b">00000101</span>) <span class="b">11111010</span> olur. Soruda bit sayısı verilmişse önce sayıyı o uzunluğa sıfırla doldur, sonra tümleyen al. Sonuçtaki baştaki sıfırları da silme, çünkü çıkarma işleminde o sıfırlar önemli.</p>
   </div>
 
-  <h3>Onluk sistemde aynı şey: 9's ve 10's complement</h3>
-  <p>Sınavda onluk sayılarla da sorulabilir. Kural aynı, sadece "ters çevir" yerine "9'dan çıkar" var:</p>
-  <ul>
-    <li>546700'ün 9's complement'i: her rakam 9'dan çıkar → <span class="b">453299</span>. 10's complement: +1 → <span class="b">453300</span>.</li>
-    <li>012398'in 9's complement'i: <span class="b">987601</span>. 10's complement: <span class="b">987602</span>.</li>
-  </ul>
-  <p>10's complement için de kısayol var: sağdaki sıfırları aynen bırak, sıfır olmayan ilk rakamı 10'dan çıkar, solundaki her rakamı 9'dan çıkar. 546700 → sondaki <span class="b">00</span> kalır, 7 → 3, kalan 5,4,6 → 4,5,3 → <span class="b">453300</span>.</p>
-
   <div class="widget" id="w-comp">
     <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: tümleyen hesaplayıcı</h4></div>
     <div class="widget-body">
-      <p>Bir sayı yaz. Baştaki sıfırları da yaz, çünkü basamak sayısını onlar belirler.</p>
+      <p>İkili bir sayı yaz. Baştaki sıfırları da yaz, çünkü basamak sayısını onlar belirler.</p>
       <div class="controls">
         <div class="field"><label for="comp-in">Sayı</label><input id="comp-in" type="text" value="1100110" autocomplete="off" spellcheck="false"></div>
-        <div class="field"><span class="lbl">Taban</span>
-          <div class="seg" role="group" aria-label="Taban" id="comp-base"><button type="button" data-v="2" aria-pressed="true">İkili</button><button type="button" data-v="10" aria-pressed="false">Onluk</button></div></div>
         <button class="btn" type="button" id="comp-go">Hesapla</button>
       </div>
       <div class="wout" id="comp-out" aria-live="polite"></div>
@@ -439,7 +429,7 @@
   <p class="lead">Bu dersin en önemli hesap konusu. Hocanın PDF'inde dört örnek var, dördünü de adım adım çözeceğiz. Önce neden işe yaradığını anlayalım.</p>
 
   <h3>Neden işe yarıyor?</h3>
-  <p>Onlukta, 2 basamaklı bir sayaçla 72 − 35 yapmak istiyoruz. 35'in 10's complement'i 100 − 35 = 65. Şimdi 72'ye 65 ekle: 72 + 65 = 137. Baştaki 1'i (yani 100'ü) atarsan 37 kalır. Ve 72 − 35 gerçekten 37!</p>
+  <p>Onlukta, 2 basamaklı bir sayaçla 72 − 35 yapmak istiyoruz. 35'i 100'e tamamlayan sayı 100 − 35 = 65. Şimdi 72'ye 65 ekle: 72 + 65 = 137. Baştaki 1'i (yani 100'ü) atarsan 37 kalır. Ve 72 − 35 gerçekten 37!</p>
   <p>Sebebi şu: <span class="m">M + (100 − N) = (M − N) + 100</span>. Toplamın içinde fazladan bir "100" var. O fazlalık en solda taşan <b>1</b> olarak görünür ve onu atınca cevap kalır. Böylece bilgisayar sadece toplama devresiyle çıkarma yapabilir.</p>
 
   <h3>2's complement ile çıkarma: M − N</h3>
@@ -582,20 +572,6 @@
     <p>0101 − 0101: 0101 + 1010 = <span class="b">1111</span>, elde yok, "negatif" der ve 1111'in tersini alırsın: <span class="b">−0000</span>. Bu 1's complement'in bilinen tuhaflığı olan <b>negatif sıfır</b>dır. Sonucu 0 olarak yaz. 2's complement'te bu sorun yok: 0101 + 1011 = <span class="b"><span class="strike">1</span>0000</span> = 0.</p>
   </div>
 
-  <div class="example">
-    <div class="example-head"><h4>Onlukta da aynısı: 72532 − 3250, 10's complement ile</h4></div>
-    <div class="example-body">
-      <ol class="steps">
-        <li>Basamakları eşitle: 3250 → <span class="b">03250</span>.</li>
-        <li>10's complement: 9's complement 96749, +1 → <span class="b">96750</span>.</li>
-        <li>Topla: 72532 + 96750 = <span class="b"><span class="strike">1</span>69282</span>. Elde taştı, at.</li>
-      </ol>
-      <p class="answer">Sonuç +69282.</p>
-      <p>Aynı işlem <b>9's complement</b> ile: 03250'nin 9's complement'i 96749. 72532 + 96749 = <span class="b"><span class="hl">1</span>69281</span>. Elde taştı, en sağa ekle (end-around carry): 69281 + 1 = <b>69282</b>.</p>
-      <p>Ters yönde 3250 − 72532: 72532'nin 10's complement'i 27468. 03250 + 27468 = 30718, elde yok. Sonuç negatif, 30718'in 10's complement'i 69282 → <b>−69282</b>.</p>
-    </div>
-  </div>
-
   <div class="note warn">
     <span class="note-title">Terim karışıklığına dikkat: "overflow"</span>
     <p>Hoca en solda taşan bite "overflow bit" demiş. Bu işaretsiz tümleyen çıkarmasında taşan <b>elde</b> (<span class="en">end carry</span>) demektir. Sınavda hocanın terimini kullanabilirsin.</p>
@@ -608,10 +584,8 @@
       <div class="controls">
         <div class="field"><label for="sub-m">M (eksilen)</label><input id="sub-m" type="text" value="1001" autocomplete="off" spellcheck="false" size="10"></div>
         <div class="field"><label for="sub-n">N (çıkan)</label><input id="sub-n" type="text" value="1011" autocomplete="off" spellcheck="false" size="10"></div>
-        <div class="field"><span class="lbl">Taban</span>
-          <div class="seg" role="group" aria-label="Taban" id="sub-base"><button type="button" data-v="2" aria-pressed="true">İkili</button><button type="button" data-v="10" aria-pressed="false">Onluk</button></div></div>
         <div class="field"><span class="lbl">Yöntem</span>
-          <div class="seg" role="group" aria-label="Yöntem" id="sub-method"><button type="button" data-v="r" aria-pressed="true">2's (10's)</button><button type="button" data-v="r-1" aria-pressed="false">1's (9's)</button></div></div>
+          <div class="seg" role="group" aria-label="Yöntem" id="sub-method"><button type="button" data-v="r" aria-pressed="true">2's</button><button type="button" data-v="r-1" aria-pressed="false">1's</button></div></div>
         <button class="btn" type="button" id="sub-go">Çöz</button>
       </div>
       <div class="wout" id="sub-out" aria-live="polite"></div>
@@ -713,60 +687,6 @@
     <li>Üst yarının başına 0, alt yarının başına 1 koy: <span class="b">00, 01, 11, 10</span>. Bu 2 bitlik Gray kodu.</li>
     <li>Aynısını tekrarla: <span class="b">000, 001, 011, 010</span> | <span class="b">110, 111, 101, 100</span>. Bu 3 bitlik Gray kodu, hocanın tablosuyla aynı.</li>
   </ol>
-
-  <h3>İkiliden Gray'e çevirme</h3>
-  <p>Burada XOR işlemine ihtiyacımız var. Kuralı çok basit: <b>iki bit farklıysa 1, aynıysa 0</b>. Yani 0⊕0 = 0, 0⊕1 = 1, 1⊕0 = 1, 1⊕1 = 0. (10. bölümde XOR'u ayrıntılı göreceğiz.)</p>
-  <ol class="steps">
-    <li>Gray'in ilk (en sol) biti, ikilinin ilk bitiyle aynıdır.</li>
-    <li>Sonraki her Gray biti = ikilideki o bit ⊕ ikilideki solundaki bit.</li>
-  </ol>
-  <div class="example">
-    <div class="example-head"><h4>Örnek: ikili 1011 → Gray</h4></div>
-    <div class="example-body">
-      <ul>
-        <li>1. bit: aynen <b>1</b></li>
-        <li>2. bit: 1 ⊕ 0 = <b>1</b> (farklı)</li>
-        <li>3. bit: 0 ⊕ 1 = <b>1</b> (farklı)</li>
-        <li>4. bit: 1 ⊕ 1 = <b>0</b> (aynı)</li>
-      </ul>
-      <p class="answer">Gray = <span class="b">1110</span></p>
-    </div>
-  </div>
-
-  <h3>Gray'den ikiliye çevirme</h3>
-  <ol class="steps">
-    <li>İkilinin ilk biti, Gray'in ilk bitiyle aynıdır.</li>
-    <li>Sonraki her ikili bit = <b>az önce bulduğun ikili bit</b> ⊕ Gray'deki o bit.</li>
-  </ol>
-  <div class="example">
-    <div class="example-head"><h4>Örnek: Gray 1110 → ikili</h4></div>
-    <div class="example-body">
-      <ul>
-        <li>1. bit: aynen <b>1</b></li>
-        <li>2. bit: (bulunan 1) ⊕ (Gray 1) = <b>0</b></li>
-        <li>3. bit: (bulunan 0) ⊕ (Gray 1) = <b>1</b></li>
-        <li>4. bit: (bulunan 1) ⊕ (Gray 0) = <b>1</b></li>
-      </ul>
-      <p class="answer">İkili = <span class="b">1011</span> (bir önceki örneğin tersi, doğru)</p>
-    </div>
-  </div>
-  <div class="note warn">
-    <span class="note-title">Sık hata</span>
-    <p>Gray'den ikiliye çevirirken Gray bitlerini kendi aralarında XOR'lama. Her adımda <b>bir önceki adımda bulduğun ikili biti</b> kullanırsın.</p>
-  </div>
-
-  <div class="widget" id="w-gray">
-    <div class="widget-head"><span class="dot" aria-hidden="true"></span><h4>Dene: Gray dönüştürücü</h4></div>
-    <div class="widget-body">
-      <div class="controls">
-        <div class="field"><label for="gray-in">Bitler</label><input id="gray-in" type="text" value="1011" autocomplete="off" spellcheck="false"></div>
-        <div class="field"><span class="lbl">Yön</span>
-          <div class="seg" role="group" aria-label="Yön" id="gray-dir"><button type="button" data-v="b2g" aria-pressed="true">İkili → Gray</button><button type="button" data-v="g2b" aria-pressed="false">Gray → İkili</button></div></div>
-        <button class="btn" type="button" id="gray-go">Çevir</button>
-      </div>
-      <div class="wout" id="gray-out" aria-live="polite"></div>
-    </div>
-  </div>
 </section>
 
 <!-- ============================================================ 10 -->
@@ -1130,7 +1050,6 @@
       <ul>
         <li>1's: bütün bitleri ters çevir. Formül (2ⁿ−1) − N</li>
         <li>2's: 1's + 1. Ya da sağdan ilk 1'e kadar aynen yaz, gerisini ters çevir. Formül 2ⁿ − N</li>
-        <li>Onlukta: 9's = her rakam 9'dan çıkar, 10's = 9's + 1</li>
         <li>Bit sayısını hep koru</li>
       </ul>
     </div>
@@ -1149,8 +1068,6 @@
         <li>BCD = 8421: her onluk rakam ayrı 4 bit. 1010–1111 geçersiz</li>
         <li>Ağırlıklı kod: değer = 1 olan bitlerin ağırlıkları toplamı (4812'de 9 = 0110)</li>
         <li>Gray: komşular arasında 1 bit fark</li>
-        <li>İkili → Gray: en soldaki bit aynen; sonraki her Gray biti = ikilide o bit ⊕ solundaki bit</li>
-        <li>Gray → ikili: en soldaki bit aynen; sonraki her ikili bit = bulunan son ikili bit ⊕ o Gray biti</li>
       </ul>
     </div>
     <div>
@@ -1213,8 +1130,6 @@
       <details class="solution"><summary>Çözümü göster</summary><p>2 = <span class="b">0010</span>, F = <span class="b">1111</span> → <span class="b">00101111</span>. Onluk: 2×16 + 15 = <b>47</b>.</p></details></li>
     <li><span class="b">10110100</span> sayısının 1's ve 2's complement'ini bul.
       <details class="solution"><summary>Çözümü göster</summary><p>1's: her biti ters çevir → <span class="b">01001011</span>. 2's: 1's + 1 → <span class="b">01001100</span>. Kısayolla: sağdaki <span class="b">100</span> aynen kalır, soldaki <span class="b">10110</span> ters çevrilip <span class="b">01001</span> olur → <span class="b">01001100</span>.</p></details></li>
-    <li>4250 sayısının (4 basamak) 9's ve 10's complement'ini bul.
-      <details class="solution"><summary>Çözümü göster</summary><p>9's: 9−4, 9−2, 9−5, 9−0 → <span class="b">5749</span>. 10's: +1 → <span class="b">5750</span>.</p></details></li>
     <li><span class="b">1100 − 0101</span> işlemini 2's complement ile yap.
       <details class="solution"><summary>Çözümü göster</summary><p><span class="m">0101<span class="arr" data-l="2's"></span>1011</span></p><div class="calc"><span class="l"></span><span class="v carry">c    </span><span class="c">elde</span><span class="l"></span><span class="v">1100</span><span class="c">12</span><span class="l">+</span><span class="v">1011</span><span class="c"></span><hr><span class="l"></span><span class="v"><span class="strike">1</span><span class="dbl">0111</span></span><span class="c">taşan 1'i at</span></div><p>Elde var, sonuç pozitif: <span class="b">0111</span> = +7. Kontrol: 12 − 5 = 7.</p></details></li>
     <li><span class="b">0101 − 1100</span> işlemini 2's complement ile yap.
@@ -1227,10 +1142,8 @@
       <details class="solution"><summary>Çözümü göster</summary><p>2 → 0010, 0 → 0000, 2 → 0010, 6 → 0110 → <span class="b">0010 0000 0010 0110</span>.</p></details></li>
     <li>7 rakamını 4812 kodunda yaz.
       <details class="solution"><summary>Çözümü göster</summary><p>Ağırlıklar 4, 8, 1, 2. 7 = 4 + 1 + 2. 4 → 1, 8 → 0, 1 → 1, 2 → 1 → <span class="b">1011</span>.</p></details></li>
-    <li>İkili <span class="b">1101</span> sayısını Gray koduna çevir.
-      <details class="solution"><summary>Çözümü göster</summary><p>İlk bit 1. Sonra 1⊕1 = 0, 1⊕0 = 1, 0⊕1 = 1 → <span class="b">1011</span>.</p></details></li>
-    <li>Gray <span class="b">0111</span> kodunu ikiliye çevir.
-      <details class="solution"><summary>Çözümü göster</summary><p>İlk bit 0. Sonra (0)⊕1 = 1, (1)⊕1 = 0, (0)⊕1 = 1 → <span class="b">0101</span>. Parantez içindekiler bir önceki adımda bulunan ikili bit.</p></details></li>
+    <li>4 bitlik Gray kodunu yansıtma yöntemiyle yaz. 7'nin karşılığı nedir?
+      <details class="solution"><summary>Çözümü göster</summary><p>3 bitlik liste: 000, 001, 011, 010, 110, 111, 101, 100. Altına aynasını ekle ve üst yarıya 0, alt yarıya 1 koy. Üst yarı 0000, 0001, 0011, 0010, 0110, 0111, 0101, <span class="b">0100</span>. 7 sekizinci sırada (0'dan sayınca): <span class="b">0100</span>.</p></details></li>
     <li><span class="m">F = <span class="ov">A</span>B + C</span> için doğruluk tablosunu çıkar.
       <details class="solution"><summary>Çözümü göster</summary><p>Satırlar 000 → 111 sırasıyla: <span class="ov">A</span>B sütunu 0,0,1,1,0,0,0,0. F = <span class="ov">A</span>B + C: <span class="b">0, 1, 1, 1, 0, 1, 0, 1</span>.</p></details></li>
     <li><span class="m">F = AB + A<span class="ov">B</span></span> ifadesini sadeleştir.
@@ -1258,8 +1171,7 @@
             <option value="sub2">2's ile çıkarma</option>
             <option value="sub1">1's ile çıkarma</option>
             <option value="bcd">BCD</option>
-            <option value="gray">İkili → Gray</option>
-            <option value="gray2b">Gray → ikili</option>
+            <option value="gray">Gray kodu sırası</option>
             <option value="logic">Lojik ifade değeri</option>
           </select></div>
         <button class="btn ghost" type="button" id="quiz-new">Yeni soru</button>

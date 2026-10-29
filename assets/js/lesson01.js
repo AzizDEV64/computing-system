@@ -118,7 +118,7 @@
   }
 
   /* ================= Tümleyen hesaplayıcı ================= */
-  const compBase = seg('comp-base', () => runComp());
+  const compBase = () => '2'; // sadece ikili (hoca onluk tümleyen kullanmıyor)
   function runComp() {
     const base = +compBase();
     const s = $('comp-in').value.trim().toUpperCase();
@@ -154,7 +154,7 @@
   }
 
   /* ================= Toplayarak çıkarma ================= */
-  const subBase = seg('sub-base', () => runSub());
+  const subBase = () => '2'; // sadece ikili
   const subMethod = seg('sub-method', () => runSub());
   function subStepsHTML(M, Nn, base, method) {
     const s = N.subtract(M, Nn, base, method);
@@ -245,31 +245,6 @@
       h += `<p class="hint">Bir rakam bu ağırlıklarla birden fazla şekilde yazılabiliyorsa ilk bulunan gösterilir.</p>`;
     }
     h += `<p>Karşılaştırma için sayının düz ikilisi: ${B(BigInt(s).toString(2))} (${BigInt(s).toString(2).length} bit), BCD ise ${digits.length * 4} bit.</p>`;
-    out.innerHTML = h;
-  }
-
-  /* ================= Gray ================= */
-  const grayDir = seg('gray-dir', () => runGray());
-  function runGray() {
-    const s = $('gray-in').value.trim();
-    const out = $('gray-out');
-    if (!/^[01]+$/.test(s)) { out.innerHTML = err('Sadece 0 ve 1 yaz.'); return; }
-    let h = '<ol class="steps">';
-    if (grayDir() === 'b2g') {
-      const r = N.binToGray(s);
-      h += `<li>İlk bit aynen iner: <b>${s[0]}</b></li>`;
-      r.steps.slice(1).forEach(st => {
-        h += `<li>${st.i + 1}. bit: ikilide solundaki ${st.a} ⊕ kendisi ${st.b} = <b>${st.v}</b> (${st.a === st.b ? 'aynı' : 'farklı'})</li>`;
-      });
-      h += `</ol><p class="result">Gray: ${B(r.result)}</p>`;
-    } else {
-      const r = N.grayToBin(s);
-      h += `<li>İlk bit aynen iner: <b>${s[0]}</b></li>`;
-      r.steps.slice(1).forEach(st => {
-        h += `<li>${st.i + 1}. bit: az önce bulunan ikili bit ${st.a} ⊕ Gray biti ${st.g} = <b>${st.v}</b></li>`;
-      });
-      h += `</ol><p class="result">İkili: ${B(r.result)}</p>`;
-    }
     out.innerHTML = h;
   }
 
@@ -365,12 +340,9 @@
       return { q: `${v} sayısını BCD (8421) ile yaz. Her rakam 4 bit.`, check: a => clean(a) === code.join(''), ans: code.join(' '), why: String(v).split('').map((d, i) => `${d} → ${code[i]}`).join(', ') };
     },
     gray() {
-      const n = rnd(4, 6), b = randBitsAny(n), r = N.binToGray(b).result;
-      return { q: `İkili ${B(b)} sayısını Gray koduna çevir.`, check: a => binEq(a, r, n), ans: r, why: `İlk bit aynen, sonra komşu ikili bitleri XOR'la: ${b.split('').slice(1).map((c, i) => `${b[i]}⊕${c}=${r[i + 1]}`).join(', ')}` };
-    },
-    gray2b() {
-      const n = rnd(4, 6), g = randBitsAny(n), r = N.grayToBin(g).result;
-      return { q: `Gray ${B(g)} kodunu ikiliye çevir.`, check: a => binEq(a, r, n), ans: r, why: `İlk bit aynen, sonra (bulunan ikili bit) ⊕ (Gray biti): ${g.split('').slice(1).map((c, i) => `${r[i]}⊕${c}=${r[i + 1]}`).join(', ')}` };
+      const n = rnd(2, 3), k = rnd(0, (1 << n) - 1);
+      const list = [...Array(1 << n).keys()].map(x => N.binToGray(x.toString(2).padStart(n, '0')).result);
+      return { q: `${n} bitlik Gray kodunda ${k} sayısının karşılığı nedir? (Yansıtma yöntemiyle listeyi yaz.)`, check: a => binEq(a, list[k], n), ans: list[k], why: `Yansıtma ile liste: ${list.join(', ')}. 0'dan saymaya başla, ${k}. sıradaki kod.` };
     },
     logic() {
       const e = LOGIC_POOL[rnd(0, LOGIC_POOL.length - 1)];
@@ -415,11 +387,10 @@
     $('comp-go').addEventListener('click', runComp); onEnter(['comp-in'], runComp);
     $('sub-go').addEventListener('click', runSub); onEnter(['sub-m', 'sub-n'], runSub);
     $('codes-go').addEventListener('click', runCodes); onEnter(['codes-in', 'codes-w'], runCodes);
-    $('gray-go').addEventListener('click', runGray); onEnter(['gray-in'], runGray);
     $('tt-go').addEventListener('click', runTT); onEnter(['tt-a', 'tt-b'], runTT);
     $('quiz-new').addEventListener('click', newQuestion);
     $('quiz-topic').addEventListener('change', newQuestion);
     $('quiz-check').addEventListener('click', checkAnswer); onEnter(['quiz-ans'], checkAnswer);
-    runConv(); runComp(); runSub(); runCodes(); runGray(); runTT(); newQuestion();
+    runConv(); runComp(); runSub(); runCodes(); runTT(); newQuestion();
   });
 })();
