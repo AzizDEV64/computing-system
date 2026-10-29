@@ -56,8 +56,7 @@
           <li><a href="#iletisim"><span class="n">7</span><span>MUX ve DEMUX ile iletişim</span></a></li>
           <li><a href="#demux"><span class="n">8</span><span>Demultiplexer (DEMUX)</span></a></li>
           <li><a href="#demux4"><span class="n">9</span><span>1×4 DEMUX</span></a></li>
-          <li><a href="#ozet"><span class="n">10</span><span>Özet kâğıdı</span></a></li>
-          <li><a href="#alistirma"><span class="n">11</span><span>Alıştırmalar ve test</span></a></li>
+          <li><a href="#alistirma"><span class="n">10</span><span>Alıştırmalar ve test</span></a></li>
         </ol>
       </details>
     </nav>
@@ -450,62 +449,9 @@
   </div>
 </section>
 
-<!-- ============================================================ 10 -->
-<section id="ozet">
-  <h2><span class="n">10</span>Özet kâğıdı</h2>
-  <div class="cheat">
-    <div>
-      <h4>Kavramlar</h4>
-      <ul>
-        <li>Kombinasyonel: çıkış sadece o anki girişlere bağlı, hafıza yok</li>
-        <li>SSI &lt; MSI &lt; LSI &lt; VLSI (CPU, RAM) &lt; XLSI</li>
-        <li>Op code → instruction set → assembly → programlama dili</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Toplayıcı/çıkarıcı (1's)</h4>
-      <ul>
-        <li>Her B biti XOR(B, Op): Op = 0 → B, Op = 1 → <span class="ov">B</span></li>
-        <li>C<sub>in0</sub> = Op · C<sub>out2</sub> (end-around carry)</li>
-        <li>Çıkarmada F₃ = 1 → pozitif, F₃ = 0 → negatif (tersini al)</li>
-        <li>2's versiyonu: C<sub>in0</sub> = Op, geri besleme yok</li>
-      </ul>
-    </div>
-    <div>
-      <h4>MUX</h4>
-      <ul>
-        <li>2ⁿ giriş, n seçme, 1 çıkış</li>
-        <li>2×1: F = I₀<span class="ov">S</span> + I₁S</li>
-        <li>4×1: F = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</li>
-        <li>S₁ yüksek bit</li>
-      </ul>
-    </div>
-    <div>
-      <h4>DEMUX</h4>
-      <ul>
-        <li>1 giriş, n seçme, 2ⁿ çıkış</li>
-        <li>1×2: F₀ = I<span class="ov">S</span>, F₁ = IS</li>
-        <li>1×4: F<sub>i</sub> = (S₁S₀'ın i. mintermi) · I</li>
-        <li>MUX + DEMUX = tek hatta çok kanal (TDM)</li>
-      </ul>
-    </div>
-  </div>
-  <h3>İngilizce–Türkçe terimler</h3>
-  <dl class="glossary">
-    <dt>combinational circuit</dt><dd>kombinasyonel (birleşimsel) devre</dd>
-    <dt>integrated circuit (IC)</dt><dd>tümleşik devre, entegre</dd>
-    <dt>adder/subtractor</dt><dd>toplayıcı/çıkarıcı</dd>
-    <dt>operation code (op code)</dt><dd>işlem kodu</dd>
-    <dt>instruction set</dt><dd>komut kümesi</dd>
-    <dt>multiplexer (MUX)</dt><dd>çoğullayıcı, veri seçici</dd>
-    <dt>demultiplexer (DEMUX)</dt><dd>çoğullama çözücü, veri dağıtıcı</dd>
-    <dt>select input</dt><dd>seçme girişi</dd>
-  </dl>
-</section>
-
 <!-- ============================================================ 11 -->
 <section id="alistirma">
-  <h2><span class="n">11</span>Alıştırmalar ve test</h2>
+  <h2><span class="n">10</span>Alıştırmalar ve test</h2>
   <h3>Çözümlü alıştırmalar</h3>
   <ol class="exercises">
     <li>16×1 bir MUX'ta kaç seçme girişi vardır? 1×8 DEMUX'ta?

@@ -54,9 +54,8 @@
           <li><a href="#fa-dec"><span class="n">5</span><span>Decoder ile tam toplayıcı</span></a></li>
           <li><a href="#comp1"><span class="n">6</span><span>1 bitlik karşılaştırıcı</span></a></li>
           <li><a href="#comp4"><span class="n">7</span><span>4 bitlik karşılaştırıcı</span></a></li>
-          <li><a href="#ozet"><span class="n">8</span><span>Özet kâğıdı</span></a></li>
-          <li><a href="#alistirma"><span class="n">9</span><span>Alıştırmalar ve test</span></a></li>
-          <li><a href="#sinav"><span class="n">10</span><span>Sınav öncesi kontrol listesi</span></a></li>
+          <li><a href="#alistirma"><span class="n">8</span><span>Alıştırmalar ve test</span></a></li>
+          <li><a href="#sinav"><span class="n">9</span><span>Sınav öncesi kontrol listesi</span></a></li>
         </ol>
       </details>
     </nav>
@@ -306,59 +305,9 @@
   </div>
 </section>
 
-<!-- ============================================================ 8 -->
-<section id="ozet">
-  <h2><span class="n">8</span>Özet kâğıdı</h2>
-  <div class="cheat">
-    <div>
-      <h4>Encoder</h4>
-      <ul>
-        <li>Aktif girişin numarasını ikili koda çevirir</li>
-        <li>N çıkış → en fazla 2ᴺ giriş</li>
-        <li>20 tuş → 5 çıkış; 2⁸ giriş → 8 çıkış</li>
-      </ul>
-    </div>
-    <div>
-      <h4>4×2 öncelikli encoder</h4>
-      <ul>
-        <li>En büyük numaralı aktif giriş kazanır</li>
-        <li>A = I₂ + I₃</li>
-        <li>B = I₁<span class="ov">I₂</span> + I₃</li>
-        <li>I₀ kullanılmaz (GND)</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Decoder</h4>
-      <ul>
-        <li>N giriş → 2ᴺ çıkış, sadece biri 1</li>
-        <li>Her çıkış bir minterm</li>
-        <li>2×4: F₀ = <span class="ov">I₀ + I₁</span> (NOR), F₁ = <span class="ov">I₁</span>I₀, F₂ = I₁<span class="ov">I₀</span>, F₃ = I₁I₀</li>
-        <li>Fonksiyon = Σ listesindeki çıkışların OR'u</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Karşılaştırıcı</h4>
-      <ul>
-        <li>1 bit: A&gt;B = A<span class="ov">B</span>, A&lt;B = <span class="ov">A</span>B, A=B = A ⊙ B</li>
-        <li>4 bit: x<sub>i</sub> = A<sub>i</sub> ⊙ B<sub>i</sub>, A=B = x₃x₂x₁x₀</li>
-        <li>A&gt;B: en üstten ilk farklı bitte A = 1</li>
-      </ul>
-    </div>
-  </div>
-  <h3>İngilizce–Türkçe terimler</h3>
-  <dl class="glossary">
-    <dt>encoder</dt><dd>kodlayıcı</dd>
-    <dt>priority encoder</dt><dd>öncelikli kodlayıcı</dd>
-    <dt>decoder</dt><dd>kod çözücü</dd>
-    <dt>comparator</dt><dd>karşılaştırıcı</dd>
-    <dt>keypad</dt><dd>tuş takımı</dd>
-    <dt>one-hot</dt><dd>sadece bir hattın 1 olduğu kod</dd>
-  </dl>
-</section>
-
 <!-- ============================================================ 9 -->
 <section id="alistirma">
-  <h2><span class="n">9</span>Alıştırmalar ve test</h2>
+  <h2><span class="n">8</span>Alıştırmalar ve test</h2>
   <h3>Çözümlü alıştırmalar</h3>
   <ol class="exercises">
     <li>50 tuşlu bir tuş takımı için encoder'ın kaç çıkışı olmalı?
@@ -400,7 +349,7 @@
 
 <!-- ============================================================ 10 -->
 <section id="sinav">
-  <h2><span class="n">10</span>Sınav öncesi kontrol listesi</h2>
+  <h2><span class="n">9</span>Sınav öncesi kontrol listesi</h2>
   <p class="lead">Bütün dersin en sık sorulan soru tipleri. Her birini kâğıt kalemle çözebildiğinden emin ol. Takıldığın konunun bağlantısına tıklayıp tekrar et.</p>
   <div class="cheat">
     <div>

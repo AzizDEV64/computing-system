@@ -61,8 +61,7 @@
           <li><a href="#islemler"><span class="n">10</span><span>Lojik işlemler</span></a></li>
           <li><a href="#tablo"><span class="n">11</span><span>Doğruluk tablosu</span></a></li>
           <li><a href="#sadelestirme"><span class="n">12</span><span>Sadeleştirme ve De Morgan</span></a></li>
-          <li><a href="#ozet"><span class="n">13</span><span>Özet kâğıdı</span></a></li>
-          <li><a href="#alistirma"><span class="n">14</span><span>Alıştırmalar ve test</span></a></li>
+          <li><a href="#alistirma"><span class="n">13</span><span>Alıştırmalar ve test</span></a></li>
         </ol>
       </details>
     </nav>
@@ -1031,91 +1030,9 @@
   </div>
 </section>
 
-<!-- ============================================================ 14 -->
-<section id="ozet">
-  <h2><span class="n">13</span>Özet kâğıdı</h2>
-  <p>Sınavdan önce son tekrar için. Sayfayı yazdırırsan (<kbd>Ctrl</kbd> + <kbd>P</kbd>) araçlar gizlenir, sadece anlatım çıkar.</p>
-  <div class="cheat">
-    <div>
-      <h4>Dönüşümler</h4>
-      <ul>
-        <li>r → 10: rakam × ağırlık, topla</li>
-        <li>10 → r tam kısım: sürekli böl, kalanları <b>aşağıdan yukarı</b> oku</li>
-        <li>10 → r kesir: sürekli çarp, tam kısımları <b>yukarıdan aşağı</b> oku</li>
-        <li>2 ↔ 8: 3'erli grupla. 2 ↔ 16: 4'erli grupla (noktadan başla)</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Tümleyenler (n bit)</h4>
-      <ul>
-        <li>1's: bütün bitleri ters çevir. Formül (2ⁿ−1) − N</li>
-        <li>2's: 1's + 1. Ya da sağdan ilk 1'e kadar aynen yaz, gerisini ters çevir. Formül 2ⁿ − N</li>
-        <li>Bit sayısını hep koru</li>
-      </ul>
-    </div>
-    <div>
-      <h4>M − N toplayarak</h4>
-      <ul>
-        <li>Bit sayısını eşitle, N'nin tümleyenini al, M ile topla</li>
-        <li>2's: elde varsa at → pozitif</li>
-        <li>1's: elde varsa en sağa ekle → pozitif</li>
-        <li>Elde yoksa → negatif: toplamın aynı tümleyenini al, eksi koy</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Kodlar</h4>
-      <ul>
-        <li>BCD = 8421: her onluk rakam ayrı 4 bit. 1010–1111 geçersiz</li>
-        <li>Ağırlıklı kod: değer = 1 olan bitlerin ağırlıkları toplamı (4812'de 9 = 0110)</li>
-        <li>Gray: komşular arasında 1 bit fark</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Boole aksiyomları</h4>
-      <ul>
-        <li>A + 0 = A, A · 1 = A</li>
-        <li>A · 0 = 0, A + 1 = 1</li>
-        <li>A + <span class="ov">A</span> = 1, A · <span class="ov">A</span> = 0</li>
-        <li><span class="ov"><span class="ov">A</span></span> = A</li>
-        <li>Boole'da 1 + 1 = 1</li>
-      </ul>
-    </div>
-    <div>
-      <h4>İşlemler ve De Morgan</h4>
-      <ul>
-        <li>AND: hepsi 1 → 1. OR: biri 1 → 1</li>
-        <li>XOR: farklı → 1. XNOR: aynı → 1</li>
-        <li>NAND, NOR: AND ve OR'un tersi</li>
-        <li>A ⊕ B = <span class="ov">A</span>B + A<span class="ov">B</span></li>
-        <li><span class="ov">AB</span> = <span class="ov">A</span> + <span class="ov">B</span>, <span class="ov">A+B</span> = <span class="ov">A</span><span class="ov">B</span></li>
-        <li>Öncelik: parantez → NOT → AND → OR (⊕ ve ⊙ ile parantez kullan)</li>
-      </ul>
-    </div>
-  </div>
-
-  <h3>İngilizce–Türkçe terimler</h3>
-  <dl class="glossary">
-    <dt>base, radix</dt><dd>taban</dd>
-    <dt>bit, nibble, byte</dt><dd>ikili rakam; 4 bit; 8 bit</dd>
-    <dt>carry / borrow</dt><dd>elde / borç</dd>
-    <dt>1's complement</dt><dd>1'e tümleyen (bitleri ters çevirme)</dd>
-    <dt>2's complement</dt><dd>2'ye tümleyen (1's + 1)</dd>
-    <dt>end-around carry</dt><dd>çevrimsel elde: 1's ile çıkarmada taşan eldeyi en sağa ekleme</dd>
-    <dt>overflow (OF)</dt><dd>en soldan dışarı taşan elde biti</dd>
-    
-    <dt>BCD, weighted code</dt><dd>ikili kodlanmış onluk; ağırlıklı kod</dd>
-    <dt>Gray code</dt><dd>Gray kodu (komşular tek bit farklı)</dd>
-    <dt>truth table</dt><dd>doğruluk tablosu</dd>
-    <dt>axiom</dt><dd>aksiyom, temel kural</dd>
-    <dt>complement (Boolean)</dt><dd>tümleme, DEĞİL işlemi</dd>
-    <dt>sum of products (SOP)</dt><dd>çarpımlar toplamı</dd>
-    <dt>simplification</dt><dd>sadeleştirme</dd>
-  </dl>
-</section>
-
 <!-- ============================================================ 15 -->
 <section id="alistirma">
-  <h2><span class="n">14</span>Alıştırmalar ve test</h2>
+  <h2><span class="n">13</span>Alıştırmalar ve test</h2>
   <p class="lead">Önce kâğıt kalemle çöz, sonra çözüme bak. Çözüme bakmadan önce kendi cevabını yazmak, öğrenmenin en etkili yolu.</p>
 
   <h3>Çözümlü alıştırmalar</h3>

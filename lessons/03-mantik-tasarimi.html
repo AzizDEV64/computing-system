@@ -59,8 +59,7 @@
           <li><a href="#yarim"><span class="n">8</span><span>Yarım toplayıcı</span></a></li>
           <li><a href="#tam"><span class="n">9</span><span>Tam toplayıcı</span></a></li>
           <li><a href="#ripple"><span class="n">10</span><span>3 bitlik toplayıcı</span></a></li>
-          <li><a href="#ozet"><span class="n">11</span><span>Özet kâğıdı</span></a></li>
-          <li><a href="#alistirma"><span class="n">12</span><span>Alıştırmalar ve test</span></a></li>
+          <li><a href="#alistirma"><span class="n">11</span><span>Alıştırmalar ve test</span></a></li>
         </ol>
       </details>
     </nav>
@@ -514,7 +513,6 @@
     <li>FA₀'ın C<sub>in</sub>'i <b>toprağa (GND, yani 0)</b> bağlı, çünkü en sağ sütuna gelen bir elde yok. Hoca C<sub>in0</sub>'ı toprak sembolüne bağlamış.</li>
     <li>Her FA'nın C<sub>out</sub>'u solundaki FA'nın C<sub>in</sub>'ine bağlı: C<sub>out0</sub> → C<sub>in1</sub>, C<sub>out1</sub> → C<sub>in2</sub>.</li>
     <li>En soldaki FA'nın C<sub>out2</sub>'si <b>OF</b> (<span class="en">overflow</span>) olarak çıkar. Sonuç 3 bite sığmadıysa bu bit 1 olur.</li>
-    <li>Bu tanım <b>işaretsiz</b> sayılar için. Sayılar 2's complement işaretli ise (1. ders, 7. bölüm) taşma C<sub>out2</sub> ile değil, işaret bitine giren ve çıkan eldenin farklı olmasıyla anlaşılır. Örnek: 011 + 011 = 110. C<sub>out2</sub> = 0, ama +3 + 3 = +6 işaretli 3 bitlik aralığa (−4…+3) sığmaz: işaret bitine giren elde 1, çıkan 0.</li>
   </ul>
   <p>Eldenin sağdan sola bir dalga gibi yayılmasından dolayı bu yapıya <span class="term">ripple carry adder</span> (dalgalı elde toplayıcı) denir. Her FA eldeyi sağındakinden beklemek zorunda olduğu için n bitlik toplayıcıda gecikme n katına çıkar. Ripple carry basit ama yavaştır.</p>
 
@@ -573,79 +571,9 @@
   </div>
 </section>
 
-<!-- ============================================================ 11 -->
-<section id="ozet">
-  <h2><span class="n">11</span>Özet kâğıdı</h2>
-  <div class="cheat">
-    <div>
-      <h4>Minterm ve maxterm</h4>
-      <ul>
-        <li>m<sub>i</sub>: çarpım, sadece i. satırda 1</li>
-        <li>M<sub>i</sub>: toplam, sadece i. satırda 0</li>
-        <li>Minterm: 0 → çizgili, 1 → düz</li>
-        <li>Maxterm: 1 → çizgili, 0 → düz</li>
-        <li>M<sub>i</sub> = <span class="ov">m<sub>i</sub></span></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Kanonik formlar</h4>
-      <ul>
-        <li>SOP: F = Σ(1 olan satırlar)</li>
-        <li>POS: F = Π(0 olan satırlar)</li>
-        <li>Σ ve Π listeleri birbirinin tamamlayıcısı</li>
-        <li>Eksik değişken X: terimi (X + <span class="ov">X</span>) ile çarp (SOP), toplam terimine X<span class="ov">X</span> ekle (POS)</li>
-        <li>Kanonik: her terimde bütün değişkenler var</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Tasarım adımları</h4>
-      <ul>
-        <li>0: giriş/çıkış ve 0/1 anlamlarını tanımla</li>
-        <li>1: doğruluk tablosu</li>
-        <li>2: F = Σ(…) ve açık hali</li>
-        <li>3: sadeleştir</li>
-        <li>4: devreyi çiz</li>
-        <li>Alarm: F = (A + B)(B + C) (hocanın cevabı) = B + AC (en sade)</li>
-      </ul>
-    </div>
-    <div>
-      <h4>Toplayıcılar</h4>
-      <ul>
-        <li>HA: S = A ⊕ B, C<sub>out</sub> = AB</li>
-        <li>FA: S = A ⊕ B ⊕ C<sub>in</sub></li>
-        <li>FA: C<sub>out</sub> = BC<sub>in</sub> + A(B ⊕ C<sub>in</sub>)</li>
-        <li>= AB + C<sub>in</sub>(A ⊕ B) = AB + AC<sub>in</sub> + BC<sub>in</sub></li>
-        <li>S: 1'ler tekse 1. C<sub>out</sub>: en az iki 1 varsa 1</li>
-      </ul>
-    </div>
-    <div>
-      <h4>n bitlik toplayıcı</h4>
-      <ul>
-        <li>n tane FA yan yana</li>
-        <li>C<sub>in0</sub> = 0 (GND)</li>
-        <li>C<sub>out,i</sub> → C<sub>in,i+1</sub></li>
-        <li>Son C<sub>out</sub> = OF (taşma)</li>
-      </ul>
-    </div>
-  </div>
-  <h3>İngilizce–Türkçe terimler</h3>
-  <dl class="glossary">
-    <dt>minterm / maxterm</dt><dd>en küçük terim / en büyük terim</dd>
-    <dt>canonical form</dt><dd>kanonik (standart, tam) biçim</dd>
-    <dt>sum of products (SOP)</dt><dd>çarpımlar toplamı</dd>
-    <dt>product of sums (POS)</dt><dd>toplamlar çarpımı</dd>
-    <dt>half adder (HA)</dt><dd>yarım toplayıcı</dd>
-    <dt>full adder (FA)</dt><dd>tam toplayıcı</dd>
-    <dt>carry in / carry out</dt><dd>gelen elde / giden elde</dd>
-    <dt>ripple carry adder</dt><dd>dalgalı elde toplayıcı</dd>
-    <dt>majority function</dt><dd>çoğunluk fonksiyonu</dd>
-    <dt>circuit diagram</dt><dd>devre şeması</dd>
-  </dl>
-</section>
-
 <!-- ============================================================ 12 -->
 <section id="alistirma">
-  <h2><span class="n">12</span>Alıştırmalar ve test</h2>
+  <h2><span class="n">11</span>Alıştırmalar ve test</h2>
   <p class="lead">Önce kâğıtta çöz, sonra çözüme bak.</p>
   <h3>Çözümlü alıştırmalar</h3>
   <ol class="exercises">
