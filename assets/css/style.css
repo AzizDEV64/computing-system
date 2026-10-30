@@ -168,8 +168,12 @@ sub { font-size: .7em; }
 .hero p.lede { color: var(--silk-dim); max-width: 34rem; font-size: var(--step-1); margin: 1.2rem 0 0; }
 .hero p.lede strong { color: var(--silk); font-weight: 600; }
 
+/* Telefonda oyuncağın ders listesinin altındaki yeri */
+.register-slot { margin-top: 2.5rem; }
+
 /* 8 bitlik register */
 .register {
+  color: var(--silk);
   background: var(--pcb-raised);
   border: 1px solid var(--pcb-line);
   border-radius: var(--radius-m);

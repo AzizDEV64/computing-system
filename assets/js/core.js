@@ -256,6 +256,14 @@
   function initRegister() {
     const reg = document.querySelector('[data-register]');
     if (!reg) return;
+    // Telefonda oyuncak ders listesinin altına iner, geniş ekranda hero'da kalır
+    const home = reg.parentNode, slot = document.querySelector('[data-register-slot]');
+    if (slot) {
+      const wide = window.matchMedia('(min-width: 62rem)');
+      const place = () => { const dest = wide.matches ? home : slot; if (reg.parentNode !== dest) dest.appendChild(reg); slot.hidden = wide.matches; };
+      place();
+      wide.addEventListener('change', place);
+    }
     const wrap = reg.querySelector('.switches');
     const bits = [0, 0, 1, 0, 1, 1, 0, 1]; // 45
     const weights = [128, 64, 32, 16, 8, 4, 2, 1];
